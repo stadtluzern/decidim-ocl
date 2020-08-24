@@ -10,6 +10,12 @@ gem 'decidim', DECIDIM_VERSION
 gem 'decidim-proposals', DECIDIM_VERSION
 # gem 'decidim-consultations', DECIDIM_VERSION
 # gem 'decidim-initiatives', DECIDIM_VERSION
+gem 'decidim-conferences'
+gem 'decidim-navbar_links', git: "https://github.com/OpenSourcePolitics/decidim-module-navbar_links", branch: "0.21.0"
+gem "decidim-calendar"
+# decidim-plans is not compatible with decidim 0.21
+#gem "decidim-plans", git: "https://github.com/mainio/decidim-module-plans", branch: "master"
+gem "decidim-navigation_maps", git: "https://github.com/Platoniq/decidim-module-navigation_maps"
 
 gem 'bootsnap', '~> 1.3'
 
