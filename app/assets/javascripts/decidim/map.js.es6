@@ -1,5 +1,7 @@
 // = require leaflet
-// = require leaflet-tilelayer-swiss
+// = require proj4
+// = require proj4leaflet
+// = require esri-leaflet/dist/esri-leaflet
 // = require leaflet-svg-icon
 // = require leaflet.markercluster
 // = require jquery-tmpl
@@ -25,7 +27,7 @@ const addMarkers = (markersData, markerClusters, map) => {
   const bounds = new L.LatLngBounds(markersData.map((markerData) => [markerData.latitude, markerData.longitude]));
 
   markersData.forEach((markerData) => {
-    let marker = L.marker(L.CRS.EPSG2056.unproject(markerData.lv95), {
+    let marker = L.marker(L.latLng([markerData.latitude, markerData.longitude]), {
       icon: new L.DivIcon.SVGIcon.DecidimIcon()
     });
     let node = document.createElement("div");
@@ -43,29 +45,39 @@ const addMarkers = (markersData, markerClusters, map) => {
   });
 
   map.addLayer(markerClusters);
-  map.fitBounds(bounds, { padding: [100, 100], maxZoom: 25 });
+  map.fitBounds(bounds, { padding: [100, 100], maxZoom: 5 });
 };
 
 const loadMap = (mapId, markersData) => {
   let markerClusters = L.markerClusterGroup();
+
+  // Swiss coordinate system LV95 is used in these maps, see https://epsg.io/2056
+  const crs = new L.Proj.CRS('EPSG:2056', '+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs', {
+    // Origin and resolutions of the maps are taken from the ArcGIS service description, see https://svc.geo.lu.ch/main/rest/services/basis/basis_citymap_baspla/MapServer/WMTS/basis_basis_citymap_baspla
+    origin: [-2.9380010775807664E7, 3.500843066123094E7],
+    resolutions: [10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1, 0.05]
+  })
 
   if (window.Decidim.currentMap) {
     window.Decidim.currentMap.remove();
     window.Decidim.currentMap = null;
   }
   const map = L.map(mapId, {
-    crs: L.CRS.EPSG2056,
+    crs: crs,
   });
 
-  L.tileLayer.swiss().addTo(map);
+  L.esri.tiledMapLayer({
+    url: 'https://svc.geo.lu.ch/main/rest/services/basis/basis_citymap_baspla/MapServer',
+    attribution: '<a href="https://geoportal.lu.ch/">Geoportal Kt. LU</a>',
+    minZoom: 0,
+    maxZoom: 9,
+  }).addTo(map);
 
   if (markersData.length > 0) {
     addMarkers(markersData, markerClusters, map);
   }
 
   map.scrollWheelZoom.disable();
-  map.options.minZoom = 2;
-  map.options.maxZoom = 25;
 
   return map;
 };
@@ -79,11 +91,7 @@ window.Decidim.mapConfiguration = {};
 $(() => {
   const mapId = "map";
   const $map = $(`#${mapId}`);
-
-  // Transform global WGS84 coordinates to swiss LV95 coordinates
-  const markersData = $map.data("markers-data").map(data => {
-    return { ...data, lv95: L.CRS.EPSG2056.project({ lng: data.longitude, lat: data.latitude }) };
-  });
+  const markersData = $map.data("markers-data");
 
   if ($map.length > 0) {
     if (markersData.length > 0) {

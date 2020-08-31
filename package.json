@@ -1,5 +1,8 @@
 {
   "name": "decidim_ocl",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "esri-leaflet": "^2.5.0",
+    "proj4leaflet": "^1.0.2"
+  }
 }
