@@ -68,7 +68,7 @@ const loadMap = (mapId, markersData) => {
 
   L.esri.tiledMapLayer({
     url: 'https://svc.geo.lu.ch/main/rest/services/basis/basis_citymap_baspla/MapServer',
-    attribution: '<a href="https://geoportal.lu.ch/">Geoportal Kt. LU</a>',
+    attribution: '<a href="https://www.gis.stadtluzern.ch/">GIS LU</a>',
     minZoom: 0,
     maxZoom: 9,
   }).addTo(map);
