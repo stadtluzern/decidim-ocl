@@ -83,6 +83,9 @@ de:
         one: Kollaborativer Entwurf
         other: Kollaborative Entwürfe
   decidim:
+    calendar:
+      menu:
+        calendar: Kalender
     account:
       delete:
         alert: Diese Aktion kann nicht rückgängig gemacht werden. Wenn du dein Konto löschst, kannst du dich mit diesem Konto nicht mehr anmelden und musst dich neu registrieren.
@@ -145,6 +148,43 @@ de:
             'true': Unpublished
         search_placeholder:
           title_cont: '%{collection} nach Titel suchen'
+        proposals:
+          category_id_eq:
+            label: Kategorie
+          is_emendation_true:
+            label: Art
+            values:
+              false: Vorschläge
+              true: Änderungsvorschläge
+          scope_id_eq:
+            label: Bereich
+          state_eq:
+            label: Status
+            values:
+              accepted: Akzeptiert
+              evaluating: In Abklärung
+              published: Veröffentlicht
+              rejected: Abgewiesen
+              validating: Technische Abklärung
+              withdrawn: Zurückgezogen
+          state_null:
+            label: Status
+            values:
+              true: Nicht beantwortet
+        initiatives:
+          decidim_area_id_eq:
+            label: Gebiet
+          state_eq:
+            label: Status
+            values:
+              accepted: Genügend Unterschriften
+              created: Erstellt
+              discarded: Verworfen
+              published: Veröffentlicht
+              rejected: Nicht genügend Unterschriften
+              validating: Technische Abklärung
+          type_id_eq:
+            label: Typ
       initiative:
         attachments: Anhänge
       menu:
@@ -222,7 +262,17 @@ de:
           title: Problematischen Inhalt melden
       proposals:
         settings:
+          step:
+            amendments_visibility: Sichtbarkeit von Änderungsvorschlägen
+            amendment_promotion_enabled: Promotion von Änderungsvorschlägen aktiviert
+            amendment_reaction_enabled: Reaktionen auf Änderungsvorschläge aktiviert
+            amendment_creation_enabled: Änderungsvorschläge erstellen aktiviert
+            answers_with_costs: Antworten mit Kosten
+            publish_answers_immediately: Antworten sofort veröffentlichen
           global:
+            new_proposal_body_template: Vorlage für Inhalt von neuen Vorschlägen
+            amendments_wizard_help_text: Hilfetext bei Änderungsvorschlägen
+            allow_card_image: Vorschlagsbilder aktiviert
             collaborative_drafts_enabled: Kollaborative Entwürfe aktiviert
     conferences:
       admin:
@@ -446,8 +496,10 @@ de:
       meetings:
         object: Events
     menu:
+      assemblies: Gremien
+      conferences: Grossanlässe
       help: Info & Hilfe
-      processes: Mitmachen
+      processes: Partizipationsprozesse
     notifications_settings:
       show:
         email_on_notification: Ich möchte jedes Mal eine E-Mail erhalten, wenn ich benachrichtigt werde.
@@ -466,6 +518,10 @@ de:
       index:
         subheading: Hier findest du Fragen und Antworten rund um %{name}.
     participatory_processes:
+      admin:
+        participatory_processes:
+          form:
+            scope_type_max_depth_help: Schränkt die maximale Tiefe des Bereichs-Filters ein; Der Filter zeigt vom Allgemeinen bis zum ausgewählten Bereichstyp.
       pages:
         home:
           highlighted_processes:
@@ -608,6 +664,7 @@ de:
           fields:
             created_at: Erstellt am
             smtp_settings: SMTP Einstellungen
+            omniauth_settings: Omniauth Einstellungen
       organizations:
         create:
           error: Beim Erstellen der neuen Organisation ist ein Fehler aufgetreten.
@@ -616,6 +673,8 @@ de:
         new:
           reference_prefix_hint: Das Referenzpräfix wird zur eindeutigen Identifizierung von Ressourcen in allen Organisationen verwendet
           secondary_hosts_hint: Geben Sie jeden Host auf einer separaten Zeile an
+        omniauth_settings:
+          enabled: Omniauth aktiviert
         update:
           error: Beim Bearbeiten dieser Organisation ist ein Fehler aufgetreten.
           success: Die Organisation wurde erfolgreich gespeichert.
@@ -634,12 +693,15 @@ de:
         my_interests: Meine Themen
         select_your_interests: Hier kannst du Themen auswählen, die dich interessieren. Du siehst aktuelle Aktivitäten der ausgewählten Themen in der "Zeitleiste" deines Profils.
         update_my_interests: Änderungen speichern
+    versions:
+      resource_version:
+        see_other_versions: siehe andere Versionen
   devise:
     confirmations:
       confirmed: Deine E-Mail-Adresse wurde erfolgreich bestätigt.
     mailer:
       confirmation_instructions:
-        subject: "DecidimOCL: E-Mail bestätigen"
+        subject: "Open Community Luzern: E-Mail bestätigen"
       reset_password_instructions:
         action: Mein Passwort ändern
         greeting: Hallo %{recipient}!
@@ -682,4 +744,3 @@ de:
         title: Kontoeinstellungen
         user_groups: Gruppen
   total_budget: Gesamtbudget
-  
