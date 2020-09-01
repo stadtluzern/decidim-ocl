@@ -66,12 +66,24 @@ const loadMap = (mapId, markersData) => {
     crs: crs,
   });
 
-  L.esri.tiledMapLayer({
+  const baspla = L.esri.tiledMapLayer({
     url: 'https://svc.geo.lu.ch/main/rest/services/basis/basis_citymap_baspla/MapServer',
     attribution: '<a href="https://www.gis.stadtluzern.ch/">GIS LU</a>',
     minZoom: 0,
     maxZoom: 9,
   }).addTo(map);
+  const ortho = L.esri.tiledMapLayer({
+    url: 'https://svc.geo.lu.ch/main/rest/services/basis/basis_citymap_ortho/MapServer',
+    attribution: '<a href="https://www.gis.stadtluzern.ch/">GIS LU</a>',
+    minZoom: 0,
+    maxZoom: 9,
+  }).addTo(map);
+
+  var tileLayers = {
+    'Stadtplan': baspla,
+    'Satellit': ortho
+  };
+  L.control.layers(tileLayers).addTo(map);
 
   if (markersData.length > 0) {
     addMarkers(markersData, markerClusters, map);
