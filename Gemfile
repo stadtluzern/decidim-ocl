@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-DECIDIM_VERSION = '~> 0.21'
+DECIDIM_VERSION = '~> 0.22'
 
 ruby RUBY_VERSION
 
@@ -10,8 +10,8 @@ gem 'decidim', DECIDIM_VERSION
 gem 'decidim-proposals', DECIDIM_VERSION
 # gem 'decidim-consultations', DECIDIM_VERSION
 # gem 'decidim-initiatives', DECIDIM_VERSION
-gem 'decidim-conferences'
-gem 'decidim-navbar_links', git: "https://github.com/OpenSourcePolitics/decidim-module-navbar_links", branch: "0.21.0"
+gem 'decidim-conferences', DECIDIM_VERSION
+gem 'decidim-navbar_links', git: "https://github.com/OpenSourcePolitics/decidim-module-navbar_links", branch: "0.22-stable"
 gem "decidim-calendar"
 # decidim-plans is not compatible with decidim 0.21
 #gem "decidim-plans", git: "https://github.com/mainio/decidim-module-plans", branch: "master"
