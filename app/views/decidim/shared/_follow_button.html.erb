@@ -1,0 +1,26 @@
+<% if (followable.is_a? Decidim::Assembly) && followable.members.not_ceased.any? %>
+
+  <div class="assembly-members-list author-data--big">
+    <h5><%= t('decidim.assemblies.assembly_members.index.members') %></h5>
+    <% for member in followable.members.not_ceased.first(6) %>
+      <%=  %>
+      <% if member.user.present? %>
+        <%= link_to (decidim.profile_url host: followable.organization.host, nickname: member.user.nickname), class: "author__avatar author__avatar-horizontal", title: member.user.nickname do %>
+          <%= image_tag member.user.avatar_url(:big), alt: "member-avatar" %>
+        <% end %>
+      <% else %>
+        <span class="author__avatar" title="<%= member.full_name %>">
+          <%= image_tag asset_path("decidim/default-avatar.svg"), alt: "member-avatar" %>
+        </span>
+      <% end %>
+    <% end %>
+  </div>
+
+    </div>
+  </div>
+  <div class="card extra">
+    <div class="card__content">
+
+<% end %>
+
+<%= cell "decidim/follow_button", followable, inline: false, large: large %>
