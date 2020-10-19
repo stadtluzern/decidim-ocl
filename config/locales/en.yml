@@ -113,6 +113,8 @@ en:
   hello: "Hello world"
   layouts:
     decidim:
+      assembly_navigation:
+        assembly_member_menu_item: "Members (%{count})"
       cookie_warning:
         description_html: This site uses cookies. By continuing to browse the site, you agree to our use of cookies. We also use Matomo for anonymous user statistics. Find out more about it %{link}.
         link_label: here

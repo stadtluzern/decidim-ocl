@@ -727,6 +727,8 @@ de:
   hello: "Hallo Welt"
   layouts:
     decidim:
+      assembly_navigation:
+        assembly_member_menu_item: "Mitglieder (%{count})"
       cookie_warning:
         description_html: Diese Seite verwendet Cookies. Durch die weitere Verwendung dieser Seite stimmst Du der Verwendung von Cookies zu. Wir verwenden Matomo für anonymisierte Statistiken. Erfahre %{link} mehr darüber.
         link_label: hier
