@@ -1,5 +1,7 @@
 FROM centos/ruby-25-centos7
 
+ENV PATH=/opt/rh/rh-ruby25/root/usr/bin:$PATH
+
 USER root
 
 ADD ./root /
