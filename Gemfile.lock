@@ -282,6 +282,10 @@ GEM
       decidim-core (= 0.22.0)
       kaminari (~> 1.2, >= 1.2.1)
       searchlight (~> 4.1)
+    decidim-decidim_awesome (0.6.0)
+      decidim-admin (>= 0.22.0, < 0.24)
+      decidim-core (>= 0.22.0, < 0.24)
+      redcarpet (~> 3.4)
     decidim-dev (0.22.0)
       byebug (~> 11.0)
       capybara (~> 3.24)
@@ -811,6 +815,7 @@ DEPENDENCIES
   decidim (~> 0.22)
   decidim-calendar
   decidim-conferences (~> 0.22)
+  decidim-decidim_awesome (~> 0.6.0)
   decidim-dev (~> 0.22)
   decidim-navbar_links!
   decidim-navigation_maps!

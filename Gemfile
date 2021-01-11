@@ -10,14 +10,19 @@ gem 'decidim', DECIDIM_VERSION
 gem 'decidim-proposals', DECIDIM_VERSION
 # gem 'decidim-consultations', DECIDIM_VERSION
 # gem 'decidim-initiatives', DECIDIM_VERSION
+gem 'decidim-calendar'
 gem 'decidim-conferences', DECIDIM_VERSION
-gem 'decidim-navbar_links', git: "https://github.com/OpenSourcePolitics/decidim-module-navbar_links", branch: "0.22-stable"
-gem "decidim-calendar"
-gem "decidim-plans", git: "https://github.com/mainio/decidim-module-plans", branch: 'develop'
-gem "decidim-navigation_maps", git: "https://github.com/Platoniq/decidim-module-navigation_maps"
+gem 'decidim-decidim_awesome', '~> 0.6.0'
+gem 'decidim-navbar_links',
+    git: 'https://github.com/OpenSourcePolitics/decidim-module-navbar_links',
+    branch: '0.22-stable'
+gem 'decidim-navigation_maps',
+    git: 'https://github.com/Platoniq/decidim-module-navigation_maps'
+gem 'decidim-plans',
+    git: 'https://github.com/mainio/decidim-module-plans',
+    branch: 'develop'
 
 gem 'bootsnap', '~> 1.3'
-
 gem 'dalli'
 gem 'delayed_job_active_record'
 gem 'faker', '~> 1.9'
