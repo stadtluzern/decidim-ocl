@@ -9,7 +9,7 @@ ruby RUBY_VERSION
 gem 'decidim', DECIDIM_VERSION
 gem 'decidim-proposals', DECIDIM_VERSION
 # gem 'decidim-consultations', DECIDIM_VERSION
-# gem 'decidim-initiatives', DECIDIM_VERSION
+gem 'decidim-initiatives', DECIDIM_VERSION
 gem 'decidim-calendar',
     git: 'https://github.com/alabs/decidim-module-calendar',
     ref: 'f942447bb3a31f4c98b16134986b9ea1bd182f3a'
