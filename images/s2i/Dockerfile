@@ -1,21 +1,18 @@
-FROM centos/ruby-25-centos7
+FROM centos/ruby-27-centos7
 
-ENV PATH=/opt/rh/rh-ruby25/root/usr/bin:$PATH
+ENV PATH=/opt/rh/rh-ruby27/root/usr/bin:$PATH
 
 USER root
 
 ADD ./root /
 
-RUN yum install -y http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm
-
 RUN \
   set -x && \
-  ## FIXME: why does ruby-25 need to be disabled for the build to work
-  yum-config-manager --disable cbs.centos.org_repos_sclo7-rh-ruby25-rh-candidate_x86_64_os_ && \
   # prepare installing yum and node.js
   curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo && \
   curl --silent --location https://rpm.nodesource.com/setup_12.x | bash - && \
-  yum  install -y \
+  yum install -y http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm && \
+  yum install -y \
   # for active storage gem
   ImageMagick poppler libpoppler libicu-devel yarn git && \
   # Call restore-artifacts sscript when assembling
