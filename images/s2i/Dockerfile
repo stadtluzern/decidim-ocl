@@ -6,7 +6,7 @@ USER root
 
 ADD ./root /
 
-RUN bash -c "gem install bundler -v \"$(grep -A 1 'BUNDLED WITH' /opt/app-root/src/Gemfile.lock | tail -n 1)\""
+RUN yum install -y http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm
 
 RUN \
   set -x && \
@@ -17,7 +17,7 @@ RUN \
   curl --silent --location https://rpm.nodesource.com/setup_12.x | bash - && \
   yum  install -y \
   # for active storage gem
-  ImageMagick poppler libpoppler libicu-devel yarn && \
+  ImageMagick poppler libpoppler libicu-devel yarn git && \
   # Call restore-artifacts sscript when assembling
   sed '/Installing application source/i $STI_SCRIPTS_PATH/restore-artifacts' \
     -i $STI_SCRIPTS_PATH/assemble && \
@@ -25,6 +25,8 @@ RUN \
   echo -e "\n\$STI_SCRIPTS_PATH/assemble-frontend" >> $STI_SCRIPTS_PATH/assemble && \
   # Call post-assemble script when assembling
   echo -e "\n\$STI_SCRIPTS_PATH/post-assemble" >> $STI_SCRIPTS_PATH/assemble
+
+RUN bash -c "gem install bundler:2.2.5 --no-document"
 
 USER 1001
 
