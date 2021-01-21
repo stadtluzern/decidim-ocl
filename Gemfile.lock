@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/Kagemaru/decidim-module-jitsi-meetings.git
+  revision: 5d3e1e4be32ca3b4881d414968211883f38ffde3
+  specs:
+    decidim-jitsi_meetings (0.22.0)
+      decidim-core (= 0.22.0)
+
+GIT
   remote: https://github.com/OpenSourcePolitics/decidim-module-navbar_links
   revision: 78e9233c7d827355aaf7d0e95650e8255502c0b8
   branch: 0.22-stable
@@ -842,6 +849,7 @@ DEPENDENCIES
   decidim-decidim_awesome (~> 0.6.1)
   decidim-dev (~> 0.22)
   decidim-initiatives (~> 0.22)
+  decidim-jitsi_meetings!
   decidim-navbar_links!
   decidim-navigation_maps!
   decidim-plans!
@@ -860,7 +868,7 @@ DEPENDENCIES
   web-console (~> 3.5)
 
 RUBY VERSION
-   ruby 2.7.2p137
+   ruby 2.7.1p83
 
 BUNDLED WITH
    2.2.5

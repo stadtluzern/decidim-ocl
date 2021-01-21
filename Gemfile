@@ -9,12 +9,14 @@ ruby RUBY_VERSION
 gem 'decidim', DECIDIM_VERSION
 gem 'decidim-proposals', DECIDIM_VERSION
 # gem 'decidim-consultations', DECIDIM_VERSION
-gem 'decidim-initiatives', DECIDIM_VERSION
 gem 'decidim-calendar',
     git: 'https://github.com/alabs/decidim-module-calendar',
     ref: 'f942447bb3a31f4c98b16134986b9ea1bd182f3a'
 gem 'decidim-conferences', DECIDIM_VERSION
 gem 'decidim-decidim_awesome', '~> 0.6.0'
+gem 'decidim-initiatives', DECIDIM_VERSION
+gem 'decidim-jitsi_meetings',
+    git: 'https://github.com/Kagemaru/decidim-module-jitsi-meetings.git'
 gem 'decidim-navbar_links',
     git: 'https://github.com/OpenSourcePolitics/decidim-module-navbar_links',
     branch: '0.22-stable'
