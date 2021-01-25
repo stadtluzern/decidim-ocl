@@ -25,6 +25,9 @@ gem 'decidim-navigation_maps',
 gem 'decidim-plans',
     git: 'https://github.com/mainio/decidim-module-plans',
     branch: 'develop'
+gem 'decidim-term_customizer',
+    git: 'https://github.com/mainio/decidim-module-term_customizer',
+    branch: 'master'
 
 gem 'bootsnap', '~> 1.3'
 gem 'dalli'

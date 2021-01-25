@@ -41,6 +41,15 @@ GIT
       graphql (~> 1.9.19)
       paper_trail-association_tracking (~> 2.0)
 
+GIT
+  remote: https://github.com/mainio/decidim-module-term_customizer
+  revision: e7d442129fcce6f79b227f7372d24187490fc0e1
+  branch: master
+  specs:
+    decidim-term_customizer (0.22.0)
+      decidim-admin (~> 0.22.0)
+      decidim-core (~> 0.22.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -854,6 +863,7 @@ DEPENDENCIES
   decidim-navigation_maps!
   decidim-plans!
   decidim-proposals (~> 0.22)
+  decidim-term_customizer!
   delayed_job_active_record
   faker (~> 1.9)
   letter_opener_web (~> 1.3)
