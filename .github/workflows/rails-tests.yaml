@@ -20,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        ruby: [ '2.5', '2.6' ]
+        ruby: [ '2.6', '2.7' ]
 
     services:
       postgres:
@@ -50,13 +50,15 @@ jobs:
       run: |
         sudo apt-get install libpq-dev
     - name: Cache gems
-      uses: actions/cache@preview
+      id: cache
+      uses: actions/cache@v2
       with:
         path: vendor/bundle
         key: ruby-${{ matrix.ruby }}-gem-${{ hashFiles('**/Gemfile.lock') }}
         restore-keys: |
           ruby-${{ matrix.ruby }}-gem-
-    - name: 'Build and test with Rake'
+
+    - name: 'Build and run tests'
       env:
         RAILS_TEST_DB_NAME: 'postgres'
         RAILS_TEST_DB_USERNAME: 'postgres'
