@@ -22,15 +22,6 @@ GIT
       decidim-core (>= 0.18.0)
 
 GIT
-  remote: https://github.com/alabs/decidim-module-calendar
-  revision: f942447bb3a31f4c98b16134986b9ea1bd182f3a
-  ref: f942447bb3a31f4c98b16134986b9ea1bd182f3a
-  specs:
-    decidim-calendar (0.19.0)
-      decidim-admin (>= 0.19.0)
-      decidim-core (>= 0.19.0)
-
-GIT
   remote: https://github.com/mainio/decidim-module-plans
   revision: 4b570343759fccdbdff06e048ab443f2cf015d24
   branch: develop
@@ -853,7 +844,6 @@ DEPENDENCIES
   byebug (~> 11.0)
   dalli
   decidim (~> 0.22)
-  decidim-calendar!
   decidim-conferences (~> 0.22)
   decidim-decidim_awesome (~> 0.6.1)
   decidim-dev (~> 0.22)
