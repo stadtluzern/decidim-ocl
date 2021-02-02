@@ -221,6 +221,19 @@ de:
     admin_terms_of_use:
       default_body: "<h2>ADMIN NUTZUNGSBEDINGUNGEN</h2><p>Wir nehmen an du hast die übliche Lektion vom lokalen Systemadministrator bekommen. Üblicherweise geht es um folgende drei Punkte:</p><ol><li>Privatsphäre anderer respektieren.</li><li>Denken bevor man klickt.</li><li>Mit grosser Macht kommt grosse Verantwortung.</li></ol>"
     amendments:
+      emendation:
+        announcement:
+          accepted: |-
+            Diese Änderung für %{amendable_type} %{proposal_link} wurde
+            am <strong>%{announcement_date}</strong> akzeptiert.
+          evaluating: |-
+            Diese Änderung für %{amendable_type} %{proposal_link}
+            wird bewertet.
+          promoted: Hochgestuft auf %{amendable_type}.
+          rejected: "Diese Änderung für %{amendable_type} %{proposal_link}\nwurde am <strong>%{announcement_date}</strong>abgelehnt."
+          withdrawn: |-
+            Diese Änderung für %{amendable_type} %{proposal_link}
+            wurde vom Autor zurückgezogen.
       amendable:
         button: '%{model_name} ändern'
         help_text: ""
