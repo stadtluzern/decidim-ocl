@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-DECIDIM_VERSION = '~> 0.22'
+DECIDIM_VERSION = '~> 0.23'
 
 ruby RUBY_VERSION
 
@@ -13,18 +13,14 @@ gem 'decidim-conferences', DECIDIM_VERSION
 gem 'decidim-decidim_awesome', '~> 0.6.1'
 gem 'decidim-initiatives', DECIDIM_VERSION
 gem 'decidim-jitsi_meetings',
-    git: 'https://github.com/Kagemaru/decidim-module-jitsi-meetings.git'
+    git: 'https://github.com/carlobeltrame/decidim-module-jitsi-meetings.git'
 gem 'decidim-navbar_links',
     git: 'https://github.com/OpenSourcePolitics/decidim-module-navbar_links',
-    branch: '0.22-stable'
+    branch: '0.23-stable'
 gem 'decidim-navigation_maps',
     git: 'https://github.com/Platoniq/decidim-module-navigation_maps'
-gem 'decidim-plans',
-    git: 'https://github.com/mainio/decidim-module-plans',
-    branch: 'develop'
 gem 'decidim-term_customizer',
-    git: 'https://github.com/mainio/decidim-module-term_customizer',
-    branch: 'master'
+    git: 'https://github.com/EntraInAzione/decidim-module-term_customizer'
 
 gem 'bootsnap', '~> 1.3'
 gem 'dalli'
