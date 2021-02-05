@@ -839,6 +839,12 @@ de:
     versions:
       resource_version:
         see_other_versions: siehe andere Versionen
+  decidim_ocl:
+    maps:
+      gis_lu:
+        attribution: '<a href="https://www.gis.stadtluzern.ch/">GIS LU</a>'
+        baspla: Stadtplan
+        ortho: Satellit
   devise:
     confirmations:
       confirmed: Deine E-Mail-Adresse wurde erfolgreich bestätigt.

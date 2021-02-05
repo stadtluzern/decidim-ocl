@@ -8,11 +8,41 @@ Decidim.configure do |config|
   config.default_locale = :de
   config.available_locales = %i[en de fr it]
 
-  # Geocoder configuration
-  config.geocoder = {
-    static_map_url: "https://image.maps.cit.api.here.com/mia/1.6/mapview",
-    here_app_id: Rails.application.secrets.geocoder[:here_app_id],
-    here_app_code: Rails.application.secrets.geocoder[:here_app_code]
+  config.maps = {
+      dynamic: {
+          provider: :gis_luzern,
+          default_center: {
+              lat: 47.052,
+              lng: 8.309
+          },
+          layers: {
+              '0': {
+                  name: -> (*args){ I18n.t('decidim_ocl.maps.gis_lu.baspla') },
+                  url: 'https://svc.geo.lu.ch/main/rest/services/basis/basis_citymap_baspla/MapServer'
+              },
+              '1': {
+                  name: -> (*args){ I18n.t('decidim_ocl.maps.gis_lu.ortho') },
+                  url: 'https://svc.geo.lu.ch/main/rest/services/basis/basis_citymap_ortho/MapServer'
+              },
+          },
+          attribution: -> (*args){ I18n.t('decidim_ocl.maps.gis_lu.attribution') }
+      },
+      static: false,
+      geocoding: {
+          provider: :osm,
+          timeout: 5,
+          units: :km,
+      },
+      autocomplete: {
+          provider: :osm,
+          url: "https://photon.komoot.io/api?lat=47.052&lon=8.309&bbox=8.18,47.016,8.373,47.095",
+          address_format: [
+              "name",
+              ["street", "housenumber"],
+              "postcode",
+              "city",
+          ]
+      }
   }
 
   # Custom resource reference generator method
