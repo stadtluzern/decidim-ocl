@@ -9,7 +9,7 @@
           <%= render partial: "decidim/shared/address_details", locals: { geolocalizable: geolocalizable } %>
         </div>
       </div>
-      <% if Decidim.geocoder.present? %>
+      <% if Decidim::Map.available?(:geocoding) %>
         <%= dynamic_map_for(geolocalizables_data_for_map([ geolocalizable ])) do %>
           <template id="marker-popup">
             <div class="map-info__content">

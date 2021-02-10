@@ -6,8 +6,8 @@ require 'action_dispatch/middleware/session/dalli_store'
 Rails.application.config.session_store(
   ActionDispatch::Session::CacheStore,
   memcache_server: ['127.0.0.1'],
-  namespace:       'sessions',
-  key:             '_session',
+  namespace: 'sessions',
+  key: '_session',
   expire_after: 30.minutes,
   secure: Rails.env.production?,
   same_site: :lax

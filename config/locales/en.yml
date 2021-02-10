@@ -99,6 +99,12 @@ en:
       proposals:
         filters:
           activity: Kind
+  decidim_ocl:
+    maps:
+      gis_lu:
+        attribution: '<a href="https://www.gis.stadtluzern.ch/">GIS LU</a>'
+        baspla: City plan
+        ortho: Satellite image
   devise:
     mailer:
       confirmation_instructions:

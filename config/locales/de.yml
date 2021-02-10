@@ -261,6 +261,10 @@ de:
             placeholder: Was meinst du dazu?
           user_group_id:
             label: Kommentiere als
+      awesome_map:
+        name: Awesome Map
+      awesome_iframe:
+        name: Awesome iFrame
       comment_order_selector:
         order:
           best_rated: Bestbewertet
@@ -734,6 +738,24 @@ de:
             smtp_settings: SMTP Einstellungen
             omniauth_settings: Omniauth Einstellungen
       organizations:
+        file_upload_settings:
+          content_types:
+            admin_hint: These MIME types are allowed for the admin section uploads. Admin users should be aware of the risks with uploading some document formats, so you can expect them to be more cautious with the file uploads.
+            default_hint: These MIME types are allowed for all users by default.
+            intro_html: You add wildcards with the asterisk character for the MIME types, e.g. <code>image/*</code>.
+            title: Allowed MIME types
+          file_extensions:
+            admin_hint: These file extensions are allowed for the admin section uploads. Admin users should be aware of the risks with uploading some document formats, so you can expect them to be more cautious with the file uploads.
+            default_hint: These file extensions are allowed for all users by default.
+            image_hint: These file extensions are allowed for any kind of image uploads.
+            title: Allowed file extensions
+          file_sizes:
+            avatar_hint: Megabytes (MB). This file size limit is used for the avatar image uploads.
+            default_hint: Megabytes (MB). This file size limit is the default which is used for all file uploads unless otherwise specified.
+            title: Maximum file sizes
+          intro: |
+            Please be extra cautious when considering to change these settings. The less you allow, the better.
+            Allowing specific file extensions or MIME types can expose the system users to security risks and it can also affect the accessibility of the website.
         create:
           error: Beim Erstellen der neuen Organisation ist ein Fehler aufgetreten.
         edit:
@@ -817,6 +839,12 @@ de:
     versions:
       resource_version:
         see_other_versions: siehe andere Versionen
+  decidim_ocl:
+    maps:
+      gis_lu:
+        attribution: '<a href="https://www.gis.stadtluzern.ch/">GIS LU</a>'
+        baspla: Stadtplan
+        ortho: Satellit
   devise:
     confirmations:
       confirmed: Deine E-Mail-Adresse wurde erfolgreich bestätigt.
