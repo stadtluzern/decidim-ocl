@@ -9,40 +9,40 @@ Decidim.configure do |config|
   config.available_locales = %i[en de fr it]
 
   config.maps = {
-      dynamic: {
-          provider: :gis_luzern,
-          default_center: {
-              lat: 47.052,
-              lng: 8.309
-          },
-          layers: {
-              '0': {
-                  name: -> (*args){ I18n.t('decidim_ocl.maps.gis_lu.baspla') },
-                  url: 'https://svc.geo.lu.ch/main/rest/services/basis/basis_citymap_baspla/MapServer'
-              },
-              '1': {
-                  name: -> (*args){ I18n.t('decidim_ocl.maps.gis_lu.ortho') },
-                  url: 'https://svc.geo.lu.ch/main/rest/services/basis/basis_citymap_ortho/MapServer'
-              },
-          },
-          attribution: -> (*args){ I18n.t('decidim_ocl.maps.gis_lu.attribution') }
+    dynamic: {
+      provider: :gis_luzern,
+      default_center: {
+        lat: 47.052,
+        lng: 8.309
       },
-      static: false,
-      geocoding: {
-          provider: :osm,
-          timeout: 5,
-          units: :km,
+      layers: {
+        '0': {
+          name: ->(*_args) { I18n.t('decidim_ocl.maps.gis_lu.baspla') },
+          url: 'https://svc.geo.lu.ch/main/rest/services/basis/basis_citymap_baspla/MapServer'
+        },
+        '1': {
+          name: ->(*_args) { I18n.t('decidim_ocl.maps.gis_lu.ortho') },
+          url: 'https://svc.geo.lu.ch/main/rest/services/basis/basis_citymap_ortho/MapServer'
+        }
       },
-      autocomplete: {
-          provider: :osm,
-          url: "https://photon.komoot.io/api?lat=47.052&lon=8.309&bbox=8.18,47.016,8.373,47.095",
-          address_format: [
-              "name",
-              ["street", "housenumber"],
-              "postcode",
-              "city",
-          ]
-      }
+      attribution: ->(*_args) { I18n.t('decidim_ocl.maps.gis_lu.attribution') }
+    },
+    static: false,
+    geocoding: {
+      provider: :osm,
+      timeout: 5,
+      units: :km
+    },
+    autocomplete: {
+      provider: :osm,
+      url: 'https://photon.komoot.io/api?lat=47.052&lon=8.309&bbox=8.18,47.016,8.373,47.095',
+      address_format: [
+        'name',
+        %w[street housenumber],
+        'postcode',
+        'city'
+      ]
+    }
   }
 
   # Custom resource reference generator method
@@ -52,7 +52,7 @@ Decidim.configure do |config|
   # end
 
   # Currency unit
-  config.currency_unit = "CHF"
+  config.currency_unit = 'CHF'
 
   # Disable the default redirect to https, since we use nginx for ssl termination
   config.force_ssl = false

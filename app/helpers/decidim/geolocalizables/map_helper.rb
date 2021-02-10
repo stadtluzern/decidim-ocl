@@ -14,10 +14,10 @@ module Decidim
           body = presenter.try(:description) || presenter.try(:body)
 
           g.slice(:latitude, :longitude, :address)
-              .merge(title: present(g).title,
-                     body: truncate(body, length: 100),
-                     icon: icon(g.class.name.demodulize.pluralize.underscore, width: 40, height: 70, remove_icon_class: true),
-                     link: Decidim::ResourceLocatorPresenter.new(g).path)
+           .merge(title: present(g).title,
+                  body: truncate(body, length: 100),
+                  icon: icon(g.class.name.demodulize.pluralize.underscore, width: 40, height: 70, remove_icon_class: true),
+                  link: Decidim::ResourceLocatorPresenter.new(g).path)
         end
       end
     end

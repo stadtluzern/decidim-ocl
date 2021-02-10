@@ -9,7 +9,7 @@ module Decidim
   module Map
     module Provider
       module DynamicMap
-        autoload :GisLuzern, "decidim/map/provider/dynamic_map/gis_luzern"
+        autoload :GisLuzern, 'decidim/map/provider/dynamic_map/gis_luzern'
       end
     end
   end

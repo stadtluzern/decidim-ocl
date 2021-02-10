@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 module Decidim
   module Map
     module Provider
       module DynamicMap
         class GisLuzern < ::Decidim::Map::DynamicMap
-
           def builder_options
             configuration.merge(super)
           end
@@ -13,7 +14,7 @@ module Decidim
           class Builder < Decidim::Map::DynamicMap::Builder
             # @see Decidim::Map::DynamicMap::Builder#javascript_snippets
             def javascript_snippets
-              template.javascript_include_tag("decidim/gis_luzern")
+              template.javascript_include_tag('decidim/gis_luzern')
             end
           end
         end
