@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+exit
 
 echo "Decidim OCL frontend build: installing js libs with yarn ..."
 
