@@ -85,6 +85,14 @@ h6,
   font-family: "Source Sans Pro", Helvetica, Roboto, Arial, sans-serif !important;
 }
 
+.hero {
+  background-position: center;
+
+  &.home-section .hero-heading, &.home-section .hero-cta {
+    visibility: hidden;
+  }
+}
+
 .hero::after,
 .highligted-content-banner::after,
 .process-header__main::after,
