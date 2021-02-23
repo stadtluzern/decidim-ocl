@@ -11,7 +11,7 @@ gem 'decidim-proposals', DECIDIM_VERSION
 # gem 'decidim-consultations', DECIDIM_VERSION
 gem 'decidim-conferences', DECIDIM_VERSION
 gem 'decidim-decidim_awesome', '~> 0.6.1'
-gem 'decidim-initiatives', DECIDIM_VERSION
+# gem 'decidim-initiatives', DECIDIM_VERSION
 gem 'decidim-jitsi_meetings',
     git: 'https://github.com/carlobeltrame/decidim-module-jitsi-meetings.git'
 gem 'decidim-navbar_links',

@@ -23,15 +23,17 @@ class MoveSignatureTypeToInitativeType < ActiveRecord::Migration[5.2]
 
     InitiativesType.reset_column_information
 
-    Decidim::Initiatives::InitiativesType.find_each do |type|
-      type.signature_type = if type.online_signature_enabled && face_to_face_voting_allowed
-                              :any
-                            elsif type.online_signature_enabled && !face_to_face_voting_allowed
-                              :online
-                            else
-                              :offline
-                            end
-      type.save!
+    if Decidim.const_defined? :Initiatives
+      Decidim::Initiatives::InitiativesType.find_each do |type|
+        type.signature_type = if type.online_signature_enabled && face_to_face_voting_allowed
+                                :any
+                              elsif type.online_signature_enabled && !face_to_face_voting_allowed
+                                :online
+                              else
+                                :offline
+                              end
+        type.save!
+      end
     end
 
     remove_column :decidim_initiatives_types, :online_signature_enabled
