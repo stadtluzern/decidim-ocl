@@ -839,6 +839,9 @@ de:
     versions:
       resource_version:
         see_other_versions: siehe andere Versionen
+    export_mailer:
+      data_portability_export:
+        click_button: 'Klicken Sie auf die Schaltfläche "Herunterladen". <br/> Sie haben die Datei bis %{date} verfügbar. <br/> Um die Datei zu öffnen, brauchen Sie <a href=''https://www.7-zip.org/''>7-Zip</a>. Password: %{password}'
   decidim_ocl:
     maps:
       gis_lu:
