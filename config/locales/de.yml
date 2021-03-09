@@ -405,6 +405,7 @@ de:
           buttons:
             check: Kontakterlaubnis erteilen und fortfahren
             unckeck: Ohne Kontakterlaubnis fortfahren
+            uncheck: Deaktivieren Sie das Kontrollkästchen
           notice: |-
             <p>Hey, bist du sicher, dass du keinen Newsletter erhalten möchtest?<br>
             Für uns ist es sehr wichtig, dass wir dich gelegentlich kontaktieren können, um dir wichtige Ankündigungen mitzuteilen - zum Beispiel, wenn wir grosses mit deinen Inputs vorhaben.</p>
