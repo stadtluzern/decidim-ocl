@@ -30,6 +30,12 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  activemodel:
+    attributes:
+      confirmation:
+        verification_code: Verification code
+      mobile_phone:
+        mobile_phone_number: Mobile phone number
   decidim:
     admin:
       filters:
@@ -105,6 +111,11 @@ en:
         attribution: '<a href="https://www.gis.stadtluzern.ch/">GIS LU</a>'
         baspla: City plan
         ortho: Satellite image
+    verifications:
+      sms:
+        aspsms_gateway:
+          sms_text: '%{code} is your access code for %{organization}'
+          sms_originator_max_11_alphabetic_characters: DECIDIM
   devise:
     mailer:
       confirmation_instructions:

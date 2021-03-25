@@ -47,6 +47,8 @@ de:
         intergram_title_closed: Titel bei geschlossenem Intergram
         intergram_intro_message: Erste Nachricht wenn der Benutzer den Chat zum ersten Mal öffnet
         intergram_auto_no_response: Eine Nachricht die eine Minute nach der ersten Nachricht ohne Antwort versendet wird
+      confirmation:
+        verification_code: Verifizierungscode
       debate:
         user_group_id: Unter welchem Namen möchtest du deine Debatte veröffentlichen?
       dummy_resource:
@@ -56,6 +58,8 @@ de:
         state: Status
       meeting:
         private_meeting: Privater Event
+      mobile_phone:
+        mobile_phone_number: Mobiltelefonnummer
       proposal:
         has_address: Hat einen Standort
         state: Status
@@ -849,6 +853,11 @@ de:
         attribution: '<a href="https://www.gis.stadtluzern.ch/">GIS LU</a>'
         baspla: Stadtplan
         ortho: Satellit
+    verifications:
+      sms:
+        aspsms_gateway:
+          sms_text: '%{code} ist dein Zugangscode auf %{organization}'
+          sms_originator_max_11_alphabetic_characters: DECIDIM
   devise:
     confirmations:
       confirmed: Deine E-Mail-Adresse wurde erfolgreich bestätigt.
