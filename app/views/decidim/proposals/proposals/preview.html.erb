@@ -14,15 +14,15 @@
           <%= stylesheet_link_tag "decidim/map" %>
           <%= javascript_include_tag "decidim/map" %>
         <% end %>
-        <%= decidim_form_for(@form, url: update_draft_proposal_path(@form.instance_variable_get(:@id)), html: { method: :patch }) do |form| %>
-          <%= form.hidden_field :title, value: form_presenter.title %>
-          <%= form.hidden_field :body, value: form_presenter.body %>
+        <%= decidim_form_for(@proposal, url: update_draft_proposal_path(@proposal.id), html: { method: :patch }) do |form| %>
+          <%= form.hidden_field :title, value: @proposal.title[I18n.locale.to_s] %>
+          <%= form.hidden_field :body, value: @proposal.body[I18n.locale.to_s] %>
           <%= form.hidden_field :address %>
           <%= form.hidden_field :latitude, data: { type: "latitude" } %>
           <%= form.hidden_field :longitude, data: { type: "longitude" } %>
           <div class="preview--form__hidden">
-            <% if @form.categories&.any? %>
-              <%= form.categories_select :category_id, @form.categories %>
+            <% if current_component.categories&.any? %>
+              <%= form.categories_select :category_id, current_component.categories %>
             <% end %>
             <% if current_participatory_space.has_subscopes? %>
               <%= scopes_picker_field form, :scope_id %>
