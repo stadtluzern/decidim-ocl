@@ -20,17 +20,6 @@
           <%= form.hidden_field :address %>
           <%= form.hidden_field :latitude, data: { type: "latitude" } %>
           <%= form.hidden_field :longitude, data: { type: "longitude" } %>
-          <div class="preview--form__hidden">
-            <% if current_component.categories&.any? %>
-              <%= form.categories_select :category_id, current_component.categories %>
-            <% end %>
-            <% if current_participatory_space.has_subscopes? %>
-              <%= scopes_picker_field form, :scope_id %>
-            <% end %>
-            <% if current_user.user_groups.verified.any? %>
-              <%= form.select :user_group_id, current_user.user_groups.verified.map { |g| [g.name, g.id] }, prompt: current_user.name %>
-            <% end %>
-          </div>
           <div class="actions">
             <%= form.submit t(".update_position"), class: "button expanded", data: { disable: true } %>
           </div>
