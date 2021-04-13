@@ -397,8 +397,9 @@ nav {
   color: inherit !important;
 }
 
-.map-info__content p img {
-  display: none;
+.map-info__content #bodyContent {
+  overflow: auto;
+  max-height: 10rem;
 }
 
 // END MODIFICATIONS
