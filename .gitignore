@@ -42,5 +42,5 @@ public/uploads
 bin/bundle
 
 # Ignore local environment variables file
-/.env.local
-/.envrc
+.env.local
+.envrc
