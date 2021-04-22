@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-DECIDIM_VERSION = '~> 0.23'
+DECIDIM_VERSION = '= 0.23.2'
 
 ruby RUBY_VERSION
 
@@ -13,9 +13,10 @@ gem 'decidim-conferences', DECIDIM_VERSION
 gem 'decidim-decidim_awesome', '~> 0.6.1'
 # gem 'decidim-initiatives', DECIDIM_VERSION
 gem 'decidim-jitsi_meetings',
-    git: 'https://github.com/carlobeltrame/decidim-module-jitsi-meetings.git'
+    git: 'https://github.com/Kagemaru/decidim-module-jitsi-meetings.git',
+    tag: '0.23.2'
 gem 'decidim-navbar_links',
-    git: 'https://github.com/OpenSourcePolitics/decidim-module-navbar_links',
+    git: 'https://github.com/puzzle/decidim-module-navbar_links',
     branch: '0.23-stable'
 gem 'decidim-navigation_maps',
     git: 'https://github.com/Platoniq/decidim-module-navigation_maps'
