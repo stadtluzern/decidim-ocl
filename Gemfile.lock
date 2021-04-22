@@ -7,14 +7,6 @@ GIT
       decidim-core (= 0.24.0)
 
 GIT
-  remote: https://github.com/Platoniq/decidim-module-navigation_maps
-  revision: 1a214a01cae773ffc603e479c3a6714eed27a297
-  specs:
-    decidim-navigation_maps (1.2.0)
-      decidim-admin (>= 0.24, < 0.25)
-      decidim-core (>= 0.24, < 0.25)
-
-GIT
   remote: https://github.com/mainio/decidim-module-term_customizer
   revision: c9f127e78bd52b29ee02bc62f252db2634f9a1f0
   specs:
@@ -344,6 +336,9 @@ GEM
       jquery-tmpl-rails (~> 1.1)
       kaminari (~> 1.2, >= 1.2.1)
       searchlight (~> 4.1)
+    decidim-navigation_maps (1.2.0)
+      decidim-admin (>= 0.24, < 0.25)
+      decidim-core (>= 0.24, < 0.25)
     decidim-pages (0.24.0)
       decidim-core (= 0.24.0)
     decidim-participatory_processes (0.24.0)
@@ -895,12 +890,11 @@ DEPENDENCIES
   decidim-dev (= 0.24.0)
   decidim-jitsi_meetings!
   decidim-navbar_links!
-  decidim-navigation_maps!
+  decidim-navigation_maps (~> 1.2.0)
   decidim-proposals (= 0.24.0)
   decidim-term_customizer!
   delayed_job_active_record
   faker (~> 1.9)
-  kramdown (>= 2.3.1)
   letter_opener_web (~> 1.3)
   listen (~> 3.1)
   prometheus_exporter
