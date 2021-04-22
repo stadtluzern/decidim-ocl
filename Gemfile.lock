@@ -96,6 +96,10 @@ GEM
       execjs (~> 2.0)
     batch-loader (1.5.0)
     bcrypt (3.1.16)
+    better_errors (2.9.1)
+      coderay (>= 1.0.0)
+      erubi (>= 1.0.0)
+      rack (>= 0.9.0)
     better_html (1.0.16)
       actionview (>= 4.0)
       activesupport (>= 4.0)
@@ -880,6 +884,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  better_errors
   bleib
   bootsnap (~> 1.3)
   byebug (~> 11.0)
@@ -895,6 +900,7 @@ DEPENDENCIES
   decidim-term_customizer!
   delayed_job_active_record
   faker (~> 1.9)
+  kramdown (>= 2.3.1)
   letter_opener_web (~> 1.3)
   listen (~> 3.1)
   prometheus_exporter
@@ -907,7 +913,7 @@ DEPENDENCIES
   web-console (~> 3.5)
 
 RUBY VERSION
-   ruby 2.7.2p137
+   ruby 2.7.1p83
 
 BUNDLED WITH
    2.2.16
