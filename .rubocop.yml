@@ -1,1 +1,6 @@
 require: rubocop-rails
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'db/migrate/*.rb'
