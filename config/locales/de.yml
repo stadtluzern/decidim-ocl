@@ -666,8 +666,6 @@ de:
           fields:
             state: Status
       proposals:
-        dynamic_map_instructions:
-          instructions: <h3>Sie können den Punkt auf der Karte bewegen.</h3><p>Vergessen Sie nicht, auf "Position aktualisieren" zu klicken, wenn sie fertig sind.</p>
         filters:
           activity: Art
           my_proposals: Eigene Vorschläge
@@ -686,7 +684,6 @@ de:
           recent: Kürzlich hinzugefügt
           with_more_authors: Von mehreren Autoren erstellt
         preview:
-          update_position: Position aktualisieren
           proposal_edit_before_minutes:
             one: Du kannst diesen Vorschlag in der ersten Minute nach seiner Veröffentlichung noch unbemerkt bearbeiten. Nach Ablauf dieses Zeitfensters kann der Vorschlag zwar noch verändert werden, aber diese Änderungen werden dann für andere Nutzer*innen stets nachvollziehbar sein.
             other: Du kannst diesen Vorschlag in den ersten %{count} Minuten nach seiner Veröffentlichung noch unbemerkt bearbeiten. Nach Ablauf dieses Zeitfensters kann der Vorschlag zwar noch verändert werden, aber diese Änderungen werden dann für andere Nutzer*innen stets nachvollziehbar sein.
