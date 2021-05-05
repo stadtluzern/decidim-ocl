@@ -21,6 +21,8 @@ gem 'decidim-navbar_links',
     tag: 'v0.24.0'
 gem 'decidim-term_customizer',
     git: 'https://github.com/mainio/decidim-module-term_customizer'
+gem 'decidim-url_aliases',
+    git: 'https://github.com/OpenSourcePolitics/decidim-urlaliases'
 
 gem 'bootsnap', '~> 1.3'
 gem 'dalli'

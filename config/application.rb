@@ -26,5 +26,8 @@ module DecidimOCL
         require_dependency override
       end
     end
+
+    # This option silences the logging of Redirector related SQL queries in your log file
+    config.redirector.silence_sql_logs = true
   end
 end
