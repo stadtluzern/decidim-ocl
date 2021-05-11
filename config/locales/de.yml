@@ -908,6 +908,9 @@ de:
           drag_and_drop_image: Drag and Drop Bild
           meetings: Meetings
           proposals: Vorschläge
+          items: Items
+          select_deselect_all: Alles auswählen / Auswahl aufheben
+          hashtags: Hashtags
       participatory_process_groups:
         participatory_process_group:
           browse: Durchsuchen
@@ -921,3 +924,7 @@ de:
         title: Kontoeinstellungen
         user_groups: Gruppen
   total_budget: Gesamtbudget
+  forms:
+    length_validator:
+      minimum:
+        other: mindestens %{count} Buchstaben

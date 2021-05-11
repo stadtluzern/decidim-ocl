@@ -2,9 +2,11 @@
 
 source 'https://rubygems.org'
 
-DECIDIM_VERSION = '= 0.24.0'
+DECIDIM_VERSION = '0.24.2'
 
 ruby RUBY_VERSION
+
+gem 'execjs', '2.7.0'
 
 gem 'decidim', DECIDIM_VERSION
 gem 'decidim-proposals', DECIDIM_VERSION
@@ -14,11 +16,11 @@ gem 'decidim-decidim_awesome', '~> 0.7.0'
 gem 'decidim-navigation_maps', '~> 1.2.0'
 # gem 'decidim-initiatives', DECIDIM_VERSION
 gem 'decidim-jitsi_meetings',
-    git: 'https://github.com/Kagemaru/decidim-module-jitsi-meetings.git',
-    tag: '0.24.0'
+    git: 'https://github.com/puzzle/decidim-module-jitsi-meetings.git',
+    tag: DECIDIM_VERSION
 gem 'decidim-navbar_links',
     git: 'https://github.com/puzzle/decidim-module-navbar_links',
-    tag: 'v0.24.0'
+    tag: "v#{DECIDIM_VERSION}"
 gem 'decidim-term_customizer',
     git: 'https://github.com/mainio/decidim-module-term_customizer'
 gem 'decidim-url_aliases',
