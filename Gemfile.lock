@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://github.com/puzzle/decidim-module-navbar_links
-  revision: 2c0ad31a53244a2efe2691e2fd4e81e8561abcb3
+  revision: 1d1ef6eefa40337ef870156d80c02bf64823470a
   tag: v0.24.2
   specs:
     decidim-navbar_links (0.24.2)
@@ -110,6 +110,8 @@ GEM
       parser (>= 2.4)
       smart_properties
     bindex (0.8.1)
+    binding_of_caller (1.0.0)
+      debug_inspector (>= 0.0.1)
     bleib (0.0.11)
     bootsnap (1.7.5)
       msgpack (~> 1.0)
@@ -171,6 +173,7 @@ GEM
     db-query-matchers (0.9.0)
       activesupport (>= 4.0, <= 6.0)
       rspec (~> 3.0)
+    debug_inspector (1.1.0)
     decidim (0.24.2)
       decidim-accountability (= 0.24.2)
       decidim-admin (= 0.24.2)
@@ -888,6 +891,7 @@ PLATFORMS
 
 DEPENDENCIES
   better_errors
+  binding_of_caller
   bleib
   bootsnap (~> 1.3)
   byebug (~> 11.0)

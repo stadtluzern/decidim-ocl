@@ -37,6 +37,7 @@ gem 'uglifier', '~> 4.1'
 
 group :development, :test do
   gem 'better_errors'
+  gem 'binding_of_caller'
   gem 'byebug', '~> 11.0', platform: :mri
   gem 'pry-byebug'
 

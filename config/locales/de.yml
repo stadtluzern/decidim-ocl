@@ -47,6 +47,7 @@ de:
         intergram_title_closed: Titel bei geschlossenem Intergram
         intergram_intro_message: Erste Nachricht wenn der Benutzer den Chat zum ersten Mal öffnet
         intergram_auto_no_response: Eine Nachricht die eine Minute nach der ersten Nachricht ohne Antwort versendet wird
+        scoped_styles: Scoped Styles
       confirmation:
         verification_code: Verifizierungscode
       debate:
@@ -78,6 +79,12 @@ de:
         password_confirmation: Passwort bestätigen
         personal_url: Meine Website
         remove_avatar: Bild entfernen
+      menu:
+        raw_label: Beschriftung
+        url: URL
+        position: Position
+        target: Ziel
+        visibility: Sichtbarkeit
     errors:
       models:
         proposal:
@@ -362,10 +369,16 @@ de:
               intergram_config: Intergram Konfiguration
               allow_images_in_proposals: Bilder in Vorschlägen erlauben
               auto_save_forms: Formulare automatisch speichern
+              scoped_styles: Scoped Styles
+              scoped_styles_variables: Scoped Styles Variables
           show:
             title: Decidim Awesome
             update: Aktualisieren
           rich_text_editor_in_public_views: "Warnung: \"Erweiterter Text Editor für Teilnehmer\" ist aktiviert, diese Option ist inaktiv. Benutze die editor hacks um Bilder in Vorschlägen zu aktivieren."
+          form_styles:
+            new: Neu
+            remove: Entfernen
+            sure_to_remove: Bist du sicher, dass du diese CSS Box entfernen möchtest?
         checks:
           index:
             admin_head_tags: Admin Head Tags
@@ -381,6 +394,34 @@ de:
           proposals: Vorschläge
           livechat: Live Chat
           checks: Checks
+          menu_hacks: Hacks
+          styles: Styles
+        constraints:
+          new:
+            constraint: Neue Einschränkung erstellen
+            save: Speichern
+            cancel: Abbrechen
+        menu_hacks:
+          index:
+            title: Hauptmenü
+            new: Neuer Hack
+            edit: Bearbeiten
+          form:
+            target:
+              self: Gleiches Fenster
+              blank: Neues Fenster
+            label_help: Übersetzungen werden nicht automatisch gefunden, bitte fülle alle Felder aus!
+            visibility:
+              default: Sichtbar
+              hidden: Immer versteckt
+              logged: Nur sichtbar für angemeldete Benutzer
+              non_logged: Nur sichtbar für anonyme Benutzer
+          edit:
+            title: Menü Eintrag bearbeiten
+            save: Speichern
+          new:
+            title: Neuer Menü Eintrag
+            save: Speichern
       credits: Danksagungen
       config:
         intergram:
