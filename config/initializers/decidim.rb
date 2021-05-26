@@ -15,6 +15,12 @@ Decidim.configure do |config|
         lat: 47.052,
         lng: 8.309
       },
+      map_limits: {
+        lat_min: 47.016,
+        lat_max: 47.095,
+        lng_min: 8.18,
+        lng_max: 8.373
+      },
       layers: {
         '0': {
           name: ->(*_args) { I18n.t('decidim_ocl.maps.gis_lu.baspla') },
