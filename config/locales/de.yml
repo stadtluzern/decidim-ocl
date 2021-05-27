@@ -335,6 +335,13 @@ de:
           open_votes: Stimmen offen
         footer_button_text:
           view: Ansehen
+    content_blocks:
+      html2:
+        name: HTML-Block 2
+      html3:
+        name: HTML-Block 3
+      html4:
+        name: HTML-Block 4
     data_portability:
       show:
         download_data_description: Hier kannst du alle Daten, die wir von dir gespeichert haben, herunterladen und ansehen. Wir stellen dir einen Link an <strong>%{user_email}</strong> zu.

@@ -37,6 +37,13 @@ en:
       mobile_phone:
         mobile_phone_number: Mobile phone number
   decidim:
+    content_blocks:
+      html2:
+        name: HTML block 2
+      html3:
+        name: HTML block 3
+      html4:
+        name: HTML block 4
     admin:
       filters:
         state_eq:
