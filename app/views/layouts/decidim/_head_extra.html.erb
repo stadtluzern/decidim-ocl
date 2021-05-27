@@ -1,7 +1,7 @@
 <% if Rails.env.production? %>
   <% prod=ENV.fetch('SENTRY_CURRENT_ENV')=='production' %>
   <% site_id=prod ? 2 : 1 %>
-  <% domain=prod ? '*.ocl-prod.puzzle.ch' : '*.ocl-test.puzzle.ch' %>
+  <% domain=prod ? '*.dialogluzern.ch' : '*.test.dialogluzern.ch' %>
 <% end %>
 
 <!-- Matomo -->
