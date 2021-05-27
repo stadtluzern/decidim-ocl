@@ -1,8 +1,11 @@
-<% if Rails.env.production? %>
-  <% prod=ENV.fetch('SENTRY_CURRENT_ENV')=='production' %>
-  <% site_id=prod ? 2 : 1 %>
-  <% domain=prod ? '*.dialogluzern.ch' : '*.test.dialogluzern.ch' %>
-<% end %>
+<%
+  if Rails.env.production?
+    domain = request.env['SERVER_NAME']
+
+    prod = ENV.fetch('SENTRY_CURRENT_ENV')=='production'
+    site_id = prod ? 2 : 1
+  end
+%>
 
 <!-- Matomo -->
 <script type="text/javascript">
