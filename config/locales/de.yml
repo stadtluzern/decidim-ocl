@@ -236,12 +236,12 @@ de:
         announcement:
           accepted: |-
             Diese Änderung für %{amendable_type} %{proposal_link} wurde
-            am <strong>%{announcement_date}</strong> akzeptiert.
+            am <strong>%{date}</strong> akzeptiert.
           evaluating: |-
             Diese Änderung für %{amendable_type} %{proposal_link}
             wird bewertet.
           promoted: Hochgestuft auf %{amendable_type}.
-          rejected: "Diese Änderung für %{amendable_type} %{proposal_link}\nwurde am <strong>%{announcement_date}</strong>abgelehnt."
+          rejected: "Diese Änderung für %{amendable_type} %{proposal_link}\nwurde am <strong>%{date}</strong>abgelehnt."
           withdrawn: |-
             Diese Änderung für %{amendable_type} %{proposal_link}
             wurde vom Autor zurückgezogen.
