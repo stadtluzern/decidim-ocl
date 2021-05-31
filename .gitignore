@@ -44,3 +44,6 @@ bin/bundle
 # Ignore local environment variables file
 .env.local
 .envrc
+
+# Ignore local gems
+vendor/bundle/**/
