@@ -42,6 +42,10 @@ en:
         name: Latest blog posts
         title: Latest blog posts
         view_all: View all
+      last_surveys:
+        name: Latest surveys
+        title: Latest surveys
+        view_all: View all
       html2:
         name: HTML block 2
       html3:

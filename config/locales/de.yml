@@ -340,6 +340,10 @@ de:
         name: Neueste Blogbeiträge
         title: Neueste Blogbeiträge
         view_all: Alle anzeigen
+      last_surveys:
+        name: Neueste Umfragen
+        title: Neueste Umfragen
+        view_all: Alle anzeigen
       html2:
         name: HTML-Block 2
       html3:
