@@ -336,6 +336,10 @@ de:
         footer_button_text:
           view: Ansehen
     content_blocks:
+      last_blog_posts:
+        name: Neueste Blogbeiträge
+        title: Neueste Blogbeiträge
+        view_all: Alle anzeigen
       html2:
         name: HTML-Block 2
       html3:

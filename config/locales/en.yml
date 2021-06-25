@@ -38,6 +38,10 @@ en:
         mobile_phone_number: Mobile phone number
   decidim:
     content_blocks:
+      last_blog_posts:
+        name: Latest blog posts
+        title: Latest blog posts
+        view_all: View all
       html2:
         name: HTML block 2
       html3:
