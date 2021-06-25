@@ -23,15 +23,17 @@ Decidim.configure do |config|
       },
       layers: {
         '0': {
-          name: ->(*_args) { I18n.t('decidim_ocl.maps.gis_lu.baspla') },
-          url: 'https://svc.geo.lu.ch/main/rest/services/basis/basis_citymap_baspla/MapServer'
+          name: ->(*_args) { I18n.t('decidim_ocl.maps.swisstopo.basic') },
+          type: :swisstopo,
+          layer: 'ch.swisstopo.pixelkarte-farbe',
         },
         '1': {
-          name: ->(*_args) { I18n.t('decidim_ocl.maps.gis_lu.ortho') },
-          url: 'https://svc.geo.lu.ch/main/rest/services/basis/basis_citymap_ortho/MapServer'
-        }
+          name: ->(*_args) { I18n.t('decidim_ocl.maps.swisstopo.satellite') },
+          type: :swisstopo,
+          layer: 'ch.swisstopo.swissimage',
+        },
       },
-      attribution: ->(*_args) { I18n.t('decidim_ocl.maps.gis_lu.attribution') }
+      attribution: ->(*_args) { I18n.t('decidim_ocl.maps.swisstopo.attribution') }
     },
     static: false,
     geocoding: {

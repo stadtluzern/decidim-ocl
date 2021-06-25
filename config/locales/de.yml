@@ -906,9 +906,13 @@ de:
   decidim_ocl:
     maps:
       gis_lu:
-        attribution: '<a href="https://www.gis.stadtluzern.ch/">GIS LU</a>'
+        attribution: '<a href="https://www.gis.stadtluzern.ch/" target="_blank">GIS LU</a>'
         baspla: Stadtplan
         ortho: Satellit
+      swisstopo:
+        basic: 'Landeskarte'
+        satellite: 'Satellit'
+        attribution: '<a href="https://www.swisstopo.ch/" target="_blank">swisstopo</a>'
     verifications:
       sms:
         aspsms_gateway:
