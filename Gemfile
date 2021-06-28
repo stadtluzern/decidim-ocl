@@ -15,8 +15,10 @@ gem 'decidim-conferences', DECIDIM_VERSION
 gem 'decidim-decidim_awesome', '~> 0.7.0'
 gem 'decidim-navigation_maps', '~> 1.2.0'
 gem 'decidim-initiatives', DECIDIM_VERSION
+gem 'decidim-antivirus',
+    git: 'https://github.com/mainio/decidim-module-antivirus'
 gem 'decidim-jitsi_meetings',
-    git: 'https://github.com/puzzle/decidim-module-jitsi-meetings.git',
+    git: 'https://github.com/puzzle/decidim-module-jitsi-meetings',
     tag: DECIDIM_VERSION
 gem 'decidim-navbar_links',
     git: 'https://github.com/puzzle/decidim-module-navbar_links',
