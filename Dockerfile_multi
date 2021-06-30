@@ -52,6 +52,9 @@ RUN rm -rf vendor/cache/ .git
 #           Run Stage           #
 #################################
 
+# This image will be replaced by Openshift
+FROM ruby:2.7-slim AS app
+
 # Set runtime shell
 SHELL ["/bin/bash", "-c"]
 
@@ -68,6 +71,8 @@ RUN    apt-get update \
   && apt-get install -y ${RUN_PACKAGES} \
   vim-tiny curl
 
+# Copy deployment ready source code from build
+COPY --from=build /app-src /app-src
 WORKDIR /app-src
 
 # Set group permissions to app folder
@@ -80,8 +85,6 @@ ENV HOME=/app-src
 RUN    bundle config set --local deployment 'true' \
   && bundle config set --local without ${BUNDLE_WITHOUT} \
   && bundle
-
-# Clean APT
 
 USER 1001
 
