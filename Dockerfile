@@ -15,6 +15,9 @@ ARG BUILD_SCRIPT
 ARG BUNDLE_WITHOUT='development:metrics:test'
 ARG BUNDLER_VERSION=2.2.17
 ARG POST_BUILD_SCRIPT
+ARG SKIP_MEMCACHE_CHECK=true
+ARG RAILS_ENV=production
+ARG SECRET_KEY_BASE
 
 # Install dependencies
 RUN    apt-get update \
