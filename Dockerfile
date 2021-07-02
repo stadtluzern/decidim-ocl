@@ -72,7 +72,15 @@ WORKDIR /app-src
 
 # Set group permissions to app folder
 RUN    chgrp -R 0 /app-src \
-  && chmod -R u+w,g=u /app-src
+  /var/log/clamav \
+  /var/lib/clamav \
+  /var/run/clamav \
+  /run/clamav \
+  && chmod -R u+w,g=u /app-src \
+  /var/log/clamav \
+  /var/lib/clamav \
+  /var/run/clamav \
+  /run/clamav
 
 ENV HOME=/app-src
 
