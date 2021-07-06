@@ -103,6 +103,10 @@ de:
         one: Kollaborativer Entwurf
         other: Kollaborative Entwürfe
   decidim:
+    url_aliases:
+      admin:
+        menu:
+          url_aliases: URL Aliases
     calendar:
       menu:
         calendar: Kalender
