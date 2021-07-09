@@ -71,7 +71,11 @@ RUN    apt-get update \
 WORKDIR /app-src
 
 # Set group permissions to app folder
-RUN    chgrp -R 0 /app-src \
+# Set group permissions to app folder
+RUN    service restart clamav-daemon
+&& service restart clamav-freshclam
+&& freshclam
+&& chgrp -R 0 /app-src \
   /var/log/clamav \
   /var/lib/clamav \
   /var/run/clamav \
