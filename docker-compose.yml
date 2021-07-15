@@ -3,8 +3,24 @@ services:
   app: &app
     build:
       context: .
-      dockerfile: ./.docker/Dockerfile
-      target: dev
+      dockerfile: ./Dockerfile
+      # target: dev
+      # arg:
+        # - TZ="Europe/Zurich"
+        # - RAILS_ENV="production"
+        # - BUNDLER_VERSION="2.2.17"
+        # - BUNDLE_WITHOUT=development:metrics:test
+        # - BUILD_PACKAGES="git libicu-dev libpq-dev nodejs npm"
+        # - BUILD_SCRIPT="npm install -g npm && \
+        #                 npm install -g yarn && \
+        #                 yarn set version 1.22.10"
+        # - POST_BUILD_SCRIPT=bin/rails assets:precompile
+        # - RUN_PACKAGES="clamav \
+        #                 clamav-daemon \
+        #                 git imagemagick \
+        #                 libicu-dev libpq5 \
+        #                 nodejs \
+        #                 poppler-utils"
     volumes:
       - .:/usr/src/app
       - bundle:/usr/local/bundle

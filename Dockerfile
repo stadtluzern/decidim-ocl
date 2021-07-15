@@ -4,25 +4,27 @@
 
 FROM ruby:2.7 AS build
 
+ARG BUILD_PACKAGES="git libicu-dev libpq-dev nodejs npm"
+ARG BUILD_SCRIPT="npm install -g npm && \
+                  npm install -g yarn && \
+                  yarn set version 1.22.10"
+ARG BUNDLE_WITHOUT='development:metrics:test'
+ARG BUNDLER_VERSION=2.2.17
+ARG POST_BUILD_SCRIPT="bin/rails assets:precompile"
+ARG SKIP_MEMCACHE_CHECK=true
+ARG RAILS_ENV=production
+ARG SECRET_KEY_BASE=thisneedstobeset
+
 # Set build shell
 SHELL ["/bin/bash", "-c"]
 
 # Use root user
 USER root
 
-ARG BUILD_PACKAGES
-ARG BUILD_SCRIPT
-ARG BUNDLE_WITHOUT='development:metrics:test'
-ARG BUNDLER_VERSION=2.2.17
-ARG POST_BUILD_SCRIPT
-ARG SKIP_MEMCACHE_CHECK=true
-ARG RAILS_ENV=production
-ARG SECRET_KEY_BASE
-
 # Install dependencies
 RUN    apt-get update \
-  && apt-get upgrade -y \
-  && apt-get install -y ${BUILD_PACKAGES}
+    && apt-get upgrade -y \
+    && apt-get install -y ${BUILD_PACKAGES}
 
 RUN [[ ${BUILD_SCRIPT} ]] && bash -c "${BUILD_SCRIPT}"
 
@@ -37,10 +39,10 @@ WORKDIR /app-src
 
 # Run deployment
 RUN    bundle config set --local deployment 'true' \
-  && bundle config set --local without ${BUNDLE_WITHOUT} \
-  && bundle package \
-  && bundle install \
-  && bundle clean
+    && bundle config set --local without ${BUNDLE_WITHOUT} \
+    && bundle package \
+    && bundle install \
+    && bundle clean
 
 RUN [[ ${POST_BUILD_SCRIPT} ]] && bash -c "${POST_BUILD_SCRIPT}"
 
@@ -52,6 +54,9 @@ RUN rm -rf vendor/cache/ .git
 #           Run Stage           #
 #################################
 
+# This image will be replaced by Openshift
+FROM ruby:2.7-slim AS app
+
 # Set runtime shell
 SHELL ["/bin/bash", "-c"]
 
@@ -60,40 +65,40 @@ RUN adduser --disabled-password --uid 1001 --gid 0 --gecos "" app
 
 ARG BUNDLE_WITHOUT='development:metrics:test'
 ARG BUNDLER_VERSION=2.2.17
-ARG RUN_PACKAGES
+ARG RUN_PACKAGES="clamav clamav-daemon git imagemagick libicu-dev libpq5 nodejs poppler-utils"
+ARG PS1="\h:\w\$"
+ENV PS1=$PS1
 
 # Install dependencies, remove apt!
 RUN    apt-get update \
-  && apt-get upgrade -y \
-  && apt-get install -y ${RUN_PACKAGES} \
-  vim-tiny curl
+    && apt-get upgrade -y \
+    && apt-get install -y ${RUN_PACKAGES} \
+       vim-tiny curl
 
+# Copy deployment ready source code from build
+COPY --from=build /app-src /app-src
+COPY docker/ /
 WORKDIR /app-src
 
 # Set group permissions to app folder
-# Set group permissions to app folder
-RUN    service restart clamav-daemon
-&& service restart clamav-freshclam
-&& freshclam
-&& chgrp -R 0 /app-src \
-  /var/log/clamav \
-  /var/lib/clamav \
-  /var/run/clamav \
-  /run/clamav \
-  && chmod -R u+w,g=u /app-src \
-  /var/log/clamav \
-  /var/lib/clamav \
-  /var/run/clamav \
-  /run/clamav
+RUN    mkdir /var/run/clamav \
+    && chgrp -R 0 /app-src \
+                  /var/log/clamav \
+                  /var/lib/clamav \
+                  /var/run/clamav \
+                  /run/clamav \
+    && chmod -R u+w,g=u /app-src \
+                        /var/log/clamav \
+                        /var/lib/clamav \
+                        /var/run/clamav \
+                        /run/clamav
 
 ENV HOME=/app-src
 
 # Use cached gems
 RUN    bundle config set --local deployment 'true' \
-  && bundle config set --local without ${BUNDLE_WITHOUT} \
-  && bundle
-
-# Clean APT
+    && bundle config set --local without ${BUNDLE_WITHOUT} \
+    && bundle
 
 USER 1001
 
