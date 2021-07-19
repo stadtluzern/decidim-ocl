@@ -33,8 +33,7 @@ RUN gem install bundler:${BUNDLER_VERSION} --no-document
 
 # TODO: Load artifacts
 
-# set up app-src directory
-COPY . /app-src
+COPY ./Gemfile ./Gemfile.lock /app-src/
 WORKDIR /app-src
 
 # Run deployment
@@ -43,6 +42,9 @@ RUN    bundle config set --local deployment 'true' \
     && bundle package \
     && bundle install \
     && bundle clean
+
+# set up app-src directory
+COPY . /app-src
 
 RUN [[ ${POST_BUILD_SCRIPT} ]] && bash -c "${POST_BUILD_SCRIPT}"
 
@@ -100,6 +102,6 @@ RUN    bundle config set --local deployment 'true' \
     && bundle config set --local without ${BUNDLE_WITHOUT} \
     && bundle
 
-USER 1001
+USER 1000
 
 CMD ["bundle", "exec", "puma", "-t", "8"]
