@@ -8,12 +8,12 @@ ARG BUILD_PACKAGES="git libicu-dev libpq-dev nodejs npm"
 ARG BUILD_SCRIPT="npm install -g npm && \
                   npm install -g yarn && \
                   yarn set version 1.22.10"
-ARG BUNDLE_WITHOUT='development:metrics:test'
-ARG BUNDLER_VERSION=2.2.17
+ARG BUNDLE_WITHOUT="development:metrics:test"
+ARG BUNDLER_VERSION="2.2.17"
 ARG POST_BUILD_SCRIPT="bin/rails assets:precompile"
-ARG SKIP_MEMCACHE_CHECK=true
-ARG RAILS_ENV=production
-ARG SECRET_KEY_BASE=thisneedstobeset
+ARG SKIP_MEMCACHE_CHECK="true"
+ARG RAILS_ENV="production"
+ARG SECRET_KEY_BASE="thisneedstobeset"
 
 # Set build shell
 SHELL ["/bin/bash", "-c"]
@@ -70,6 +70,8 @@ ARG BUNDLER_VERSION=2.2.17
 ARG RUN_PACKAGES="clamav clamav-daemon git imagemagick libicu-dev libpq5 nodejs poppler-utils"
 ARG PS1="\h:\w\$"
 ENV PS1=$PS1
+ARG TZ="Europe/Zurich"
+ENV TZ=$TZ
 
 # Install dependencies, remove apt!
 RUN    apt-get update \
