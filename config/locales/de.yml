@@ -30,6 +30,10 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 de:
+  decidim_navbar_links:
+    admin:
+      menu:
+        navbar_links: Navbar Links
   activemodel:
     attributes:
       close_meeting:
@@ -103,6 +107,48 @@ de:
         one: Kollaborativer Entwurf
         other: Kollaborative Entwürfe
   decidim:
+    navigation_maps:
+      admin:
+        areas:
+          create:
+            error: Beim Erstellen des Bereichs ist ein Fehler aufgetreten
+            success: Bereich wurde erfolgreich erstellt
+          form:
+            no_popup: Kein Popup verwenden, direkt zum Bereich verlinken.
+          new:
+            area: Details des neuen Bereichs
+            cancel: Abbrechen
+            save: Speichern
+          show:
+            area: Bereichseinstellungen
+            cancel: Abbrechen
+            link_suggestions: 'Tipp: Benutzen Sie %{map} um zu anderen Tabs zu verlinken'
+            save: Speichern
+          update:
+            error: Beim Speichern des Bereichs ist ein Fehler aufgetreten
+            success: Bereich erfolgreich gespeichert
+      content_blocks:
+        name: Navigation Maps
+        navigation_map:
+          view: Teilnehmen
+        navigation_map_settings_form:
+          add: Hinzufügen
+          autohide_tabs: Tab-Navigation verstecken wenn nur eine Karte vorhanden ist
+          blueprint_image: Bild
+          description: Beschreibung
+          editor: Karten-Editor
+          height: Höhe (px)
+          id: Id
+          image_missing: Bitte fügen Sie ein Bild hinzu um zu beginnen
+          info: Allgemeine Informationen
+          link: Link
+          remove_blueprint: Dieses Bild löschen
+          title: Titel
+          type: Typ
+          upload_image: Bild hochladen
+      create:
+        error: Fehler beim Erstellen
+        success: Erfolgreich erstellt
     url_aliases:
       admin:
         menu:
