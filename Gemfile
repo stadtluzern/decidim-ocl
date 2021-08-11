@@ -14,7 +14,7 @@ gem 'decidim-proposals', DECIDIM_VERSION
 gem 'decidim-conferences', DECIDIM_VERSION
 gem 'decidim-decidim_awesome', '~> 0.7.0'
 gem 'decidim-navigation_maps', '~> 1.2.0'
-# gem 'decidim-initiatives', DECIDIM_VERSION
+gem 'decidim-initiatives', DECIDIM_VERSION
 gem 'decidim-jitsi_meetings',
     git: 'https://github.com/puzzle/decidim-module-jitsi-meetings.git',
     tag: DECIDIM_VERSION
