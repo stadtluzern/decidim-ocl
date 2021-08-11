@@ -410,5 +410,20 @@ nav {
 	background-image: url(<%= asset_path "layers-2x.png" %>);
 }
 
+// Default image for organizations
+#parent-assemblies .card__content::before {
+  content: '';
+  height: 160px;
+  width: 378px;
+  display: block;
+  background-image: url(<%= asset_path 'organization-default-image.png' %>);
+  margin: -1.5rem 0 1.5rem -1.5rem;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+}
+#parent-assemblies a + .card__content::before {
+  display: none;
+}
 
 // END MODIFICATIONS
