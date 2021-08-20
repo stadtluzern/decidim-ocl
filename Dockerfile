@@ -67,7 +67,7 @@ RUN adduser --disabled-password --uid 1001 --gid 0 --gecos "" app
 
 ARG BUNDLE_WITHOUT='development:metrics:test'
 ARG BUNDLER_VERSION=2.2.17
-ARG RUN_PACKAGES="clamav clamav-daemon git imagemagick libicu-dev libpq5 nodejs poppler-utils"
+ARG RUN_PACKAGES="clamav clamav-daemon git graphicsmagick libicu-dev libpq5 nodejs poppler-utils"
 ARG PS1="\h:\w\$"
 ENV PS1=$PS1
 ARG TZ="Europe/Zurich"
