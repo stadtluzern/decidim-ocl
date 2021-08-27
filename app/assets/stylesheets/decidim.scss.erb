@@ -411,19 +411,30 @@ nav {
 }
 
 // Default image for organizations
-#parent-assemblies .card__content::before {
-  content: '';
-  height: 160px;
-  width: 378px;
-  display: block;
-  background-image: url(<%= asset_path 'organization-default-image.png' %>);
-  margin: -1.5rem 0 1.5rem -1.5rem;
-  background-position: center;
-  background-size: cover;
+#parent-assemblies .card__content {
   position: relative;
+
+  padding-top: calc(1.5rem + 160px);
+
+  &::before {
+    content: '';
+    height: 160px;
+    display: block;
+    background-image: url(<%= asset_path 'organization-default-image.png' %>);
+    margin-top: calc(-1.5rem - 160px);
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+
 }
-#parent-assemblies a + .card__content::before {
-  display: none;
+#parent-assemblies a + .card__content {
+  padding-top: 1.5rem;
+  &::before {
+    display: none;
+  }
 }
 
 // END MODIFICATIONS
