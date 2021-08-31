@@ -64,6 +64,7 @@ SHELL ["/bin/bash", "-c"]
 
 # Add user
 RUN adduser --disabled-password --uid 1001 --gid 0 --gecos "" app
+RUN adduser --disabled-password --uid 1002 --gid 0 --gecos "" clamav
 
 ARG BUNDLE_WITHOUT='development:metrics:test'
 ARG BUNDLER_VERSION=2.2.17
@@ -95,7 +96,9 @@ RUN    mkdir /var/run/clamav \
                         /var/log/clamav \
                         /var/lib/clamav \
                         /var/run/clamav \
-                        /run/clamav
+                        /run/clamav \
+    && freshclam
+
 
 ENV HOME=/app-src
 
