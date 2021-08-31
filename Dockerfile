@@ -78,16 +78,19 @@ ENV TZ=$TZ
 RUN    apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y ${RUN_PACKAGES} \
-       vim-tiny curl
+       vim-tiny curl \
+    && usermod -a -G 0 clamav
 
 # Copy deployment ready source code from build
 COPY --from=build /app-src /app-src
 COPY docker/ /
 WORKDIR /app-src
 
-# Set group permissions to app folder
+# Set group permissions to app folder and help clamav to start
 RUN    mkdir /var/run/clamav \
     && echo "A4" > /etc/papersize \
+    && chown clamav /run/clamav \
+    && sed -i 's/^chown/# chown/' /etc/init.d/clamav-daemon \
     && chgrp -R 0 /app-src \
                   /var/log/clamav \
                   /var/lib/clamav \
