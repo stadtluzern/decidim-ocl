@@ -12,7 +12,7 @@ ARG BUNDLE_WITHOUT="development:metrics:test"
 ARG BUNDLER_VERSION="2.2.17"
 
 # bin/rails assets:precompile"
-ARG POST_BUILD_SCRIPT=""
+ARG POST_BUILD_SCRIPT="bin/rails about"
 
 ARG SKIP_MEMCACHE_CHECK="true"
 ARG RAILS_ENV="production"
