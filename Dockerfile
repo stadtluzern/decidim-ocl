@@ -10,10 +10,7 @@ ARG BUILD_SCRIPT="npm install -g npm && \
                   yarn set version 1.22.10"
 ARG BUNDLE_WITHOUT="development:metrics:test"
 ARG BUNDLER_VERSION="2.2.17"
-
-# bin/rails assets:precompile"
-ARG POST_BUILD_SCRIPT="bin/rails about"
-
+ARG POST_BUILD_SCRIPT="bin/rails assets:precompile"
 ARG SKIP_MEMCACHE_CHECK="true"
 ARG RAILS_ENV="production"
 ARG SECRET_KEY_BASE="thisneedstobeset"
@@ -71,16 +68,10 @@ RUN adduser --disabled-password --uid 1001 --gid 0 --gecos "" app
 ARG BUNDLE_WITHOUT='development:metrics:test'
 ARG BUNDLER_VERSION=2.2.17
 ARG RUN_PACKAGES="clamav clamav-daemon git graphicsmagick libicu-dev libpq5 nodejs poppler-utils"
-ARG PS1="\h:\w\$"
+ARG PS1="\\h:\\w\\$"
 ENV PS1=$PS1
 ARG TZ="Europe/Zurich"
 ENV TZ=$TZ
-
-# DEBUG, papersize cannot be set
-RUN    echo "a4" > /etc/papersize \
-    && apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install -y libpaper-utils
 
 # Install dependencies, remove apt!
 RUN    apt-get update \
