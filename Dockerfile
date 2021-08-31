@@ -76,7 +76,11 @@ ENV PS1=$PS1
 ARG TZ="Europe/Zurich"
 ENV TZ=$TZ
 
-RUN whoami
+# DEBUG, papersize cannot be set
+RUN    echo "a4" > /etc/papersize \
+    && apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y libpaper-utils
 
 # Install dependencies, remove apt!
 RUN    apt-get update \
