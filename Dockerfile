@@ -10,7 +10,10 @@ ARG BUILD_SCRIPT="npm install -g npm && \
                   yarn set version 1.22.10"
 ARG BUNDLE_WITHOUT="development:metrics:test"
 ARG BUNDLER_VERSION="2.2.17"
-ARG POST_BUILD_SCRIPT="bin/rails assets:precompile"
+
+# bin/rails assets:precompile"
+ARG POST_BUILD_SCRIPT=""
+
 ARG SKIP_MEMCACHE_CHECK="true"
 ARG RAILS_ENV="production"
 ARG SECRET_KEY_BASE="thisneedstobeset"
@@ -72,6 +75,8 @@ ARG PS1="\h:\w\$"
 ENV PS1=$PS1
 ARG TZ="Europe/Zurich"
 ENV TZ=$TZ
+
+RUN whoami
 
 # Install dependencies, remove apt!
 RUN    apt-get update \
