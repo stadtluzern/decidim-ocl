@@ -63,7 +63,7 @@ FROM ruby:2.7-slim AS app
 SHELL ["/bin/bash", "-c"]
 
 # Add user
-RUN adduser --disabled-password --uid 1001 --gid 0 --gecos "" app
+RUN adduser --disabled-password --uid 1001 --gid 0 --gecos "" --shell /bin/bash app
 # RUN adduser --disabled-password --uid 1002 --gid 0 --gecos "" clamav
 
 ARG BUNDLE_WITHOUT='development:metrics:test'
