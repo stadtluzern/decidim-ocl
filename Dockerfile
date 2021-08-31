@@ -87,6 +87,7 @@ WORKDIR /app-src
 
 # Set group permissions to app folder
 RUN    mkdir /var/run/clamav \
+    && echo "A4" > /etc/papersize \
     && chgrp -R 0 /app-src \
                   /var/log/clamav \
                   /var/lib/clamav \
