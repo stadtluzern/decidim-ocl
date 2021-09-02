@@ -413,7 +413,6 @@ nav {
 // Default image for organizations
 #parent-assemblies .card__content {
   position: relative;
-
   padding-top: calc(1.5rem + 160px);
 
   &::before {
@@ -435,6 +434,10 @@ nav {
   &::before {
     display: none;
   }
+}
+
+#highlighted-assemblies .card__image-top {
+  background-image: url(<%= asset_path 'organization-default-image.png' %>);
 }
 
 // END MODIFICATIONS
