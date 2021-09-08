@@ -85,7 +85,13 @@ RUN    apt-get upgrade -y
 RUN    apt-get -y install clamav
 RUN    apt-get -y install clamav-daemon
 RUN    apt-get -y install git
-RUN    apt-get install -y -o Dpkg::Options::="--force-overwrite" -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" graphicsmagick
+RUN    apt-get download libpaper1
+RUN    dpkg --unpack libpaper1*.deb
+RUN    rm /var/lib/dpkg/info/libpaper1\:amd64.postinst
+RUN    dpkg --configure libpaper1
+RUN    apt-get install -yf
+RUN    rm libpaper1*.deb
+RUN    apt-get -y install graphicsmagick
 RUN    apt-get -y install libicu-dev
 RUN    apt-get -y install libpq5
 RUN    apt-get -y install nodejs
