@@ -6,8 +6,8 @@ FROM ruby:2.7 AS build
 
 ARG BUILD_PACKAGES="git libicu-dev libpq-dev nodejs npm"
 ARG BUILD_SCRIPT="npm install -g npm && \
-                  npm install -g yarn && \
-                  yarn set version 1.22.10"
+    npm install -g yarn && \
+    yarn set version 1.22.10"
 ARG BUNDLE_WITHOUT="development:metrics:test"
 ARG BUNDLER_VERSION="2.2.17"
 ARG POST_BUILD_SCRIPT="bin/rails assets:precompile"
@@ -68,19 +68,34 @@ RUN adduser --disabled-password --uid 1001 --gid 0 --gecos "" --shell /bin/bash 
 
 ARG BUNDLE_WITHOUT='development:metrics:test'
 ARG BUNDLER_VERSION=2.2.17
-ARG RUN_PACKAGES="clamav clamav-daemon git graphicsmagick libicu-dev libpq5 nodejs poppler-utils"
+# ARG RUN_PACKAGES="clamav clamav-daemon git graphicsmagick libicu-dev libpq5 nodejs poppler-utils"
 ARG PS1="\\h:\\w\\$"
 ENV PS1=$PS1
 ARG TZ="Europe/Zurich"
 ENV TZ=$TZ
 
 # Install dependencies, remove apt!
-RUN    apt-get update \
-    && echo "a4" > /etc/papersize \
-    && apt-get upgrade -y \
-    && apt-get install -y ${RUN_PACKAGES} \
-       vim-tiny curl \
-    && usermod -a -G 0 clamav
+RUN    echo "a4" > /etc/papersize
+RUN    touch /etc/papersize.dpkg-inst
+RUN    chmod a+rw /etc/papersize.dpkg-inst
+RUN    chmod a+x /etc
+RUN    export DEBIAN_FRONTEND=noninteractive
+RUN    apt-get update
+RUN    apt-get upgrade -y
+RUN    apt-get -y install clamav
+RUN    apt-get -y install clamav-daemon
+RUN    apt-get -y install git
+RUN    apt-get install -y -o Dpkg::Options::="--force-overwrite" -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" graphicsmagick
+RUN    apt-get -y install libicu-dev
+RUN    apt-get -y install libpq5
+RUN    apt-get -y install nodejs
+RUN    apt-get -y install poppler-utils
+# && apt-get -y \
+#            -o Dpkg::Options::="--force-overwrite" \
+#            -o Dpkg::Options::="--force-confdef" \
+#            -o Dpkg::Options::="--force-confold" \
+#            install ${RUN_PACKAGES} vim-tiny curl \
+RUN usermod -a -G 0 clamav
 
 # Copy deployment ready source code from build
 COPY --from=build /app-src /app-src
@@ -92,15 +107,15 @@ RUN    mkdir /var/run/clamav \
     && chown clamav /run/clamav \
     && sed -i 's/^chown/# chown/' /etc/init.d/clamav-daemon \
     && chgrp -R 0 /app-src \
-                  /var/log/clamav \
-                  /var/lib/clamav \
-                  /var/run/clamav \
-                  /run/clamav \
+    /var/log/clamav \
+    /var/lib/clamav \
+    /var/run/clamav \
+    /run/clamav \
     && chmod -R u+w,g=u /app-src \
-                        /var/log/clamav \
-                        /var/lib/clamav \
-                        /var/run/clamav \
-                        /run/clamav \
+    /var/log/clamav \
+    /var/lib/clamav \
+    /var/run/clamav \
+    /run/clamav \
     && freshclam
 
 
