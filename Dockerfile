@@ -1,6 +1,6 @@
-#################################
-#          Build Stage          #
-#################################
+##################################################################
+#                            Build Stage                         #
+##################################################################
 
 FROM ruby:2.7 AS build
 
@@ -21,7 +21,7 @@ SHELL ["/bin/bash", "-c"]
 # Use root user
 USER root
 
-# Install dependencies
+# Install packages needed at buildtime
 RUN    apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y ${BUILD_PACKAGES}
@@ -52,9 +52,9 @@ RUN [[ ${POST_BUILD_SCRIPT} ]] && bash -c "${POST_BUILD_SCRIPT}"
 
 RUN rm -rf vendor/cache/ .git
 
-#################################
-#           Run Stage           #
-#################################
+##################################################################
+#                            Run Stage                           #
+##################################################################
 
 # This image will be replaced by Openshift
 FROM ruby:2.7-slim AS app
@@ -68,60 +68,51 @@ RUN adduser --disabled-password --uid 1001 --gid 0 --gecos "" --shell /bin/bash 
 
 ARG BUNDLE_WITHOUT='development:metrics:test'
 ARG BUNDLER_VERSION=2.2.17
-# ARG RUN_PACKAGES="clamav clamav-daemon git graphicsmagick libicu-dev libpq5 nodejs poppler-utils"
+ARG RUN_PACKAGES="clamav clamav-daemon git graphicsmagick libicu-dev libpq5 nodejs poppler-utils"
 ARG PS1="\\h:\\w\\$"
 ENV PS1=$PS1
 ARG TZ="Europe/Zurich"
 ENV TZ=$TZ
 
-# Install dependencies, remove apt!
-RUN    echo "a4" > /etc/papersize
-RUN    touch /etc/papersize.dpkg-inst
-RUN    chmod a+rw /etc/papersize.dpkg-inst
-RUN    chmod a+x /etc
-RUN    export DEBIAN_FRONTEND=noninteractive
-RUN    apt-get update
-RUN    apt-get upgrade -y
-RUN    apt-get -y install clamav
-RUN    apt-get -y install clamav-daemon
-RUN    apt-get -y install git
-RUN    apt-get download libpaper1
-RUN    dpkg --unpack libpaper1*.deb
-RUN    rm /var/lib/dpkg/info/libpaper1\:amd64.postinst
-RUN    dpkg --configure libpaper1
-RUN    apt-get install -yf
-RUN    rm libpaper1*.deb
-RUN    apt-get -y install graphicsmagick
-RUN    apt-get -y install libicu-dev
-RUN    apt-get -y install libpq5
-RUN    apt-get -y install nodejs
-RUN    apt-get -y install poppler-utils
-# && apt-get -y \
-#            -o Dpkg::Options::="--force-overwrite" \
-#            -o Dpkg::Options::="--force-confdef" \
-#            -o Dpkg::Options::="--force-confold" \
-#            install ${RUN_PACKAGES} vim-tiny curl \
-RUN usermod -a -G 0 clamav
+
+# Prepare apt-get
+RUN    export DEBIAN_FRONTEND=noninteractive \
+    && apt-get update \
+    && apt-get upgrade -y \
+# Install libpaper1 seperately, because statx is broken on APPUiO build
+    && apt-get install -y ucf \
+    && apt-get download libpaper1 \
+    && dpkg --unpack libpaper1*.deb \
+    && rm /var/lib/dpkg/info/libpaper1\:amd64.postinst \
+    && dpkg --configure libpaper1 \
+    && apt-get install -yf \
+    && rm libpaper1*.deb \
+# Install the Packages we need at runtime
+    && apt-get -y install ${RUN_PACKAGES} \
+# HACK: Maybe not needed in the end... gives clamav the right to execute
+    && usermod -a -G 0 clamav \
+# Clean up after ourselves
+    && unset DEBIAN_FRONTEND
 
 # Copy deployment ready source code from build
 COPY --from=build /app-src /app-src
 COPY docker/ /
 WORKDIR /app-src
 
-# Set group permissions to app folder and help clamav to start
+# HACK: Probably not needed... Set group permissions to app folder and help clamav to start
 RUN    mkdir /var/run/clamav \
     && chown clamav /run/clamav \
     && sed -i 's/^chown/# chown/' /etc/init.d/clamav-daemon \
     && chgrp -R 0 /app-src \
-    /var/log/clamav \
-    /var/lib/clamav \
-    /var/run/clamav \
-    /run/clamav \
+                  /var/log/clamav \
+                  /var/lib/clamav \
+                  /var/run/clamav \
+                  /run/clamav \
     && chmod -R u+w,g=u /app-src \
-    /var/log/clamav \
-    /var/lib/clamav \
-    /var/run/clamav \
-    /run/clamav \
+                        /var/log/clamav \
+                        /var/lib/clamav \
+                        /var/run/clamav \
+                        /run/clamav \
     && freshclam
 
 
