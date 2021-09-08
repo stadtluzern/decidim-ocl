@@ -76,6 +76,7 @@ ENV TZ=$TZ
 
 # Install dependencies, remove apt!
 RUN    apt-get update \
+    && echo "a4" > /etc/papersize \
     && apt-get upgrade -y \
     && apt-get install -y ${RUN_PACKAGES} \
        vim-tiny curl \
@@ -88,7 +89,6 @@ WORKDIR /app-src
 
 # Set group permissions to app folder and help clamav to start
 RUN    mkdir /var/run/clamav \
-    && echo "A4" > /etc/papersize \
     && chown clamav /run/clamav \
     && sed -i 's/^chown/# chown/' /etc/init.d/clamav-daemon \
     && chgrp -R 0 /app-src \
