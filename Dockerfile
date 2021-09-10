@@ -69,7 +69,7 @@ RUN adduser --disabled-password --uid 1001 --gid 0 --gecos "" --shell /bin/bash 
 ARG BUNDLE_WITHOUT='development:metrics:test'
 ARG BUNDLER_VERSION=2.2.17
 ARG RUN_PACKAGES="clamav clamav-daemon git graphicsmagick libicu-dev libpq5 nodejs poppler-utils"
-ARG PS1="\\h:\\w\\$"
+ARG PS1="$SENTRY_CURRENT_ENV:\\w$ "
 ENV PS1=$PS1
 ARG TZ="Europe/Zurich"
 ENV TZ=$TZ
