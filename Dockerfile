@@ -9,7 +9,7 @@ ARG BUILD_SCRIPT="npm install -g npm && \
     npm install -g yarn && \
     yarn set version 1.22.10"
 ARG BUNDLE_WITHOUT="development:metrics:test"
-ARG BUNDLER_VERSION="2.2.17"
+ARG BUNDLER_VERSION="2.2.27"
 ARG POST_BUILD_SCRIPT="bin/rails assets:precompile"
 ARG SKIP_MEMCACHE_CHECK="true"
 ARG RAILS_ENV="production"
@@ -67,7 +67,7 @@ RUN adduser --disabled-password --uid 1001 --gid 0 --gecos "" --shell /bin/bash 
 # RUN adduser --disabled-password --uid 1002 --gid 0 --gecos "" clamav
 
 ARG BUNDLE_WITHOUT='development:metrics:test'
-ARG BUNDLER_VERSION=2.2.17
+ARG BUNDLER_VERSION="2.2.27"
 ARG RUN_PACKAGES="clamav clamav-daemon git graphicsmagick libicu-dev libpq5 nodejs poppler-utils"
 ARG PS1="$SENTRY_CURRENT_ENV:\\w$ "
 ENV PS1=$PS1
@@ -89,7 +89,7 @@ RUN    export DEBIAN_FRONTEND=noninteractive \
     && rm libpaper1*.deb \
 # Install the Packages we need at runtime
     && apt-get -y install ${RUN_PACKAGES} \
-# HACK: Maybe not needed in the end... gives clamav the right to execute
+# HACK: Maybe move to different image... gives clamav the right to execute
     && usermod -a -G 0 clamav \
 # Clean up after ourselves
     && unset DEBIAN_FRONTEND
@@ -99,7 +99,9 @@ COPY --from=build /app-src /app-src
 COPY docker/ /
 WORKDIR /app-src
 
-# HACK: Probably not needed... Set group permissions to app folder and help clamav to start
+RUN    chgrp -R 0 /app-src \
+    && chmod -R u+w,g=u /app-src
+# HACK: Maybe move to different image... Set group permissions to app folder and help clamav to start
 RUN    mkdir /var/run/clamav \
     && chown clamav /run/clamav \
     && sed -i 's/^chown/# chown/' /etc/init.d/clamav-daemon \
