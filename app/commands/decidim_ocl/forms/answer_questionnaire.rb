@@ -7,11 +7,11 @@ module DecidimOCL
         super
         if current_component&.manifest_name == 'surveys'
           component = current_component
-          survey = @questionnaire.questionnaire_for
-          email = survey.try(:component).try(:settings).try(:notified_email)
+          email = component.try(:settings).try(:notified_email)
+          id = form.context.session_token
 
           if email.present?
-            DecidimOCL::Surveys::SurveyAnsweredMailer.answered(email, component).deliver_now
+            DecidimOCL::Surveys::SurveyAnsweredMailer.answered(email, component, id).deliver_now
           end
         end
       end

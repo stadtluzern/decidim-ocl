@@ -6,9 +6,9 @@ module DecidimOCL
     class SurveyAnsweredMailer < Decidim::ApplicationMailer
       include Decidim::TranslationsHelper
 
-      def answered(email, component)
+      def answered(email, component, id)
         @survey_name = translated_attribute component.name
-        @answers_link = Decidim::EngineRouter.admin_proxy(component).index_survey_url
+        @answers_link = Decidim::EngineRouter.admin_proxy(component).show_survey_url(id)
 
         # need to set the organization for asset resolution to work
         @organization = component.organization
