@@ -314,6 +314,10 @@ de:
         project:
           view: Ansehen
     components:
+      surveys:
+        settings:
+          global:
+            notified_email: E-Mail für Benachrichtigungen
       accountability:
         name: Umsetzungsstand
       add_comment_form:
@@ -954,6 +958,12 @@ de:
       data_portability_export:
         click_button: 'Klicken Sie auf die Schaltfläche "Herunterladen". <br/> Sie haben die Datei bis %{date} verfügbar. <br/> Um die Datei zu öffnen, brauchen Sie <a href=''https://www.7-zip.org/''>7-Zip</a>. Password: %{password}'
   decidim_ocl:
+    surveys:
+        survey_answered_mailer:
+          answered:
+            answered_survey: 'Jemand hat an der Umfrage "%{survey_name}" teilgenommen.'
+            subject: 'Neue Antwort auf Umfrage "%{survey_name}"'
+            view: 'Zur Umfrage'
     maps:
       gis_lu:
         attribution: '<a href="https://www.gis.stadtluzern.ch/" target="_blank">GIS LU</a>'
