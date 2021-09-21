@@ -29,5 +29,10 @@ module DecidimOCL
 
     # This option silences the logging of Redirector related SQL queries in your log file
     config.redirector.silence_sql_logs = true
+
+    Raven.configure do |config|
+      config.dsn = ENV['SENTRY_DSN']
+      config.current_environment = ENV['SENTRY_CURRENT_ENV']
+    end
   end
 end
