@@ -89,6 +89,7 @@ RUN    export DEBIAN_FRONTEND=noninteractive \
     && rm libpaper1*.deb \
 # Install the Packages we need at runtime
     && apt-get -y install ${RUN_PACKAGES} \
+       vim-tiny curl \
 # HACK: Maybe move to different image... gives clamav the right to execute
     && usermod -a -G 0 clamav \
 # Clean up after ourselves
