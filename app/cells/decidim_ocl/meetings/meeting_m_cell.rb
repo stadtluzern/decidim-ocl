@@ -28,7 +28,7 @@ module DecidimOCL
       private
 
       def resource_image_path
-        'organization-default-image.png'
+        present(model).image_path.presence || 'organization-default-image.png'
       end
 
       def followers_count
