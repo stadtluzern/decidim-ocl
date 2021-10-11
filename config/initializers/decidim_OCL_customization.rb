@@ -5,6 +5,7 @@ Decidim::Proposals::ProposalMCell.include DecidimOCL::Proposals::ProposalMCell
 Decidim::ParticipatoryProcesses::ProcessMCell.include DecidimOCL::ParticipatoryProcesses::ProcessMCell
 Decidim::Proposals::Admin::ProposalNoteCreatedEvent.prepend DecidimOCL::Proposals::Admin::ProposalNoteCreatedEvent
 Decidim::Forms::AnswerQuestionnaire.prepend DecidimOCL::Forms::AnswerQuestionnaire
+Decidim::Meetings::MeetingMCell.prepend DecidimOCL::Meetings::MeetingMCell
 
 # Setup a controller hook to setup the sms gateway before the
 # request is processed. This is done through a notification to
