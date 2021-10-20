@@ -5,7 +5,7 @@ module DecidimOCL
     module AnswerQuestionnaire
       def answer_questionnaire
         super
-        if current_component&.manifest_name == 'surveys'
+        if try(:current_component)&.manifest_name == 'surveys'
           component = current_component
           email = component.try(:settings).try(:notified_email)
           id = form.context.session_token
