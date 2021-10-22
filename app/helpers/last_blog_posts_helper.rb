@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module LastBlogPostsHelper
+  include ApplicationHelper
+
   def blog_image_src(post)
     image_from_text = Nokogiri::HTML
         .parse(translated_attribute post.body)

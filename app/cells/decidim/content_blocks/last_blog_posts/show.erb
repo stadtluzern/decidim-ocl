@@ -10,7 +10,7 @@
               <span class="card__title"><%= translated_attribute first_post.title %></span>
             <% end %>
             <div class="card__author" style="margin: 0.5rem 0 0">
-              <%= cell("decidim/author", present(first_post.author)) %>
+              <%= assembly_or_space(first_post.component&.participatory_space) %>
             </div>
           </div>
         </div>
@@ -24,7 +24,7 @@
                 <span class="card__title"><%= translated_attribute post.title %></span>
               <% end %>
               <div class="card__author" style="margin: 0.5rem 0 0">
-                <%= cell("decidim/author", present(post.author)) %>
+                <%= assembly_or_space(post.component&.participatory_space) %>
               </div>
             </div>
           </div>
