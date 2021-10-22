@@ -4,6 +4,7 @@ module DecidimOCL
   module Meetings
     # Modifications to make the /meetings list more compact
     module MeetingMCell
+      include ApplicationHelper
 
       def has_authors?
         false
@@ -11,10 +12,6 @@ module DecidimOCL
 
       def has_image?
         true
-      end
-
-      def render_top?
-        false
       end
 
       def date
