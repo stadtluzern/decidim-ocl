@@ -410,32 +410,7 @@ nav {
 	background-image: url(<%= asset_path "layers-2x.png" %>);
 }
 
-// Default image for organizations
-#parent-assemblies .card__content {
-  position: relative;
-  padding-top: calc(1.5rem + 160px);
-
-  &::before {
-    content: '';
-    height: 160px;
-    display: block;
-    background-image: url(<%= asset_path 'organization-default-image.png' %>);
-    margin-top: calc(-1.5rem - 160px);
-    background-position: center;
-    background-size: cover;
-    position: absolute;
-    left: 0;
-    right: 0;
-  }
-
-}
-#parent-assemblies a + .card__content {
-  padding-top: 1.5rem;
-  &::before {
-    display: none;
-  }
-}
-
+// Default image for organizations on home page
 #highlighted-assemblies .card__image-top {
   background-image: url(<%= asset_path 'organization-default-image.png' %>);
 }
@@ -493,10 +468,10 @@ nav {
   }
 }
 
-.meeting-image {
+.meeting-image, .assembly-image {
   position: relative;
 
-  .meeting-follower-count {
+  .meeting-follower-count, .assembly-follower-count {
     position: absolute;
     top: 1rem;
     right: 1rem;
