@@ -6,11 +6,11 @@ module DecidimOCL
     module MeetingMCell
       include ApplicationHelper
 
-      def has_authors?
+      def has_authors? # rubocop:disable Naming/PredicateName
         false
       end
 
-      def has_image?
+      def has_image? # rubocop:disable Naming/PredicateName
         true
       end
 
@@ -44,11 +44,11 @@ module DecidimOCL
         []
       end
 
-      def has_actions?
+      def has_actions? # rubocop:disable Naming/PredicateName
         false
       end
 
-      def has_badge?
+      def has_badge? # rubocop:disable Naming/PredicateName
         false
       end
 

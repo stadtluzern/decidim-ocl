@@ -6,7 +6,7 @@ module DecidimOCL
     module AssemblyMCell
       include ApplicationHelper
 
-      def has_image?
+      def has_image? # rubocop:disable Naming/PredicateName
         true
       end
 
@@ -18,7 +18,7 @@ module DecidimOCL
         end
       end
 
-      def has_badge?
+      def has_badge? # rubocop:disable Naming/PredicateName
         false
       end
 
@@ -35,7 +35,6 @@ module DecidimOCL
       def statuses
         []
       end
-
     end
   end
 end
