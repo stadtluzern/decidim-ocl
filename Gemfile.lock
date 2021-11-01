@@ -616,7 +616,7 @@ GEM
     multipart-post (2.1.1)
     mustache (1.1.1)
     netrc (0.11.0)
-    nio4r (2.5.7)
+    nio4r (2.5.8)
     nobspw (0.6.2)
     nokogiri (1.11.3)
       mini_portile2 (~> 2.5.0)
@@ -689,7 +689,7 @@ GEM
       eventmachine_httpserver
       http_parser.rb (~> 0.6.0)
       multi_json
-    puma (5.3.1)
+    puma (5.5.1)
       nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
