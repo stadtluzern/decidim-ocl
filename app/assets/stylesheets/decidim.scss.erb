@@ -410,34 +410,73 @@ nav {
 	background-image: url(<%= asset_path "layers-2x.png" %>);
 }
 
-// Default image for organizations
-#parent-assemblies .card__content {
-  position: relative;
-  padding-top: calc(1.5rem + 160px);
-
-  &::before {
-    content: '';
-    height: 160px;
-    display: block;
-    background-image: url(<%= asset_path 'organization-default-image.png' %>);
-    margin-top: calc(-1.5rem - 160px);
-    background-position: center;
-    background-size: cover;
-    position: absolute;
-    left: 0;
-    right: 0;
-  }
-
-}
-#parent-assemblies a + .card__content {
-  padding-top: 1.5rem;
-  &::before {
-    display: none;
-  }
-}
-
+// Default image for organizations on home page
 #highlighted-assemblies .card__image-top {
   background-image: url(<%= asset_path 'organization-default-image.png' %>);
 }
+
+.first-blog-post {
+  position: relative;
+  height: 400px;
+  overflow: hidden;
+
+  &> img {
+    object-fit: cover;
+    object-position: center center;
+    height: 400px;
+    width: 100%;
+  }
+
+  .first-blog-post-description {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 1.5rem;
+  }
+}
+
+.older-blog-posts {
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-items: flex-start;
+  gap: 20px;
+}
+
+.older-blog-post {
+  position: relative;
+  max-height: 120px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  justify-items: flex-start;
+  align-items: center;
+
+  &.card {
+    margin-bottom: 0;
+  }
+
+  &> img {
+    object-fit: cover;
+    object-position: center center;
+    height: 120px;
+    width: 120px;
+  }
+
+  .older-blog-post-description {
+    padding: 0 1.5rem;
+  }
+}
+
+.meeting-image, .assembly-image {
+  position: relative;
+
+  .meeting-follower-count, .assembly-follower-count {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+}
+
 
 // END MODIFICATIONS
