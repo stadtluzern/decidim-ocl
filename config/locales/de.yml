@@ -941,9 +941,21 @@ de:
             help_title: Hilfe
             title: Übersetzungsset
         translations:
+          edit: 
+            title: Bearbeiten
+            save: Speichern
+          form:
+            title: Übersetzung
+            help_title: "Was ist ein Key?"
+            help_html: "Der YAML Pfad zu der Übersetzung, unterteilt mit '.'"
+            term_help_title: "Was ist der Value?"
+            term_help_html: "Die angezeigte Übersetzung"
           index:
             actions: Aktionen
             selected: Ausgewählt
+          new:
+            title: Neue Übersetzung
+            create: Erstellen
       menu:
         term_customizer: Term Customizer
     user_interests:
@@ -1005,6 +1017,9 @@ de:
         didn_t_receive_unlock_instructions: Hast du keine Entsperrungsanweisungen erhalten?
   errors:
     messages:
+      antivirus_virus_detected: 'enthält einen Virus'
+      antivirus_client_error: 'kann nicht gescannt werden'
+      antivirus_file_not_found: 'wurde nicht gefunden'
       too_many_marks: enthält zu viele aufeinanderfolgende Satzzeichen (z.B. "!" und "?")
   hello: "Hallo Welt"
   layouts:
