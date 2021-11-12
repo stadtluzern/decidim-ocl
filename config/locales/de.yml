@@ -51,6 +51,7 @@ de:
         intergram_title_closed: Titel bei geschlossenem Intergram
         intergram_intro_message: Erste Nachricht wenn der Benutzer den Chat zum ersten Mal öffnet
         intergram_auto_no_response: Eine Nachricht die eine Minute nach der ersten Nachricht ohne Antwort versendet wird
+        proposal_custom_fields: Custom fields %{id}
         scoped_styles: Scoped Styles
       confirmation:
         verification_code: Verifizierungscode
@@ -422,24 +423,48 @@ de:
     decidim_awesome:
       admin:
         config:
+          caution: 'NOTE: This feature heavily modifies some default behaviours that
+            might lead to unexpected results. Use it with caution!'
           constraints:
             add_condition: Einschränkung hinzufügen
             always: Immer
+            delete: Löschen
+            edit: Bearbeiten
             title: Einschränkungen
           experimental: Experimentell
           form:
+            edit_label: Label umbenennen
             help:
               allow_images_in_full_editor: Bilder im vollen Editor erlauben
               allow_images_in_markdown_editor: Bilder im Markdown Editor erlauben
               allow_images_in_small_editor: Bilder in kleinem Editor erlauben
               drag_and_drop_supported: Drag and Drop unterstützen
               intergram_about: Über Intergram
+              proposal_custom_fields: Create custom proposal fields that applies only
+                in certain parts of the public web (use the restrictions editor for
+                that)
+              proposal_custom_fields_example: Data is stored in a XML object using
+                compatible HTML attributes (dl,dt,dd elements) replacing the "body"
+                in a normal proposal.
+              proposal_custom_fields_translations: "Labels, help text, placeholders
+                and default values can use your application custom translations. \nFor
+                that, instead of using a string literal, use the i18n key (it must
+                containt at least one dot).\nFor instance:\n- \"activemodel.attributes.proposal.title\"
+                instead of \"Title\"\n- \"activemodel.attributes.proposal.address\"
+                instead of \"Address\"\nOr use your own keys in combination with other
+                tools to define translations (eg: using the module Term Customizer):\n
+                - \"myapp.custom_fields.bio\" instead of \"Biography\""
               use_markdown_editor: Markdown Editor benutzen
               intergram_config: Intergram Konfiguration
               allow_images_in_proposals: Bilder in Vorschlägen erlauben
               auto_save_forms: Formulare automatisch speichern
               scoped_styles: Scoped Styles
               scoped_styles_variables: Scoped Styles Variables
+          form_proposal_custom_fields:
+            new: Add a new "custom fields" box
+            remove: Remove this "custom fields" box
+            sure_to_remove: Are you sure you want to destroy this fields box?
+          none: "⛔ Niemals! - Deaktiviert alle anderen Einschränkungen"
           show:
             title: Decidim Awesome
             update: Aktualisieren
@@ -458,18 +483,24 @@ de:
             decidim-core: decidim-core
             decidim-proposals: decidim-proposals
         menu:
-          editors: Editoren
-          surveys: Umfragen
-          proposals: Vorschläge
-          livechat: Live Chat
+          admins: Scoped Admins
           checks: Checks
+          editors: Editoren
+          livechat: Live Chat
           menu_hacks: Hacks
+          proposal_custom_fields: Vorschläge Custom Felder
+          proposals: Vorschläge
           styles: Styles
+          surveys: Umfragen
         constraints:
           new:
             constraint: Neue Einschränkung erstellen
             save: Speichern
             cancel: Abbrechen
+          show:
+            cancel: Abbrechen
+            constraint: Neue Einschränkung erstellen
+            save: Speichern
         menu_hacks:
           index:
             title: Hauptmenü
