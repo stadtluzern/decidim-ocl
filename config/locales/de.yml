@@ -1049,8 +1049,8 @@ de:
   errors:
     messages:
       antivirus_virus_detected: 'enthält einen Virus'
-      antivirus_client_error: 'kann nicht gescannt werden'
-      antivirus_file_not_found: 'wurde nicht gefunden'
+      antivirus_client_error: 'konnte nicht auf Viren geprüft werden'
+      antivirus_file_not_found: 'Die letzte Datei für den Virenscan wurde nicht gefunden'
       too_many_marks: enthält zu viele aufeinanderfolgende Satzzeichen (z.B. "!" und "?")
   hello: "Hallo Welt"
   layouts:
