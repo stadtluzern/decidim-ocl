@@ -14,7 +14,13 @@ gem 'decidim-proposals', DECIDIM_VERSION
 gem 'decidim-antivirus',
     git: 'https://github.com/mainio/decidim-module-antivirus'
 gem 'decidim-conferences', DECIDIM_VERSION
-gem 'decidim-decidim_awesome', '~> 0.7.2'
+
+# Currently the editor fix is only in main
+# gem 'decidim-decidim_awesome', '~> 0.7.2'
+gem 'decidim-decidim_awesome',
+    git: 'https://github.com/Platoniq/decidim-module-decidim_awesome.git',
+    branch: 'main'
+
 gem 'decidim-initiatives', DECIDIM_VERSION
 gem 'decidim-jitsi_meetings',
     git: 'https://github.com/puzzle/decidim-module-jitsi-meetings',
