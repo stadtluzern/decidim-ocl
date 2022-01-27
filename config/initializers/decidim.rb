@@ -16,10 +16,10 @@ Decidim.configure do |config|
         lng: 8.309
       },
       map_limits: {
-        lat_min: 47.016,
-        lat_max: 47.095,
-        lng_min: 8.18,
-        lng_max: 8.373
+        lat_min: 47.0,
+        lat_max: 47.136,
+        lng_min: 8.24,
+        lng_max: 8.42
       },
       layers: {
         '0': {
