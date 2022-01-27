@@ -17,5 +17,4 @@
 // require_tree .
 //= require cable.js
 //= require collapse-floating-help.js
-//= require collapse-process-nav.js
 //= require decidim
