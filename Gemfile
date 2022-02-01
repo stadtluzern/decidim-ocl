@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-DECIDIM_VERSION = '0.24.2'
+DECIDIM_VERSION = '0.24.3'
 
 ruby RUBY_VERSION
 
@@ -12,7 +12,8 @@ gem 'decidim', DECIDIM_VERSION
 gem 'decidim-proposals', DECIDIM_VERSION
 # gem 'decidim-consultations', DECIDIM_VERSION
 gem 'decidim-antivirus',
-    git: 'https://github.com/mainio/decidim-module-antivirus'
+    git: 'https://github.com/mainio/decidim-module-antivirus',
+    branch: 'release/0.24-stable'
 gem 'decidim-conferences', DECIDIM_VERSION
 
 # Currently the editor fix is only in main
@@ -33,7 +34,9 @@ gem 'decidim-term_customizer',
     git: 'https://github.com/mainio/decidim-module-term_customizer'
 gem 'decidim-url_aliases',
     git: 'https://github.com/OpenSourcePolitics/decidim-urlaliases'
+gem "decidim-question_captcha", git: "https://github.com/OpenSourcePolitics/decidim-module-question_captcha.git"
 
+gem "acts_as_textcaptcha", "~> 4.5.1"
 gem 'bootsnap', '~> 1.3'
 gem 'dalli'
 gem 'delayed_job_active_record'
