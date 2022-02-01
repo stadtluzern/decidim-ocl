@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # Be sure to restart your server when you modify this file.
-require 'action_dispatch/middleware/session/dalli_store'
 
 Rails.application.config.session_store(
   ActionDispatch::Session::CacheStore,
@@ -13,8 +12,8 @@ Rails.application.config.session_store(
   same_site: :lax
 )
 
-def dalli_reachable?
-  Rails.cache.dalli.stats.values.any?
+def cache_reachable?
+  Rails.cache.stats.values.any?
 end
 
 def memcache_configured?
@@ -36,6 +35,6 @@ end
 if !skip_memcache_check &&
    memcache_configured? &&
    !Rails.env.production? &&
-   !dalli_reachable?
+   !cache_reachable?
   raise 'As CSRF tokens are read from cache, we require a memcache instance to start'
 end
