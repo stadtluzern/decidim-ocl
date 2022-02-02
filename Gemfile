@@ -34,7 +34,9 @@ gem 'decidim-term_customizer',
     git: 'https://github.com/mainio/decidim-module-term_customizer'
 gem 'decidim-url_aliases',
     git: 'https://github.com/OpenSourcePolitics/decidim-urlaliases'
-gem "decidim-question_captcha", git: "https://github.com/OpenSourcePolitics/decidim-module-question_captcha.git"
+gem "decidim-question_captcha",
+    git: "https://github.com/puzzle/decidim-module-question_captcha.git",
+    tag: 'release/0.24-stable'
 
 gem "acts_as_textcaptcha", "~> 4.5.1"
 gem 'bootsnap', '~> 1.3'

@@ -537,6 +537,9 @@ de:
           username_help: Öffentlich sichtbarer Name, der in deinen Beiträgen angezeigt wird. Wenn du lieber anonym bleibst, kannst du auch einen Namen erfinden.
       registrations:
         new:
+          captcha_legend: Sicherheitsfrage
+          captcha_instructions: Bitte beantworte die folgende Frage, um zu beweisen dass du ein Mensch bist.
+          textcaptcha_answer: Antwort
           already_have_an_account?: Du hast bereits ein Konto?
           newsletter: Ich möchte gelegentlich per Newsletter über Neuigkeiten informiert werden.
           newsletter_title: Kontakterlaubnis
@@ -549,8 +552,7 @@ de:
         newsletter_modal:
           buttons:
             check: Kontakterlaubnis erteilen und fortfahren
-            unckeck: Ohne Kontakterlaubnis fortfahren
-            uncheck: Deaktivieren Sie das Kontrollkästchen
+            uncheck: Ohne Kontakterlaubnis fortfahren
           notice: |-
             <p>Hey, bist du sicher, dass du keinen Newsletter erhalten möchtest?<br>
             Für uns ist es sehr wichtig, dass wir dich gelegentlich kontaktieren können, um dir wichtige Ankündigungen mitzuteilen - zum Beispiel, wenn wir grosses mit deinen Inputs vorhaben.</p>

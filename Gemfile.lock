@@ -1,12 +1,4 @@
 GIT
-  remote: https://github.com/OpenSourcePolitics/decidim-module-question_captcha.git
-  revision: e89ed5156088641390bc6828f9de06674bd79e3c
-  specs:
-    decidim-question_captcha (0.24.3)
-      acts_as_textcaptcha (~> 4.5.1)
-      decidim-core (= 0.24.3)
-
-GIT
   remote: https://github.com/OpenSourcePolitics/decidim-urlaliases
   revision: 3527043c1ce2886ef86cd1f34e14d2bef5c759bb
   specs:
@@ -57,6 +49,15 @@ GIT
   tag: v0.24.3
   specs:
     decidim-navbar_links (0.24.3)
+      decidim-core (= 0.24.3)
+
+GIT
+  remote: https://github.com/puzzle/decidim-module-question_captcha.git
+  revision: 21cac1bce7394cb03f862e4ba66108f3049b4e0c
+  tag: release/0.24-stable
+  specs:
+    decidim-question_captcha (0.24.3)
+      acts_as_textcaptcha (~> 4.5.1)
       decidim-core (= 0.24.3)
 
 GEM
@@ -634,6 +635,7 @@ GEM
     mime-types-data (3.2022.0105)
     mini_magick (4.11.0)
     mini_mime (1.1.2)
+    mini_portile2 (2.6.1)
     minitest (5.15.0)
     mixlib-cli (2.1.8)
     mixlib-config (3.0.9)
@@ -648,6 +650,9 @@ GEM
     netrc (0.11.0)
     nio4r (2.5.8)
     nobspw (0.6.2)
+    nokogiri (1.12.5)
+      mini_portile2 (~> 2.6.1)
+      racc (~> 1.4)
     nokogiri (1.12.5-x86_64-linux)
       racc (~> 1.4)
     oauth (0.5.8)
