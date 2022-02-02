@@ -50,6 +50,14 @@ GIT
     decidim-navbar_links (0.24.2)
       decidim-core (= 0.24.2)
 
+PATH
+  remote: /code/pz/decidim-module-newsfeed
+  specs:
+    decidim-newsfeed (0.24.2)
+      decidim-core (= 0.24.2)
+      rails (~> 5.2.0)
+      sanitize
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -640,6 +648,8 @@ GEM
     nokogiri (1.11.7)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
+    nokogumbo (2.0.5)
+      nokogiri (~> 1.8, >= 1.8.4)
     oauth (0.5.8)
     oauth2 (1.4.7)
       faraday (>= 0.8, < 2.0)
@@ -841,6 +851,10 @@ GEM
       ffi (~> 1.12)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
+    sanitize (5.2.3)
+      crass (~> 1.0.2)
+      nokogiri (>= 1.8.0)
+      nokogumbo (~> 2.0)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -964,6 +978,7 @@ DEPENDENCIES
   decidim-jitsi_meetings!
   decidim-navbar_links!
   decidim-navigation_maps (~> 1.2.0)
+  decidim-newsfeed!
   decidim-proposals (= 0.24.2)
   decidim-term_customizer!
   decidim-url_aliases!
