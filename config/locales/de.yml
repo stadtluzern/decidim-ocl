@@ -101,6 +101,10 @@ de:
       decidim/meetings/create_meeting_event: Event
       decidim/meetings/upcoming_meeting_event: Kommender Event
   activerecord:
+    errors/models/decidim/attachment/attributes/file:
+      antivirus_virus_detected: 'enthält einen Virus'
+      antivirus_client_error: 'konnte nicht auf Viren geprüft werden'
+      antivirus_file_not_found: 'Die letzte Datei für den Virenscan wurde nicht gefunden'
     models:
       decidim/meetings/meeting:
         one: Event
@@ -974,7 +978,7 @@ de:
             help_title: Hilfe
             title: Übersetzungsset
         translations:
-          edit: 
+          edit:
             title: Bearbeiten
             save: Speichern
           form:
