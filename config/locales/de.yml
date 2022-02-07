@@ -96,6 +96,11 @@ de:
           attributes:
             attachment:
               needs_to_be_reattached: Der Anhang muss nochmals hinzugefügt werden.
+        user:
+          attributes:
+            textcaptcha_answer:
+              expired: "Die Sicherheitsfrage ist abgelaufen, bitte versuche es erneut."
+              incorrect: "Die Antwort ist leider nicht korrekt, bitte versuche es erneut."
     models:
       decidim/meetings/close_meeting_event: Event geschlossen
       decidim/meetings/create_meeting_event: Event
