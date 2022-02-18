@@ -50,8 +50,9 @@ GIT
     decidim-navbar_links (0.24.2)
       decidim-core (= 0.24.2)
 
-PATH
-  remote: /code/pz/decidim-module-newsfeed
+GIT
+  remote: https://github.com/stadtluzern/decidim-module-newsfeed.git
+  revision: 717ac16019320edd6148d06a8ca569fde445de76
   specs:
     decidim-newsfeed (0.24.2)
       decidim-core (= 0.24.2)

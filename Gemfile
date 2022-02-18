@@ -15,7 +15,8 @@ gem 'decidim-antivirus',
     git: 'https://github.com/mainio/decidim-module-antivirus'
 gem 'decidim-conferences', DECIDIM_VERSION
 
-gem 'decidim-newsfeed', path: '/code/pz/decidim-module-newsfeed'
+gem 'decidim-newsfeed',
+    git: 'https://github.com/stadtluzern/decidim-module-newsfeed.git'
 
 # Currently the editor fix is only in main
 # gem 'decidim-decidim_awesome', '~> 0.7.2'
