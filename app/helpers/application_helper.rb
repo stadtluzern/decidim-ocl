@@ -31,7 +31,7 @@ module ApplicationHelper
     return nil unless html
 
     tag.span({ style: 'margin-left: 0.2rem' }) do
-      ['(', html, ')'].join
+      safe_join(['(', html, ')'])
     end
   end
 
