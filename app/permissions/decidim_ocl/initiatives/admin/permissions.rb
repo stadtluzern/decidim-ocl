@@ -11,6 +11,11 @@ module DecidimOCL::Initiatives::Admin
         return disallow!
       end
 
+      if permission_action.subject == :initiative &&
+          permission_action.action == :export_votes
+        return disallow!
+      end
+
       super
     end
   end
