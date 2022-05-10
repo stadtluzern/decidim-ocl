@@ -1,0 +1,8 @@
+<div class="card__content">
+    <%= t ".invite_to_committee_help" %>
+
+<div class="column actions">
+    <%= link_to t(".continue"), next_wizard_path, class: "button expanded" %>
+</div>
+
+<%= javascript_include_tag "decidim/initiatives/admin/invite_users.js" %>
