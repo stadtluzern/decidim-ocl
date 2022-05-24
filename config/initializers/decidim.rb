@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
-Decidim.configure do |config|
+Decidim.register_assets_path File.expand_path('app/packs', Rails.application.root)
+Decidim.register_assets_path File.expand_path('app/packs/fonts', Rails.application.root)
+
+Decidim.configure do |config| # rubocop:disable Metrics/BlockLength
   config.application_name = 'DecidimOCL'
   config.mailer_sender = 'info@puzzle.ch'
 
@@ -25,13 +28,13 @@ Decidim.configure do |config|
         '0': {
           name: ->(*_args) { I18n.t('decidim_ocl.maps.swisstopo.basic') },
           type: :swisstopo,
-          layer: 'ch.swisstopo.pixelkarte-farbe',
+          layer: 'ch.swisstopo.pixelkarte-farbe'
         },
         '1': {
           name: ->(*_args) { I18n.t('decidim_ocl.maps.swisstopo.satellite') },
           type: :swisstopo,
-          layer: 'ch.swisstopo.swissimage',
-        },
+          layer: 'ch.swisstopo.swissimage'
+        }
       },
       attribution: ->(*_args) { I18n.t('decidim_ocl.maps.swisstopo.attribution') }
     },

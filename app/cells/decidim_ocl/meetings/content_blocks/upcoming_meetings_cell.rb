@@ -4,8 +4,8 @@ module DecidimOCL
   module Meetings
     module ContentBlocks
       # Only show events that are today or in the future
-      module UpcomingEventsCell
-        def upcoming_events
+      module UpcomingMeetingsCell
+        def upcoming_meetings
           super.where('start_time >= ?', DateTime.now.beginning_of_day)
         end
       end

@@ -880,6 +880,9 @@ de:
           error: Beim Erstellen des neuen Administrators ist ein Fehler aufgetreten.
         edit:
           update: Bearbeiten
+      dashboard:
+        show:
+          current_organizations: Meine Organisationen anzeigen
       menu:
         dashboard: Dashboard
       models:
@@ -895,6 +898,9 @@ de:
             smtp_settings: SMTP Einstellungen
             omniauth_settings: Omniauth Einstellungen
       organizations:
+        advanced_settings:
+          hide: Verstecken
+          show: Anzeigen
         file_upload_settings:
           content_types:
             admin_hint: These MIME types are allowed for the admin section uploads. Admin users should be aware of the risks with uploading some document formats, so you can expect them to be more cautious with the file uploads.

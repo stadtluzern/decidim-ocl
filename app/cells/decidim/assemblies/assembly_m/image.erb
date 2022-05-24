@@ -1,7 +1,9 @@
 <% if resource_image_path.present? %>
   <div class="assembly-image">
     <%= link_to resource_path do %>
-      <%= image_tag resource_image_path, class: "card__image", alt: title %>
+      <%= image_pack_tag "media/images/#{resource_image_path}",
+                         class: "card__image",
+                         alt: title %>
     <% end %>
     <span class="assembly-follower-count">
       <span class="icon-wrap">

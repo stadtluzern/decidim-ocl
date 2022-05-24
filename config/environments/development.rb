@@ -33,7 +33,7 @@ Rails.application.configure do
   config.cache_store = :mem_cache_store, "#{memcached_host}:#{memcached_port}"
 
   # Store uploaded files on the local file system (see config/storage.yml for options)
-  config.active_storage.service = :local
+  config.active_storage.service = ENV['ACTIVE_STORAGE_SERVICE']&.to_sym || :local
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
@@ -51,14 +51,6 @@ Rails.application.configure do
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
 
-  # Debug mode disables concatenation and preprocessing of assets.
-  # This option may cause significant delays in view rendering with a large
-  # number of complex assets.
-  config.assets.debug = true
-
-  # Suppress logger output for asset requests.
-  config.assets.quiet = true
-
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
@@ -66,12 +58,33 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  # No precompilation on demand on first request
-  config.assets.check_precompiled_asset = false
-
   config.aspsms = {
     user_key: ENV['ASPSMS_API_USER_KEY'],
     password: ENV['ASPSMS_API_PASSWORD'],
     affiliate_id: ENV['ASPSMS_AFFILIATE_ID']
   }
+
+  host = ENV['RAILS_HOST']
+  config.hosts << host if host
+
+
+  # TODO Remove after fixing dev
+
+  config.log_level = :info
+
+  config.lograge.enabled = true
+  config.lograge.ignore_actions = ['StatusController#health', 'StatusController#readiness']
+  config.lograge.custom_payload do |controller|
+    {
+      host: controller.request.host,
+      user_id: controller.current_user.try(:id)
+    }
+  end
+  config.lograge.custom_options = lambda do |event|
+    exceptions = %w[controller action format id]
+    {
+      time: Time.zone.now.utc,
+      params: event.payload[:params].except(*exceptions)
+    }
+  end
 end

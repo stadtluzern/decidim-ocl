@@ -1,0 +1,2 @@
+# Use locally installed npm version
+npx npm "$@"
