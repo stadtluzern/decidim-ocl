@@ -27,7 +27,7 @@ class CustomizationOutput
       prepends_output,
       overrides_output,
       color_end
-    ]
+    ].join("\n").to_s
   end
 
   private
