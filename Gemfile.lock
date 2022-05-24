@@ -100,6 +100,22 @@ GEM
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.2)
+    aws-eventstream (1.2.0)
+    aws-partitions (1.590.0)
+    aws-sdk-core (3.131.1)
+      aws-eventstream (~> 1, >= 1.0.2)
+      aws-partitions (~> 1, >= 1.525.0)
+      aws-sigv4 (~> 1.1)
+      jmespath (~> 1, >= 1.6.1)
+    aws-sdk-kms (1.57.0)
+      aws-sdk-core (~> 3, >= 3.127.0)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-s3 (1.114.0)
+      aws-sdk-core (~> 3, >= 3.127.0)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.4)
+    aws-sigv4 (1.5.0)
+      aws-eventstream (~> 1, >= 1.0.2)
     axe-core-api (4.4.0)
       dumb_delegator
       virtus
@@ -238,6 +254,11 @@ GEM
     decidim-comments (0.26.1)
       decidim-core (= 0.26.1)
       redcarpet (~> 3.5, >= 3.5.1)
+    decidim-conferences (0.26.1)
+      decidim-core (= 0.26.1)
+      decidim-meetings (= 0.26.1)
+      wicked_pdf (~> 2.1)
+      wkhtmltopdf-binary (~> 0.12)
     decidim-core (0.26.1)
       active_link_to (~> 1.0)
       acts_as_list (~> 0.9)
@@ -473,6 +494,7 @@ GEM
       ruby-vips (>= 2.0.17, < 3)
     invisible_captcha (0.13.0)
       rails (>= 3.2.0)
+    jmespath (1.6.1)
     json (2.6.2)
     jwt (2.3.0)
     kaminari (1.2.2)
@@ -838,6 +860,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_textcaptcha (~> 4.5.1)
+  aws-sdk-s3
   better_errors
   binding_of_caller
   bleib
@@ -846,6 +869,7 @@ DEPENDENCIES
   dalli
   decidim (= 0.26.1)
   decidim-antivirus!
+  decidim-conferences (= 0.26.1)
   decidim-decidim_awesome!
   decidim-dev (= 0.26.1)
   decidim-initiatives (= 0.26.1)

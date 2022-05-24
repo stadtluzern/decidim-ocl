@@ -9,7 +9,7 @@ ruby RUBY_VERSION
 gem 'execjs' # , '2.7.0'
 
 gem 'decidim', DECIDIM_VERSION
-
+gem 'decidim-conferences', DECIDIM_VERSION
 gem 'decidim-initiatives', DECIDIM_VERSION
 gem 'decidim-proposals', DECIDIM_VERSION
 
@@ -25,6 +25,7 @@ gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', 
 # gem 'decidim-url_aliases', github: 'OpenSourcePolitics/decidim-urlaliases'
 
 gem 'acts_as_textcaptcha', '~> 4.5.1'
+gem 'aws-sdk-s3', require: false
 gem 'binding_of_caller'
 gem 'bootsnap'                # , '~> 1.3'
 gem 'byebug'                  # , '~> 11.0', platform: :mri
