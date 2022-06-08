@@ -4,22 +4,32 @@
 
 FROM ruby:2.7 AS build
 
-ARG BUILD_PACKAGES="git libicu-dev libpq-dev nodejs npm"
-ARG BUILD_SCRIPT="npm install -g npm && \
-    npm install -g yarn && \
-    yarn set version 1.22.10"
-ARG BUNDLE_WITHOUT="development:metrics:test"
-ARG BUNDLER_VERSION="2.2.27"
-ARG POST_BUILD_SCRIPT="bin/rails assets:precompile"
-ARG SKIP_MEMCACHE_CHECK="true"
-ARG RAILS_ENV="production"
-ARG SECRET_KEY_BASE="thisneedstobeset"
-
 # Set build shell
 SHELL ["/bin/bash", "-c"]
 
 # Use root user
 USER root
+
+ARG BUILD_PACKAGES="git libicu-dev libpq-dev nodejs npm"
+ARG BUILD_SCRIPT="curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg -o /root/yarn-pubkey.gpg \
+    && apt-key add /root/yarn-pubkey.gpg \
+    && echo \"deb https://dl.yarnpkg.com/debian/ stable main\" > /etc/apt/sources.list.d/yarn.list \
+    && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends nodejs \
+    && apt-get clean \
+    && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && truncate -s 0 /var/log/*log \
+    && npm install -g npm \
+    && npm install -g yarn \
+    && yarn set version 1.22.10"
+ARG BUNDLE_WITHOUT="development:metrics:test"
+ARG BUNDLER_VERSION="2.3.12"
+ARG POST_BUILD_SCRIPT="yarn && bundle exec rails assets:precompile"
+ARG SKIP_MEMCACHE_CHECK="true"
+ARG RAILS_ENV="production"
+ARG SECRET_KEY_BASE="thisneedstobeset"
+ARG CUSTOMIZATION_OUTPUT="false"
 
 # Install packages needed at buildtime
 RUN    apt-get update \
@@ -33,7 +43,8 @@ RUN gem install bundler:${BUNDLER_VERSION} --no-document
 
 # TODO: Load artifacts
 
-COPY ./Gemfile ./Gemfile.lock /app-src/
+# set up app-src directory
+COPY . /app-src
 WORKDIR /app-src
 
 # Run deployment
@@ -42,9 +53,6 @@ RUN    bundle config set --local deployment 'true' \
     && bundle package \
     && bundle install \
     && bundle clean
-
-# set up app-src directory
-COPY . /app-src
 
 RUN [[ ${POST_BUILD_SCRIPT} ]] && bash -c "${POST_BUILD_SCRIPT}"
 
@@ -64,16 +72,12 @@ SHELL ["/bin/bash", "-c"]
 
 # Add user
 RUN adduser --disabled-password --uid 1001 --gid 0 --gecos "" --shell /bin/bash app
-# RUN adduser --disabled-password --uid 1002 --gid 0 --gecos "" clamav
 
-ARG BUNDLE_WITHOUT='development:metrics:test'
-ARG BUNDLER_VERSION="2.2.27"
+ARG BUNDLE_WITHOUT="development:metrics:test"
+ARG BUNDLER_VERSION="2.3.12"
 ARG RUN_PACKAGES="clamav clamav-daemon git graphicsmagick libicu-dev libpq5 nodejs poppler-utils"
-ARG PS1='$SENTRY_CURRENT_ENV$ '
-ENV PS1=$PS1
-ARG TZ="Europe/Zurich"
-ENV TZ=$TZ
-
+ARG CUSTOMIZATION_OUTPUT="false"
+ENV TZ="Europe/Zurich"
 
 # Prepare apt-get
 RUN    export DEBIAN_FRONTEND=noninteractive \
@@ -123,11 +127,14 @@ RUN    mkdir /var/run/clamav \
 
 ENV HOME=/app-src
 
+# Install specific versions of dependencies
+RUN gem install bundler:${BUNDLER_VERSION} --no-document
+
 # Use cached gems
 RUN    bundle config set --local deployment 'true' \
     && bundle config set --local without ${BUNDLE_WITHOUT} \
     && bundle
 
-USER 1000
+USER 1001
 
 CMD ["bundle", "exec", "puma", "-t", "8"]
