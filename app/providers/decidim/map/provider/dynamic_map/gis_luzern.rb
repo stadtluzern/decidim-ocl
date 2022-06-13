@@ -14,7 +14,7 @@ module Decidim
           class Builder < Decidim::Map::DynamicMap::Builder
             # @see Decidim::Map::DynamicMap::Builder#javascript_snippets
             def javascript_snippets
-              template.javascript_include_tag('decidim/gis_luzern')
+              template.javascript_pack_tag('decidim/gis_luzern')
             end
           end
         end
