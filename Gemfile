@@ -19,7 +19,7 @@ gem 'decidim-question_captcha', github: 'Kagemaru/decidim-module-question_captch
 gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', ref: 'develop'
 
 # TODO: These are not updated yet :(
-# gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', tag: DECIDIM_VERSION
+gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', branch: DECIDIM_VERSION
 # gem 'decidim-navbar_links', github: 'puzzle/decidim-module-navbar_links', tag: "v#{DECIDIM_VERSION}"
 # gem 'decidim-navigation_maps', '~> 1.2.0'
 # gem 'decidim-url_aliases', github: 'OpenSourcePolitics/decidim-urlaliases'

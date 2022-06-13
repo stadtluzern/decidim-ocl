@@ -33,6 +33,14 @@ GIT
       ratonvirus (~> 0.3.0)
       ratonvirus-clamby (~> 0.3.0)
 
+GIT
+  remote: https://github.com/puzzle/decidim-module-jitsi-meetings.git
+  revision: 79cfb4c1e4fa6977a963bd5ee46406556a00ac79
+  branch: 0.26.1
+  specs:
+    decidim-jitsi_meetings (0.26.1)
+      decidim-core (= 0.26.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -873,6 +881,7 @@ DEPENDENCIES
   decidim-decidim_awesome!
   decidim-dev (= 0.26.1)
   decidim-initiatives (= 0.26.1)
+  decidim-jitsi_meetings!
   decidim-proposals (= 0.26.1)
   decidim-question_captcha!
   decidim-term_customizer!
@@ -897,4 +906,4 @@ RUBY VERSION
    ruby 2.7.2p137
 
 BUNDLED WITH
-   2.3.12
+   2.3.15
