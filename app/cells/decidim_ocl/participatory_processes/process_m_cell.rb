@@ -9,7 +9,7 @@ module DecidimOCL
 
       included do
         def resource_image_path
-          model.hero_image.url || current_organization.highlighted_content_banner_image.url
+          model.attached_uploader(:hero_image).path || rails_blob_path(current_organization.highlighted_content_banner_image)
         end
       end
     end

@@ -1,7 +1,7 @@
 <% if resource_image_path.present? %>
   <div class="meeting-image">
     <%= link_to resource_path do %>
-      <%= image_pack_tag "/media/images/#{resource_image_path}",
+      <%= image_pack_tag "media/images/#{resource_image_path}",
                          class: "card__image",
                          alt: title %>
     <% end %>

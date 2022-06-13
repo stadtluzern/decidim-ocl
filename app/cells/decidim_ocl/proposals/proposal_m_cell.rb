@@ -9,17 +9,16 @@ module DecidimOCL
 
       included do
         def has_image?
-          model.component.settings.allow_card_image
-        end
-
-        def has_own_image?
-          model.attachments.first.present? && model.attachments.first.file.content_type.start_with?('image') && model.component.settings.allow_card_image
+          @has_image ||= model.attachments.map(&:image?).any?
         end
 
         def resource_image_path
-          return model.attachments.first.url if has_own_image?
-
-          model.component.participatory_space.hero_image.url
+          @resource_image_path ||=
+            if has_image?
+              model.attachments.find_by("content_type like '%image%'").thumbnail_url
+            else
+              model.component.participatory_space.attached_uploader(:hero_image).path
+            end
         end
       end
     end

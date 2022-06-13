@@ -46,7 +46,7 @@ bin/bundle
 .envrc
 
 # Ignore local gems
-vendor/bundle/**/
+vendor/bundle
 
 /public/packs
 /public/packs-test

@@ -10,7 +10,7 @@
         <% end %>
       <% else %>
         <span class="author__avatar" title="<%= member.full_name %>">
-          <%= image_tag asset_pack_path("default-avatar.svg"), alt: "member-avatar" %>
+          <%= image_pack_tag ("media/images/default-avatar.svg"), alt: "member-avatar" %>
         </span>
       <% end %>
     <% end %>

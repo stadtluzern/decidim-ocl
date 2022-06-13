@@ -29,7 +29,7 @@ module DecidimOCL
       private
 
       def resource_image_path
-        model.hero_image.url.presence || 'organization-default-image.png'
+        model.attached_uploader(:hero_image).path || 'organization-default-image.png'
       end
 
       def statuses
