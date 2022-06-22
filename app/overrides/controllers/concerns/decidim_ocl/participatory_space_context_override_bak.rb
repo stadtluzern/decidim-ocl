@@ -12,6 +12,7 @@
 
 Decidim::ParticipatorySpaceContext.module_eval do
   private
+
   def current_participatory_space_manifest
     manifest = current_participatory_space&.manifest
 

@@ -1,4 +1,4 @@
-Decidim::Initiatives::Admin::InitiativeForm.class_eval do
+Decidim::Initiatives::InitiativeForm.class_eval do
   def signature_type_options
     Decidim::Initiative.signature_types.keys.map do |type|
       [

@@ -15,7 +15,7 @@ prepends = [
   [Decidim::Meetings::MeetingMCell, DecidimOCL::Meetings::MeetingMCell],
   [Decidim::Meetings::MeetingPresenter, DecidimOCL::Meetings::MeetingPresenter],
   [Decidim::Meetings::ContentBlocks::UpcomingMeetingsCell, DecidimOCL::Meetings::ContentBlocks::UpcomingMeetingsCell],
-  [Decidim::Initiatives::Admin::Permissions, DecidimOCL::Initiatives::Admin::Permissions]
+  # [Decidim::Initiatives::Admin::Permissions, DecidimOCL::Initiatives::Admin::Permissions]
 ].each { |base, addition| base.prepend addition }
 
 override_path = Pathname.new('app/overrides')

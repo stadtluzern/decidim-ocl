@@ -10,16 +10,18 @@ gem 'execjs' # , '2.7.0'
 
 gem 'decidim', DECIDIM_VERSION
 gem 'decidim-conferences', DECIDIM_VERSION
-gem 'decidim-initiatives', DECIDIM_VERSION
 gem 'decidim-proposals', DECIDIM_VERSION
+
+# TODO: this is quite broken at the moment
+#gem 'decidim-initiatives', DECIDIM_VERSION
 
 gem 'decidim-antivirus', github: 'puzzle/decidim-module-antivirus'
 gem 'decidim-decidim_awesome', github: 'Platoniq/decidim-module-decidim_awesome'
+gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', branch: DECIDIM_VERSION, ref: '90e5126'
 gem 'decidim-question_captcha', github: 'Kagemaru/decidim-module-question_captcha'
 gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', ref: 'develop'
 
 # TODO: These are not updated yet :(
-gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', branch: DECIDIM_VERSION
 # gem 'decidim-navbar_links', github: 'puzzle/decidim-module-navbar_links', tag: "v#{DECIDIM_VERSION}"
 # gem 'decidim-navigation_maps', '~> 1.2.0'
 # gem 'decidim-url_aliases', github: 'OpenSourcePolitics/decidim-urlaliases'
@@ -49,6 +51,7 @@ end
 group :development do
   gem 'letter_opener_web'     # , '~> 1.3'
   gem 'listen'                # , '~> 3.1'
+  gem 'solargraph'
   gem 'spring'                # , '~> 2.0'
   gem 'spring-watcher-listen' # , '~> 2.0'
   gem 'web-console'           # , '~> 3.5'
