@@ -9,7 +9,7 @@
 #
 # Also we don't use -onbuild as they're deprecated
 # https://github.com/docker-library/official-images/issues/2076
-FROM ruby:2.7.1 as dev
+FROM ruby:2.7 as dev
 LABEL maintainer="beltrame@puzzle.ch"
 
 # Installs system dependencies
@@ -28,7 +28,8 @@ RUN apt-get update -qq \
     && truncate -s 0 /var/log/*log
 
 # Installs yarn/nodejs as a dependency
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg -o /root/yarn-pubkey.gpg && apt-key add /root/yarn-pubkey.gpg \
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg -o /root/yarn-pubkey.gpg && apt-key add /root/yarn-pubkey.gpg \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
@@ -55,6 +56,7 @@ RUN mkdir /db-init && chown 1000 /db-init
 USER decidim
 
 # Update system gems
+RUN gem install bundler:2.3.15
 RUN gem update --system
 
 # Copy Gemfile and install bundle dependencies
@@ -63,5 +65,4 @@ ENV LANG=C.UTF-8 \
   BUNDLE_JOBS=20 \
   BUNDLE_RETRY=5 \
   PATH=${APP_HOME}/bin:${PATH}
-RUN gem install bundler:2.2.5
 RUN bundle install

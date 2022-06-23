@@ -1,31 +1,16 @@
-version: '3.4'
+version: '3.6'
 services:
   app: &app
     build:
       context: .
-      dockerfile: ./Dockerfile
-      # target: dev
-      # arg:
-        # - TZ="Europe/Zurich"
-        # - RAILS_ENV="production"
-        # - BUNDLER_VERSION="2.2.17"
-        # - BUNDLE_WITHOUT=development:metrics:test
-        # - BUILD_PACKAGES="git libicu-dev libpq-dev nodejs npm"
-        # - BUILD_SCRIPT="npm install -g npm && \
-        #                 npm install -g yarn && \
-        #                 yarn set version 1.22.10"
-        # - POST_BUILD_SCRIPT=bin/rails assets:precompile
-        # - RUN_PACKAGES="clamav \
-        #                 clamav-daemon \
-        #                 git imagemagick \
-        #                 libicu-dev libpq5 \
-        #                 nodejs \
-        #                 poppler-utils"
+      dockerfile: ./.docker/Dockerfile
+      target: dev
     volumes:
       - .:/usr/src/app
       - bundle:/usr/local/bundle
       - node_modules:/app/node_modules
       - db-init:/db-init
+      - ./bin/bundle-binstub:/usr/src/app/bin/bundle
     depends_on:
       - pg
       - cache
@@ -37,6 +22,7 @@ services:
       - RAILS_ENV=development
       - RAILS_MEMCACHED_HOST=cache
       - RAILS_MAIL_DELIVERY_CONFIG=address:mail,port:1025
+      #- RAILS_DB_NAME=decidim_luzern_production
     ports:
       - 3000:3000
     command: bundle exec puma
@@ -46,25 +32,25 @@ services:
   pg:
     image: postgres
     environment:
-      - POSTGRES_USER=decidim_ocl
+      - POSTGRES_USER=decidim_luzern
       - POSTGRES_PASSWORD=7UhEIvi9wFymva3
-      - POSTGRES_DB=decidim_ocl_development
+      - POSTGRES_DB=decidim_luzern_development
     ports:
       - 5432:5432
     volumes:
       - pg-data:/var/lib/postgresql/data
+      #- ./.docker/00-prepare-for-prod-dump.sql:/docker-entrypoint-initdb.d/00-prepare-for-prod-dump.sql
+      #- ./.docker/database-init.sql:/docker-entrypoint-initdb.d/database-init.sql
   cache:
     image: memcached:1.5-alpine
     command: [ memcached, -l, '0.0.0.0', -p, '11211' ]
-
-  adminer:
-    image: adminer
+  webpack:
+    <<: *app
+    depends_on: []
     ports:
-      - '8080:8080'
-    links:
-      - pg:db
-    depends_on:
-      - pg
+      - 3035:3035
+    entrypoint: ./.docker/webpack-entrypoint.sh
+    command: [ 'bin/webpack-dev-server' ]
 
   mail:
     image: schickling/mailcatcher:latest
@@ -76,12 +62,6 @@ services:
     ports: []
     entrypoint: []
     command: [ rake, 'jobs:work' ]
-  ruby:
-    build:
-      context: .
-      dockerfile: ./.docker/Dockerfile
-      target: dev
-    command: []
 
 volumes:
   node_modules: {}
