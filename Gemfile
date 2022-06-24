@@ -17,7 +17,8 @@ gem 'decidim-proposals', DECIDIM_VERSION
 
 gem 'decidim-antivirus', github: 'puzzle/decidim-module-antivirus'
 gem 'decidim-decidim_awesome', github: 'Platoniq/decidim-module-decidim_awesome'
-gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', branch: DECIDIM_VERSION, ref: '90e5126'
+gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', branch: DECIDIM_VERSION, ref: '6d32dd1'
+# gem 'decidim-jitsi_meetings', path: '/code/pz/decidim-module-jitsi-meetings'  
 gem 'decidim-question_captcha', github: 'Kagemaru/decidim-module-question_captcha'
 gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', ref: 'develop'
 

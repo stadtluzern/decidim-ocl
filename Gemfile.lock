@@ -35,8 +35,8 @@ GIT
 
 GIT
   remote: https://github.com/puzzle/decidim-module-jitsi-meetings.git
-  revision: 90e51265ce1e2ac6dd4e0a3563874eaa48e2b3b2
-  ref: 90e5126
+  revision: 6d32dd1d68d1232a95eab7540cef3b6109aa316f
+  ref: 6d32dd1
   branch: 0.26.1
   specs:
     decidim-jitsi_meetings (0.26.1)
