@@ -26,6 +26,8 @@ module DecidimOCL
 
       def resource_image_path
         model.photo&.url || 'organization-default-image.png'
+      rescue NoMethodError
+        'organization-default-image.png'
       end
 
       def followers_count
