@@ -3,7 +3,7 @@
 namespace :ocl do
   namespace :initiatives do
     desc 'Run all cleaners'
-    task clean_all: %i[clean_notifications clean_comments clean_action_logs] do
+    task clean_all: %i[clean_notifications clean_comments clean_action_logs clean_follows] do
       puts 'All tasks have run!'
     end
 
@@ -50,6 +50,14 @@ namespace :ocl do
       participatory_space_logs = Decidim::ActionLog.where(participatory_space_type: 'Decidim::Initiative')
       puts "Removing #{participatory_space_logs.count} initiative participatory space action logs…"
       participatory_space_logs.delete_all
+      puts 'Done!'
+    end
+
+    desc 'Deletes all remaining initiative follows'
+    task clean_follows: :environment do
+      follows = Decidim::Follow.where(decidim_followable_type: 'Decidim::Initiative')
+      puts "Removing #{follows.count} initiative follows…"
+      follows.delete_all
       puts 'Done!'
     end
   end
