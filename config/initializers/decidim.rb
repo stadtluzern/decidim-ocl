@@ -13,7 +13,7 @@ Decidim.configure do |config| # rubocop:disable Metrics/BlockLength
 
   config.maps = {
     dynamic: {
-      provider: :gis_luzern,
+      provider: :swisstopo,
       default_center: {
         lat: 47.052,
         lng: 8.309
@@ -27,12 +27,10 @@ Decidim.configure do |config| # rubocop:disable Metrics/BlockLength
       layers: {
         '0': {
           name: ->(*_args) { I18n.t('decidim_ocl.maps.swisstopo.basic') },
-          type: :swisstopo,
           layer: 'ch.swisstopo.pixelkarte-farbe'
         },
         '1': {
           name: ->(*_args) { I18n.t('decidim_ocl.maps.swisstopo.satellite') },
-          type: :swisstopo,
           layer: 'ch.swisstopo.swissimage'
         }
       },

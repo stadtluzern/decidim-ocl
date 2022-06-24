@@ -5523,7 +5523,7 @@ lcid@^1.0.0:
 
 leaflet-svgicon@^0.0.2:
   version "0.0.2"
-  resolved "https://registry.npmjs.org/leaflet-svgicon/-/leaflet-svgicon-0.0.2.tgz"
+  resolved "https://registry.yarnpkg.com/leaflet-svgicon/-/leaflet-svgicon-0.0.2.tgz#ec590365d01e66e2e72613c6eb6ad93862055f01"
   integrity sha512-9hGBLBHHcCSZAdVLwdiZbU2c/Z47eziDQslDrRQRcBNomEazH4NXvqY8egDMw+zGh/nBQub6jvTl1ty2nlEwmQ==
   dependencies:
     src "^1.1.2"
@@ -5532,6 +5532,11 @@ leaflet-tilelayer-here@1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/leaflet-tilelayer-here/-/leaflet-tilelayer-here-1.0.2.tgz"
   integrity sha512-PQytY0goCZLANGabPCPQJDhCrXrwdVP6F5NEgw/zjunrfFhQ1XwnBUNCWi0irUWQsETNntcwfkomikhlQ7uCRQ==
+
+leaflet-tilelayer-swiss@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/leaflet-tilelayer-swiss/-/leaflet-tilelayer-swiss-2.2.1.tgz#a9127089f9d12c3d962852bbf95ddfc84a2689df"
+  integrity sha512-ADBSZDXJlgcaKWWGhatrhPgvKP8f9PbOxAvP3rUQyTIvDpR6vqlJIZzwuaX/L8lxNVruOmAXabxTGvD5T0gfcw==
 
 leaflet.featuregroup.subgroup@^1.0.2:
   version "1.0.2"
@@ -5543,10 +5548,20 @@ leaflet.markercluster@1.4.1:
   resolved "https://registry.npmjs.org/leaflet.markercluster/-/leaflet.markercluster-1.4.1.tgz"
   integrity sha512-ZSEpE/EFApR0bJ1w/dUGwTSUvWlpalKqIzkaYdYB7jaftQA/Y2Jav+eT4CMtEYFj+ZK4mswP13Q2acnPBnhGOw==
 
+leaflet.markercluster@^1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.5.3.tgz#9cdb52a4eab92671832e1ef9899669e80efc4056"
+  integrity sha512-vPTw/Bndq7eQHjLBVlWpnGeLa3t+3zGiuM7fJwCkiMFq+nmRuG3RI3f7f4N4TDX7T4NpbAXpR2+NTRSEGfCSeA==
+
 leaflet@1.3.1:
   version "1.3.1"
   resolved "https://registry.npmjs.org/leaflet/-/leaflet-1.3.1.tgz"
   integrity sha512-adQOIzh+bfdridLM1xIgJ9VnJbAUY3wqs/ueF+ITla+PLQ1z47USdBKUf+iD9FuUA8RtlT6j6hZBfZoA6mW+XQ==
+
+leaflet@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.8.0.tgz#4615db4a22a304e8e692cae9270b983b38a2055e"
+  integrity sha512-gwhMjFCQiYs3x/Sf+d49f10ERXaEFCPr+nVTryhAW8DWbMGqJqt9G4XuIaHmFW08zYvhgdzqXGr8AlW8v8dQkA==
 
 levn@^0.4.1:
   version "0.4.1"

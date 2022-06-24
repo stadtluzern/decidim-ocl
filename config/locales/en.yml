@@ -118,6 +118,8 @@ en:
         upcoming_meetings: Upcoming events
     proposals:
       proposals:
+        preview:
+          update_position: Update position
         filters:
           activity: Kind
   decidim_ocl:

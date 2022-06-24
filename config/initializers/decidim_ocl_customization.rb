@@ -44,7 +44,7 @@ module Decidim
   module Map
     module Provider
       module DynamicMap
-        autoload :GisLuzern, 'decidim/map/provider/dynamic_map/gis_luzern'
+        autoload :Swisstopo, 'decidim/map/provider/dynamic_map/swisstopo'
       end
     end
   end
