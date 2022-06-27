@@ -11,7 +11,6 @@ includes = [
 prepends = [
   [Decidim::Proposals::Admin::ProposalNoteCreatedEvent, DecidimOCL::Proposals::Admin::ProposalNoteCreatedEvent],
   [Decidim::Forms::AnswerQuestionnaire, DecidimOCL::Forms::AnswerQuestionnaire],
-  [Decidim::Assemblies::AssemblyMCell, DecidimOCL::Assemblies::AssemblyMCell],
   [Decidim::Meetings::MeetingPresenter, DecidimOCL::Meetings::MeetingPresenter],
   [Decidim::Meetings::ContentBlocks::UpcomingMeetingsCell, DecidimOCL::Meetings::ContentBlocks::UpcomingMeetingsCell],
   # [Decidim::Initiatives::Admin::Permissions, DecidimOCL::Initiatives::Admin::Permissions]
