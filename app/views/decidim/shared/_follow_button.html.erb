@@ -3,14 +3,14 @@
   <div class="assembly-members-list author-data--big">
     <h5><%= t('decidim.assemblies.assembly_members.index.members') %></h5>
     <% for member in followable.members.not_ceased.first(6) %>
-      <%=  %>
-      <% if member.user.present? %>
-        <%= link_to (decidim.profile_url host: followable.organization.host, nickname: member.user.nickname), class: "author__avatar author__avatar-horizontal", title: member.user.nickname do %>
-          <%= image_tag member.user.avatar_url(:big), alt: "member-avatar" %>
+      <% model = Decidim::AssemblyMemberPresenter.new(member) %>
+      <% if model.profile_url.present? %>
+        <%= link_to (decidim.profile_url host: followable.organization.host, nickname: model.user.nickname), class: "author__avatar author__avatar-horizontal", title: model.user.nickname do %>
+          <%= image_tag Decidim::AssemblyMemberPresenter.new(model).avatar_url(:big), alt: "member-avatar" %>
         <% end %>
       <% else %>
-        <span class="author__avatar" title="<%= member.full_name %>">
-          <%= image_pack_tag ("media/images/default-avatar.svg"), alt: "member-avatar" %>
+        <span class="author__avatar" title="<%= model.full_name %>">
+          <%= image_tag model.non_user_avatar_path, alt: "member-avatar" %>
         </span>
       <% end %>
     <% end %>
