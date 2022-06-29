@@ -12,7 +12,11 @@
 
 Decidim::Meetings::MeetingMCell.module_eval do
   def resource_image_path
-    model.photo&.url || 'organization-default-image.png'
+    Nokogiri::HTML
+        .parse(translated_attribute(model.description))
+        .css('img')
+        .first
+        &.attr('src') || 'organization-default-image.png'
   end
 
   def followers_count
