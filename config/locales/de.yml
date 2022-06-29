@@ -136,6 +136,8 @@ de:
         one: Kollaborativer Entwurf
         other: Kollaborative Entwürfe
   decidim:
+    accessibility:
+      front_page_link: Zur Startseite
     navigation_maps:
       admin:
         areas:
@@ -234,6 +236,8 @@ de:
         update:
           success: Anhang erfolgreich aktualisiert
       filters:
+        decidim_assemblies_type_id_eq:
+          label: Typ
         filter_label: Filter
         private_space_eq:
           label: Privat
@@ -722,6 +726,13 @@ de:
       last_activity:
         new_meeting_at_html: "<span>Neuer Event unter %{link}</span>"
       meetings:
+        calendar_modal:
+          add_to_calendar: Zum Kalender hinzufügen
+          apple: Zu Apple Kalender hinzufügen
+          close_window: Fenster schliessen
+          full_details_html: Details siehe %{link}
+          google: Zu Google Kalender hinzufügen
+          outlook: Zu Outlook Kalender hinzufügen
         filters:
           past: Vergangene Events
           upcoming: Kommende Events
