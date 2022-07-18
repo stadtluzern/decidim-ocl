@@ -1,9 +1,14 @@
 <%
   if Rails.env.production?
     domain = request.env['SERVER_NAME']
-
     prod = ENV.fetch('SENTRY_CURRENT_ENV')=='production'
-    site_id = prod ? 2 : 1
+    #site_id = prod ? 2 : 1
+
+    subdomain, site_id =
+      case domain
+      when /deinklima/ then ['deinklima', prod ? 1 : 2]
+      else                  ['ocl-test',  prod ? 2 : 1]
+      end
   end
 %>
 
@@ -20,12 +25,12 @@
   _paq.push(['enableLinkTracking']);
 
   (function () {
-    var u = "https://ocl-test.matomo.cloud/";
+      var u = "https://<%= subdomain %>.matomo.cloud/";
     _paq.push(['setTrackerUrl', u + 'matomo.php']);
     _paq.push(['setSiteId', '<%= site_id %>']);
     var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
-    g.type = 'text/javascript'; g.async = true; g.defer = true; g.src = '//cdn.matomo.cloud/ocl-test.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g, s);
+      g.type = 'text/javascript'; g.async = true; g.defer = true; g.src = '//cdn.matomo.cloud/<%= subdomain %>.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g, s);
   })();
 </script>
-<noscript><p><img src="https://ocl-test.matomo.cloud/matomo.php?idsite=<%= site_id %>&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+<noscript><p><img src="https://<%= subdomain %>.matomo.cloud/matomo.php?idsite=<%= site_id %>&amp;rec=1" style="border:0;" alt="" /></p></noscript>
 <!-- End Matomo Code -->
