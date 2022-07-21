@@ -236,6 +236,11 @@ de:
         update:
           success: Anhang erfolgreich aktualisiert
       filters:
+        meetings:
+          closed_at_present:
+            label: Geschlossen
+          category_id_eq:
+            label: Kategorie
         decidim_assemblies_type_id_eq:
           label: Typ
         filter_label: Filter
@@ -347,6 +352,8 @@ de:
         project:
           view: Ansehen
     components:
+      jitsi_meetings:
+        name: Jitsi Meetings
       surveys:
         settings:
           global:
@@ -388,6 +395,17 @@ de:
       proposals:
         settings:
           step:
+            default_sort_order_options:
+              default: Standard
+              most_commented: Meiste Kommentare
+              most_endorsed: Meiste Unterstützungen
+              most_followed: Meiste Followers
+              most_voted: Meiste Stimmen
+              random: Zufällig
+              recent: Aktuellste
+              with_more_authors: Meiste Autoren
+            default_sort_order: Standardsortierung
+            creation_enabled: Erstellung aktiviert
             amendments_visibility: Sichtbarkeit von Änderungsvorschlägen
             amendment_promotion_enabled: Promotion von Änderungsvorschlägen aktiviert
             amendment_reaction_enabled: Reaktionen auf Änderungsvorschläge aktiviert
@@ -395,6 +413,16 @@ de:
             answers_with_costs: Antworten mit Kosten
             publish_answers_immediately: Antworten sofort veröffentlichen
           global:
+            default_sort_order_options:
+              default: Standard
+              most_commented: Meiste Kommentare
+              most_endorsed: Meiste Unterstützungen
+              most_followed: Meiste Followers
+              most_voted: Meiste Stimmen
+              random: Zufällig
+              recent: Aktuellste
+              with_more_authors: Meiste Autoren
+            default_sort_order: Standardsortierung
             new_proposal_body_template: Vorlage für Inhalt von neuen Vorschlägen
             amendments_wizard_help_text: Hilfetext bei Änderungsvorschlägen
             allow_card_image: Vorschlagsbilder aktiviert
@@ -679,6 +707,7 @@ de:
           state: Status
     meetings:
       actions:
+        manage_poll: Umfrage verwalten
         attachments: Anhänge
         new: Neuer Event
       admin:
@@ -687,12 +716,16 @@ de:
             end_date: Ende
             start_date: Beginn
         exports:
+          answers: Antworten
           meetings: Events
         meeting_closes:
           edit:
             close: Schliessen
             title: Event schliessen
         meetings:
+          form:
+            select_an_iframe_access_level: iFrame Zugriffslevel wählen
+            show_embedded_iframe_help: iFrame Hilfe anzeigen
           close:
             success: Event erfolgreich abgeschlossen
           update:
@@ -744,6 +777,7 @@ de:
       models:
         meeting:
           fields:
+            id: ID
             end_date: Ende
             start_date: Beginn
       registration_mailer:
