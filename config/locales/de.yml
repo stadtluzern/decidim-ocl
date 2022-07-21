@@ -136,6 +136,9 @@ de:
         one: Kollaborativer Entwurf
         other: Kollaborative Entwürfe
   decidim:
+    application:
+      geocoding:
+        geocoded_address: Adresse
     accessibility:
       front_page_link: Zur Startseite
     navigation_maps:
@@ -882,6 +885,9 @@ de:
           fields:
             state: Status
       proposals:
+        dynamic_map_instructions:
+          description: 'Die Koordinaten werden aktualisiert wenn du auf den \"Vorschau\" Button klickst. Die Adresse ändert sich dabei nicht.'
+          instructions: Du kannst den Punkt auf der Karte bewegen.
         filters:
           activity: Art
           my_proposals: Eigene Vorschläge
