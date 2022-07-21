@@ -958,10 +958,16 @@ de:
           actions:
             save_and_invite: Organisation erstellen & Admin einladen
           fields:
+            map_config: Karteneinstellungen
             created_at: Erstellt am
             smtp_settings: SMTP Einstellungen
             omniauth_settings: Omniauth Einstellungen
       organizations:
+        smtp_settings:
+          fieldsets:
+            map_config:
+              default_center: Leere Karten zentrieren auf
+              map_limits: Einzugsgebiet
         advanced_settings:
           hide: Verstecken
           show: Anzeigen
