@@ -36,8 +36,8 @@
     <fieldset class="fieldset">
       <legend><%= t(".fieldsets.map_config.map_limits") %></legend>
       <%= f.number_field :map_limits_lat_min, placeholder: Decidim.maps.dig(:dynamic, :map_limits, :lat_min)&.to_s %>
-      <%= f.number_field :map_limits_lat_max, placeholder: Decidim.maps.dig(:dynamic, :map_limits, :lat_max)&.to_s %>
       <%= f.number_field :map_limits_lng_min, placeholder: Decidim.maps.dig(:dynamic, :map_limits, :lng_min)&.to_s %>
+      <%= f.number_field :map_limits_lat_max, placeholder: Decidim.maps.dig(:dynamic, :map_limits, :lat_max)&.to_s %>
       <%= f.number_field :map_limits_lng_max, placeholder: Decidim.maps.dig(:dynamic, :map_limits, :lng_max)&.to_s %>
     </fieldset>
   <% end %>
