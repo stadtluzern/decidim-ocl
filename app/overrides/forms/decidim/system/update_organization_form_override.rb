@@ -12,6 +12,8 @@ Decidim::System::UpdateOrganizationForm.class_eval do
       ['map_limits.lng_min', Float],
       ['map_limits.lng_max', Float]
   ]
+
+  attribute :tenant_type, String
 end
 
 Decidim::System::RegisterOrganization.prepend DecidimOCL::System::RegisterOrganization

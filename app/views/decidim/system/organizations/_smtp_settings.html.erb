@@ -23,6 +23,16 @@
 </div>
 
 <div class="fieldset">
+  <h4><%= t("decidim.system.models.organization.fields.tenant_type") %></h4>
+  <div class="field">
+    <%= f.select :tenant_type,
+                 [:deinklima],
+                 { include_blank: t("decidim.system.organizations.tenant_type.none") },
+                 { multiple: false } %>
+  </div>
+</div>
+
+<div class="fieldset">
   <h4><%= t("decidim.system.models.organization.fields.map_config") %></h4>
   <%= f.fields_for :map_config do %>
     <div class="field">

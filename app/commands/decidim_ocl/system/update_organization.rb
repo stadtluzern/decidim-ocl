@@ -5,6 +5,7 @@ module DecidimOCL
     module UpdateOrganization
       def save_organization
         organization.map_config = form.map_config
+        organization.tenant_type = form.tenant_type
         super
       end
     end

@@ -968,12 +968,15 @@ de:
             created_at: Erstellt am
             smtp_settings: SMTP Einstellungen
             omniauth_settings: Omniauth Einstellungen
+            tenant_type: Spezial-Features
       organizations:
         smtp_settings:
           fieldsets:
             map_config:
               default_center: Leere Karten zentrieren auf
               map_limits: Einzugsgebiet
+        tenant_type:
+          none: Keine
         advanced_settings:
           hide: Verstecken
           show: Anzeigen
