@@ -35,7 +35,7 @@ Decidim::Assemblies::AssemblyMCell.module_eval do
   private
 
   def resource_image_path
-    model.attached_uploader(:hero_image).path || 'organization-default-image.png'
+    model.attached_uploader(:hero_image).path || "#{current_organization.tenant_type.presence || 'organization'}-default-image.png"
   end
 
   def statuses

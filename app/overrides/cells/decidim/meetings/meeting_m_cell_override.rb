@@ -16,7 +16,7 @@ Decidim::Meetings::MeetingMCell.module_eval do
         .parse(translated_attribute(model.description))
         .css('img')
         .first
-        &.attr('src') || 'organization-default-image.png'
+        &.attr('src') || "#{current_organization.tenant_type.presence || 'organization'}-default-image.png"
   end
 
   def followers_count
