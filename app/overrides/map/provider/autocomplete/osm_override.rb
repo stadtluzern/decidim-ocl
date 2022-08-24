@@ -20,7 +20,6 @@ Decidim::Map::Provider::Autocomplete::Osm::Builder.class_eval do
   end
 
   def autocomplete_url(url)
-    binding.pry
     # TODO handle URLs with query params which are not ordered exactly this way
     regex = /\?lat=([0-9.]*)&lon=([0-9.]*)&bbox=([0-9.]*),([0-9.]*),([0-9.]*),([0-9.]*)/
     regex.match url
