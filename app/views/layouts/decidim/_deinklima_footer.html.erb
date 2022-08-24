@@ -1,0 +1,38 @@
+<div class="logos">
+  <%= link_to 'https://www.wyssacademy.org/', class: "main-footer__badge" do %>
+    <%= image_tag '/wyss-academy-logo.png', alt: 'Wyss Academy' %>
+  <% end %>
+  <%= link_to 'https://www.be.ch/', class: "main-footer__badge" do %>
+    <%= image_tag '/kanton-bern-logo.png', alt: 'Kanton Bern' %>
+  <% end %>
+</div>
+<div class="decidim-swiss">
+  <%= link_to 'https://decidim.swiss/', class: "main-footer__badge" do %>
+    <%= image_tag '/powered-by-decidim-swiss-logo.png', alt: 'Decidim Swiss' %>
+  <% end %>
+</div>
+<div class="main__footer__nav">
+  <p>
+    <a href="/pages/terms-and-conditions">
+      Rechtliche Hinweise und<br/>Nutzungsbedingungen
+    </a>
+  </p>
+  <p>
+    <a href="/pages/impressum">
+      Impressum
+    </a>
+  </p>
+  <p>
+    <a rel="license noopener"
+       href="https://decidim.org/"
+       target="_blank">
+      Open Source Software
+    </a>
+    <br/>
+    <a rel="license noopener"
+       href="https://creativecommons.org/licenses/by-sa/4.0/"
+       target="_blank">
+      <%= Date.today.year %>, cc by-sa 4.0
+    </a>
+  </p>
+</div>

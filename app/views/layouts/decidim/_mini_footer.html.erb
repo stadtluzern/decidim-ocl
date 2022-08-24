@@ -1,7 +1,7 @@
-<div class="main-footer">
-  <% if current_organization.tenant_type == 'deinklima' %>
-    <% # Here be dragons %>
-  <% else %>
+<% if current_organization.tenant_type == 'deinklima' %>
+  <% # Here be dragons %>
+<% else %>
+  <div class="mini-footer">
     <div class="mini-footer">
       <div class="row">
         <div class="medium-7 large-8 column">
@@ -23,5 +23,5 @@
         </div>
       </div>
     </div>
-  <% end %>
-</div>
+  </div>
+<% end %>
