@@ -48,8 +48,7 @@ Decidim.configure do |config| # rubocop:disable Metrics/BlockLength
       address_format: [
         'name',
         %w[street housenumber],
-        'postcode',
-        'city'
+        ['postcode', 'city'],
       ]
     }
   }
