@@ -2,16 +2,17 @@
   if Rails.env.production?
     domain = request.env['SERVER_NAME']
     prod = ENV.fetch('SENTRY_CURRENT_ENV')=='production'
-    #site_id = prod ? 2 : 1
 
     subdomain, site_id =
       case domain
       when /deinklima/ then ['deinklima', prod ? 1 : 2]
-      else                  ['ocl-test',  prod ? 2 : 1]
+      when /dialog/    then ['ocl-test',  prod ? 2 : 1]
+      else [nil, nil]
       end
   end
 %>
 
+<% if subdomain %>
 <!-- Matomo -->
 <script type="text/javascript">
   var _paq = window._paq || [];
@@ -34,3 +35,4 @@
 </script>
 <noscript><p><img src="https://<%= subdomain %>.matomo.cloud/matomo.php?idsite=<%= site_id %>&amp;rec=1" style="border:0;" alt="" /></p></noscript>
 <!-- End Matomo Code -->
+<% end %>
