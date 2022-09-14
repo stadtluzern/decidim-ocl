@@ -5,7 +5,6 @@ Decidim.register_assets_path File.expand_path('app/packs/fonts', Rails.applicati
 
 Decidim.configure do |config| # rubocop:disable Metrics/BlockLength
   config.application_name = 'DecidimOCL'
-  config.mailer_sender = 'info@puzzle.ch'
 
   # Change these lines to set your preferred locales
   config.default_locale = :de
