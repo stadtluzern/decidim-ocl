@@ -3,16 +3,16 @@
 require_relative '../../lib/customization_output'
 
 includes = [
-  [Decidim::DiffCell, DecidimOCL::DiffCell],
-  [Decidim::Proposals::ProposalMCell, DecidimOCL::Proposals::ProposalMCell],
+  [Decidim::DiffCell,                             DecidimOCL::DiffCell],
+  [Decidim::Proposals::ProposalMCell,             DecidimOCL::Proposals::ProposalMCell],
   [Decidim::ParticipatoryProcesses::ProcessMCell, DecidimOCL::ParticipatoryProcesses::ProcessMCell]
 ].each { |base, addition| base.include addition }
 
 prepends = [
-  [Decidim::ApplicationMailer, DecidimOCL::ApplicationMailer],
-  [Decidim::Proposals::Admin::ProposalNoteCreatedEvent, DecidimOCL::Proposals::Admin::ProposalNoteCreatedEvent],
-  [Decidim::Forms::AnswerQuestionnaire, DecidimOCL::Forms::AnswerQuestionnaire],
-  [Decidim::Meetings::ContentBlocks::UpcomingMeetingsCell, DecidimOCL::Meetings::ContentBlocks::UpcomingMeetingsCell],
+  [Decidim::ApplicationMailer,                             DecidimOCL::ApplicationMailer],
+  [Decidim::Proposals::Admin::ProposalNoteCreatedEvent,    DecidimOCL::Proposals::Admin::ProposalNoteCreatedEvent],
+  [Decidim::Forms::AnswerQuestionnaire,                    DecidimOCL::Forms::AnswerQuestionnaire],
+  [Decidim::Meetings::ContentBlocks::UpcomingMeetingsCell, DecidimOCL::Meetings::ContentBlocks::UpcomingMeetingsCell]
   # [Decidim::Initiatives::Admin::Permissions, DecidimOCL::Initiatives::Admin::Permissions]
 ].each { |base, addition| base.prepend addition }
 

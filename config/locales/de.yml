@@ -486,8 +486,7 @@ de:
     decidim_awesome:
       admin:
         config:
-          caution: 'NOTE: This feature heavily modifies some default behaviours that
-            might lead to unexpected results. Use it with caution!'
+          caution: 'NOTE: This feature heavily modifies some default behaviours that might lead to unexpected results. Use it with caution!'
           constraints:
             add_condition: Einschränkung hinzufügen
             always: Immer
@@ -503,20 +502,9 @@ de:
               allow_images_in_small_editor: Bilder in kleinem Editor erlauben
               drag_and_drop_supported: Drag and Drop unterstützen
               intergram_about: Über Intergram
-              proposal_custom_fields: Create custom proposal fields that applies only
-                in certain parts of the public web (use the restrictions editor for
-                that)
-              proposal_custom_fields_example: Data is stored in a XML object using
-                compatible HTML attributes (dl,dt,dd elements) replacing the "body"
-                in a normal proposal.
-              proposal_custom_fields_translations: "Labels, help text, placeholders
-                and default values can use your application custom translations. \nFor
-                that, instead of using a string literal, use the i18n key (it must
-                containt at least one dot).\nFor instance:\n- \"activemodel.attributes.proposal.title\"
-                instead of \"Title\"\n- \"activemodel.attributes.proposal.address\"
-                instead of \"Address\"\nOr use your own keys in combination with other
-                tools to define translations (eg: using the module Term Customizer):\n
-                - \"myapp.custom_fields.bio\" instead of \"Biography\""
+              proposal_custom_fields: Create custom proposal fields that applies only in certain parts of the public web (use the restrictions editor for that)
+              proposal_custom_fields_example: Data is stored in a XML object using compatible HTML attributes (dl,dt,dd elements) replacing the "body" in a normal proposal.
+              proposal_custom_fields_translations: "Labels, help text, placeholders and default values can use your application custom translations. \nFor that, instead of using a string literal, use the i18n key (it must containt at least one dot).\nFor instance:\n- \"activemodel.attributes.proposal.title\" instead of \"Title\"\n- \"activemodel.attributes.proposal.address\" instead of \"Address\"\nOr use your own keys in combination with other tools to define translations (eg: using the module Term Customizer):\n - \"myapp.custom_fields.bio\" instead of \"Biography\""
               use_markdown_editor: Markdown Editor benutzen
               intergram_config: Intergram Konfiguration
               allow_images_in_proposals: Bilder in Vorschlägen erlauben
@@ -1054,6 +1042,9 @@ de:
           translation_sets: Übersetzungssets
           translations: Übersetzungen
         translation_sets:
+          new:
+            title: Übersetzungs-Sets
+            create: Erstellen
           constraint_fields:
             constraint: Einschränkung
             remove: Entfernen
@@ -1067,6 +1058,8 @@ de:
             help_html: ""
             help_title: Hilfe
             title: Übersetzungsset
+          index:
+            no_records_html: Keine Einträge
         translations:
           edit:
             title: Bearbeiten
@@ -1080,6 +1073,7 @@ de:
           index:
             actions: Aktionen
             selected: Ausgewählt
+            no_records_html: Keine Elemente
           new:
             title: Neue Übersetzung
             create: Erstellen
@@ -1098,11 +1092,11 @@ de:
         click_button: 'Klicken Sie auf die Schaltfläche "Herunterladen". <br/> Sie haben die Datei bis %{date} verfügbar. <br/> Um die Datei zu öffnen, brauchen Sie <a href=''https://www.7-zip.org/''>7-Zip</a>. Password: %{password}'
   decidim_ocl:
     surveys:
-        survey_answered_mailer:
-          answered:
-            answered_survey: 'Jemand hat an der Umfrage "%{survey_name}" teilgenommen.'
-            subject: 'Neue Antwort auf Umfrage "%{survey_name}"'
-            view: 'Zur Umfrage'
+      survey_answered_mailer:
+        answered:
+          answered_survey: 'Jemand hat an der Umfrage "%{survey_name}" teilgenommen.'
+          subject: 'Neue Antwort auf Umfrage "%{survey_name}"'
+          view: 'Zur Umfrage'
     maps:
       gis_lu:
         attribution: '<a href="https://www.gis.stadtluzern.ch/" target="_blank">GIS LU</a>'
@@ -1130,6 +1124,8 @@ de:
         instruction_2: Falls du das nicht selbst warst, kannst du diese E-Mail ignorieren.
         instruction_3: Dein Passwort ändert sich erst, wenn du auf den obigen Link zugreifst und ein neues Passwort erstellst.
         subject: Passwort zurücksetzen
+      invitation_instructions:
+        hello: Hallo %{email}
     passwords:
       new:
         forgot_your_password: Hast du dein Passwort vergessen?
