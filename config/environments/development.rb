@@ -36,8 +36,12 @@ Rails.application.configure do
   config.active_storage.service = ENV['ACTIVE_STORAGE_SERVICE']&.to_sym || :local
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :letter_opener_web
+
+  LetterOpenerWeb.configure do |config|
+    config.letters_location = Rails.root.join('tmp/letter_opener')
+  end
   config.action_mailer.default_url_options = { port: 3000 }
 
   config.action_mailer.perform_caching = false

@@ -1091,6 +1091,46 @@ de:
       data_portability_export:
         click_button: 'Klicken Sie auf die Schaltfläche "Herunterladen". <br/> Sie haben die Datei bis %{date} verfügbar. <br/> Um die Datei zu öffnen, brauchen Sie <a href=''https://www.7-zip.org/''>7-Zip</a>. Password: %{password}'
   decidim_ocl:
+    devise:
+      dialogluzern:
+        devise:
+          mailer:
+            confirmation_instructions:
+              action: Bestätige dein Konto
+              greeting: Willkommen %{recipient}!
+              instruction: "Du kannst deine E-Mail-Adresse über den folgenden Link bestätigen:"
+            email_changed:
+              greeting: Hallo %{recipient}!
+              message: Wir schreiben dir, um dich darüber zu informieren, dass deine E-Mail-Adresse zu %{email} geändert wurde.
+              message_unconfirmed: Wir schreiben dir, um dich darüber zu informieren, dass deine E-Mail-Adresse zu %{email} geändert wurde.
+            invitation_instructions:
+              accept: Die Einladung annehmen
+              accept_until: Diese Einladung wird in %{due_date} fällig.
+              decline: Einladung ablehnen
+              hello: Hallo %{email},
+              ignore: "Wenn du die Einladung nicht annehmen möchtest, ignoriere diese E-Mail.<br /> Dein Konto wird erst erstellt, Wenn du auf den obigen Link zugreifst und deinen Benutzernamen und dein Passwort festlegst."
+              invited_you_as_admin: "%{invited_by} hat dich als Admin von %{application} eingeladen. Du kannst es über den folgenden Link akzeptieren."
+              invited_you_as_private_user: "%{invited_by} hat dich als private/n Benutzer/in von %{application} eingeladen. Du kannst es über den folgenden Link akzeptieren."
+              someone_invited_you: Jemand hat dich zu %{application} eingeladen. Du kannst die Einladung über den folgenden Link akzeptieren.
+              someone_invited_you_as_admin: Jemand hat dich als Admin von %{application} eingeladen, du kannst die Einladung über den untenstehenden Link akzeptieren.
+              someone_invited_you_as_private_user: Jemand hat dich als private_user von %{application} eingeladen, du kannst die Einladung über den folgenden Link akzeptieren.
+            password_change:
+              greeting: Hallo %{recipient}!
+              message: Wir kontaktieren dich, um dich darüber zu informieren, dass dein Passwort geändert wurde.
+              subject: Passwort geändert
+            reset_password_instructions:
+              action: Mein Passwort ändern
+              greeting: Hallo %{recipient}!
+              instruction: "Jemand hat einen Link angefordert, um dein Passwort zu ändern. Falls du das selbst warst, dann folge diesem Link:"
+              instruction_2: Falls du das nicht selbst warst, kannst du diese E-Mail ignorieren.
+              instruction_3: Dein Passwort ändert sich erst, wenn du auf den obigen Link zugreifst und ein neues Passwort erstellst.
+            unlock_instructions:
+              action: Entsperre mein Konto
+              greeting: Hallo %{recipient}!
+              instruction: "Klicke auf den folgenden Link, um dein Konto zu entsperren:"
+              message: Dein Konto wurde aufgrund einer übermässigen Anzahl fehlgeschlagener Anmeldeversuche gesperrt.
+      # deinklima: null
+      # gemeinsamerspace: null
     surveys:
       survey_answered_mailer:
         answered:
@@ -1116,7 +1156,7 @@ de:
       confirmed: Deine E-Mail-Adresse wurde erfolgreich bestätigt.
     mailer:
       confirmation_instructions:
-        subject: "Open Community Luzern: E-Mail bestätigen"
+        subject: "E-Mail bestätigen"
       reset_password_instructions:
         action: Mein Passwort ändern
         greeting: Hallo %{recipient}!
@@ -1126,6 +1166,25 @@ de:
         subject: Passwort zurücksetzen
       invitation_instructions:
         hello: Hallo %{email}
+        subject: Anweisungen zur Einladung
+      email_changed:
+        subject: E-Mail geändert
+      invite_admin:
+        subject: Du wurdest eingeladen, %{organization} zu verwalten
+      invite_collaborator:
+        subject: Du wurdest eingeladen, an %{organization} mitzuarbeiten
+      invite_private_user:
+        subject: Du wurdest zu einem privaten Partizipationsprozess auf %{organization} eingeladen
+      join_conference:
+        subject: Einladung zur Teilnahme an einer Konferenz
+      join_meeting:
+        subject: Einladung zu einer Veranstaltung
+      organization_admin_invitation_instructions:
+        subject: Du wurdest eingeladen, %{organization} zu verwalten
+      password_change:
+        subject: Passwort geändert
+      unlock_instructions:
+        subject: Anweisungen zum Entsperren
     passwords:
       new:
         forgot_your_password: Hast du dein Passwort vergessen?

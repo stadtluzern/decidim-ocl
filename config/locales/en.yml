@@ -136,7 +136,7 @@ en:
   devise:
     mailer:
       confirmation_instructions:
-        subject: "Open Community Luzern: Confirm E-Mail"
+        subject: "Confirm E-Mail"
       reset_password_instructions:
         action: Change my password
         greeting: Hello %{recipient}!

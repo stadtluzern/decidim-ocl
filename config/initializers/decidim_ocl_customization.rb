@@ -30,6 +30,23 @@ CustomizationOutput.puts_and_log(includes: includes, prepends: prepends, overrid
 
 # v Specially handled things (here be dragons) v
 
+# Add the Devise custom scope to the Decidim config
+# Find all instances with: <% scope = Decidim.config.devise_custom_scope.(@organization) %>
+Decidim.config[:devise_custom_scope] = lambda { |org, base = nil|
+  base ||= %i[decidim_ocl devise]
+
+  org_scope =
+    case org.id
+    when 2 then :dialogluzern
+    when 7 then :deinklima
+    when 8 then :gemeinsamerspace
+    else :other
+    end
+
+  # Ensure that the current tenant is using custom translations for the devise mails
+  base + [org_scope] if I18n.t(org_scope, scope: base, default: nil)
+}
+
 # Setup a controller hook to setup the sms gateway before the
 # request is processed. This is done through a notification to
 # get access to the `current_*` environment variables within
