@@ -1099,7 +1099,7 @@ de:
           view: 'Zur Umfrage'
     maps:
       gis_lu:
-        attribution: '<a href="https://www.gis.stadtluzern.ch/" target="_blank">GIS LU</a>'
+        attribution: '<a href="https://www.gis.stadt.ch/" target="_blank">GIS LU</a>'
         baspla: Stadtplan
         ortho: Satellit
       swisstopo:
@@ -1116,7 +1116,7 @@ de:
       confirmed: Deine E-Mail-Adresse wurde erfolgreich bestätigt.
     mailer:
       confirmation_instructions:
-        subject: "Open Community Luzern: E-Mail bestätigen"
+        subject: "%{organization}: E-Mail bestätigen"
       reset_password_instructions:
         action: Mein Passwort ändern
         greeting: Hallo %{recipient}!
