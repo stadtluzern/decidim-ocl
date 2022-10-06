@@ -55,6 +55,9 @@ ActiveSupport::Notifications.subscribe 'start_processing.action_controller' do |
   DecidimOCL::Verifications::Sms::AspsmsGateway.organization = data[:headers].env['decidim.current_organization']
 end
 
+# Override default for surveys
+Decidim.find_component_manifest(:surveys).settings(:global).attributes[:clean_after_publish].default = false
+
 module Decidim
   module Map
     module Provider
