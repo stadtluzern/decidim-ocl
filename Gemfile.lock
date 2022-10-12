@@ -204,6 +204,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
+    colorize (0.8.1)
     concurrent-ruby (1.1.10)
     crack (0.4.5)
       rexml
@@ -358,6 +359,16 @@ GEM
       wkhtmltopdf-binary (~> 0.12)
     decidim-generators (0.26.1)
       decidim-core (= 0.26.1)
+    decidim-initiatives (0.26.1)
+      decidim-admin (= 0.26.1)
+      decidim-comments (= 0.26.1)
+      decidim-core (= 0.26.1)
+      decidim-verifications (= 0.26.1)
+      origami (~> 2.1)
+      virtus-multiparams (~> 0.1)
+      wicked (~> 1.3)
+      wicked_pdf (~> 2.1)
+      wkhtmltopdf-binary (~> 0.12)
     decidim-meetings (0.26.1)
       decidim-core (= 0.26.1)
       decidim-forms (= 0.26.1)
@@ -598,6 +609,8 @@ GEM
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
+    origami (2.1.0)
+      colorize (~> 0.7)
     orm_adapter (0.5.0)
     paper_trail (12.3.0)
       activerecord (>= 5.2)
@@ -830,6 +843,8 @@ GEM
       coercible (~> 1.0)
       descendants_tracker (~> 0.0, >= 0.0.3)
       equalizer (~> 0.0, >= 0.0.9)
+    virtus-multiparams (0.1.1)
+      virtus (~> 1.0)
     w3c_rspec_validators (0.3.0)
       rails
       rspec
@@ -858,6 +873,8 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    wicked (1.4.0)
+      railties (>= 3.0.7)
     wicked_pdf (2.6.2)
       activesupport
     wisper (2.0.1)
@@ -887,6 +904,7 @@ DEPENDENCIES
   decidim-conferences (= 0.26.1)
   decidim-decidim_awesome!
   decidim-dev (= 0.26.1)
+  decidim-initiatives (= 0.26.1)
   decidim-jitsi_meetings!
   decidim-proposals (= 0.26.1)
   decidim-question_captcha!
@@ -913,4 +931,4 @@ RUBY VERSION
    ruby 2.7.2p137
 
 BUNDLED WITH
-   2.3.22
+   2.3.23
