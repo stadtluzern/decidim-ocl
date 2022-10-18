@@ -68,12 +68,13 @@ Rails.application.configure do
     affiliate_id: ENV['ASPSMS_AFFILIATE_ID']
   }
 
+  # Add allowed hosts and deduplicate them
+  hosts = ENV.fetch('RAILS_ALLOWED_HOSTS', '').split(',').map(&:strip)
   host = ENV['RAILS_HOST']
-  config.hosts << host if host
-
+  config.hosts |= hosts if hosts.present?
+  config.hosts |= [host] if host.present?
 
   # TODO Remove after fixing dev
-
   config.log_level = :info
 
   config.lograge.enabled = true
