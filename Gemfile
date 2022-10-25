@@ -10,10 +10,9 @@ gem 'execjs' # , '2.7.0'
 
 gem 'decidim', DECIDIM_VERSION
 gem 'decidim-conferences', DECIDIM_VERSION
-gem 'decidim-proposals', DECIDIM_VERSION
 gem 'decidim-initiatives', DECIDIM_VERSION
+gem 'decidim-proposals', DECIDIM_VERSION
 
-# gem 'decidim-jitsi_meetings', path: '/code/pz/decidim-module-jitsi-meetings'  
 gem 'decidim-antivirus', github: 'puzzle/decidim-module-antivirus'
 gem 'decidim-decidim_awesome', github: 'Platoniq/decidim-module-decidim_awesome'
 gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', branch: DECIDIM_VERSION, ref: '6d32dd1'
