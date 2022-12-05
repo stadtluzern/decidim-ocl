@@ -15,6 +15,7 @@ module DecidimOCL
 
         def deliver_code
           return false if @mobile_phone_number.blank?
+          return false if user_key.blank? || password.blank?
 
           response = Net::HTTP.post(uri, payload)
           response.code == '200' && (begin
@@ -55,11 +56,11 @@ module DecidimOCL
         end
 
         def user_key
-          Rails.application.config.aspsms[:user_key]
+          organization.try(:aspsms_user_key)
         end
 
         def password
-          Rails.application.config.aspsms[:password]
+          organization.try(:aspsms_password)
         end
 
         def affiliate_id

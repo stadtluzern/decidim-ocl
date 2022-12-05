@@ -961,6 +961,7 @@ de:
             smtp_settings: SMTP Einstellungen
             omniauth_settings: Omniauth Einstellungen
             tenant_type: Spezial-Features
+            aspsms: ASPSMS Anbindung
       organizations:
         smtp_settings:
           fieldsets:

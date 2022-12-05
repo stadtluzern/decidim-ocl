@@ -14,6 +14,15 @@ Decidim::System::UpdateOrganizationForm.class_eval do
   ]
 
   attribute :tenant_type, String
+
+  attribute :aspsms_user_key, String
+  attribute :aspsms_password, String
+
+  validates :aspsms_user_key, :aspsms_password, presence: true, if: :sms_verification_active?
+
+  def sms_verification_active?
+    available_authorizations.present? && available_authorizations.include?('sms')
+  end
 end
 
 Decidim::System::RegisterOrganization.prepend DecidimOCL::System::RegisterOrganization
