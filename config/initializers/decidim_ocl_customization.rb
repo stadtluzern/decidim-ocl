@@ -34,13 +34,7 @@ CustomizationOutput.puts_and_log(includes: includes, prepends: prepends, overrid
 Decidim.config[:devise_custom_scope] = lambda { |org, base = nil|
   base ||= %i[decidim_ocl devise]
 
-  org_scope =
-    case org.id
-    when 2 then :dialogluzern
-    when 7 then :deinklima
-    when 8 then :gemeinsamerspace
-    else :other
-    end
+  org_scope = (org.tenant_type || 'other').to_sym
 
   # Ensure that the current tenant is using custom translations for the devise mails
   base + [org_scope] if I18n.t(org_scope, scope: base, default: nil)
