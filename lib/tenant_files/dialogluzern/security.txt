@@ -1,0 +1,8 @@
+# In the event that you have discovered a technical vulnerability in an IT system of the city of Lucerne (Stadt Luzern), 
+# we encourage you to report it to the Competence Center for Digital Security and Privacy using the Coordinated Vulnerability Disclosure program.
+
+Contact: https://www.stadtluzern.ch/politikverwaltung/stadtverwaltung/dienstabteilungenbereiche/33551
+Contact: mailto:security@stadtluzern.ch
+Expires: 2023-12-31T23:59:59.000Z
+Preferred-Languages: en, de
+Canonical: https://www.stadtluzern.ch/.well-known/security.txt
