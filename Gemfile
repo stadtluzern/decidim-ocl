@@ -12,6 +12,7 @@ gem 'decidim', DECIDIM_VERSION
 gem 'decidim-conferences', DECIDIM_VERSION
 gem 'decidim-initiatives', DECIDIM_VERSION
 gem 'decidim-proposals', DECIDIM_VERSION
+gem 'decidim-templates', DECIDIM_VERSION
 
 gem 'decidim-antivirus', github: 'puzzle/decidim-module-antivirus'
 gem 'decidim-decidim_awesome', github: 'Platoniq/decidim-module-decidim_awesome'

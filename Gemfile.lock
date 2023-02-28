@@ -912,6 +912,7 @@ DEPENDENCIES
   decidim-navigation_maps (~> 1.3.0)
   decidim-proposals (= 0.26.1)
   decidim-question_captcha!
+  decidim-templates (= 0.26.1)
   decidim-term_customizer!
   delayed_job_active_record
   execjs
