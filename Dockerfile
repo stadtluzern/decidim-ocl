@@ -41,6 +41,9 @@ RUN [[ ${BUILD_SCRIPT} ]] && bash -c "${BUILD_SCRIPT}"
 # Install specific versions of dependencies
 RUN gem install bundler:${BUNDLER_VERSION} --no-document
 
+RUN gem install activerecord-nulldb-adapter
+ENV RAILS_DB_ADAPTER=nulldb
+
 # TODO: Load artifacts
 
 # set up app-src directory
