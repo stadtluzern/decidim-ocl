@@ -5,8 +5,9 @@
 
     subdomain, site_id =
       case domain
-      when /deinklima/ then ['deinklima', prod ? 1 : 2]
-      when /dialog/    then ['ocl-test',  prod ? 2 : 1]
+      when /deinklima/ then ['deinklima',    prod ? 1 : 2]
+      when /dialog/    then ['ocl-test',     prod ? 2 : 1]
+      when /koeniz/    then ['impulskoeniz', prod ? 1 : 2]
       else [nil, nil]
       end
   end
