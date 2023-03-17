@@ -133,4 +133,6 @@ Rails.application.configure do
       params: event.payload[:params].except(*exceptions)
     }
   end
+
+  config.deface.enabled = !(ENV['DISABLE_DEFACE'].to_s.in? %w[true on 1])
 end

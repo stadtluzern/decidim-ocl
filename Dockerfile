@@ -30,6 +30,7 @@ ARG SKIP_MEMCACHE_CHECK="true"
 ARG RAILS_ENV="production"
 ARG SECRET_KEY_BASE="thisneedstobeset"
 ARG CUSTOMIZATION_OUTPUT="false"
+ARG DISABLE_DEFACE="true"
 
 # Install packages needed at buildtime
 RUN    apt-get update \
@@ -40,9 +41,6 @@ RUN [[ ${BUILD_SCRIPT} ]] && bash -c "${BUILD_SCRIPT}"
 
 # Install specific versions of dependencies
 RUN gem install bundler:${BUNDLER_VERSION} --no-document
-
-RUN gem install activerecord-nulldb-adapter
-ENV RAILS_DB_ADAPTER=nulldb
 
 # TODO: Load artifacts
 
