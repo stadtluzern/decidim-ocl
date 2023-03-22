@@ -5,7 +5,7 @@ module Decidim
         class Swisstopo < ::Decidim::Map::DynamicMap
 
           def builder_options
-            configuration.merge(super).merge(organization.map_config)
+            configuration.merge(super).deep_merge(organization.map_config)
           end
 
           # A builder for the GIS LU maps which need to be configured differently
