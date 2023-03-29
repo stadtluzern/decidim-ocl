@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_28_141848) do
+ActiveRecord::Schema.define(version: 2023_03_02_145314) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
@@ -1616,6 +1616,17 @@ ActiveRecord::Schema.define(version: 2023_02_28_141848) do
     t.index ["valuator_role_type", "valuator_role_id"], name: "decidim_proposals_valuation_assignment_valuator_role"
   end
 
+  create_table "decidim_reporting_proposals_category_valuators", force: :cascade do |t|
+    t.bigint "decidim_category_id", null: false
+    t.string "valuator_role_type", null: false
+    t.bigint "valuator_role_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["decidim_category_id", "valuator_role_id", "valuator_role_type"], name: "decidim_reporting_proposals_category_valuator_unique", unique: true
+    t.index ["decidim_category_id"], name: "decidim_reporting_proposals_category_category_id"
+    t.index ["valuator_role_type", "valuator_role_id"], name: "decidim_reporting_proposals_category_valuator_role"
+  end
+
   create_table "decidim_reports", id: :serial, force: :cascade do |t|
     t.integer "decidim_moderation_id", null: false
     t.integer "decidim_user_id", null: false
@@ -2077,6 +2088,7 @@ ActiveRecord::Schema.define(version: 2023_02_28_141848) do
   add_foreign_key "decidim_participatory_processes", "decidim_organizations"
   add_foreign_key "decidim_participatory_processes", "decidim_scope_types"
   add_foreign_key "decidim_plans_tags", "decidim_organizations"
+  add_foreign_key "decidim_reporting_proposals_category_valuators", "decidim_categories"
   add_foreign_key "decidim_scope_types", "decidim_organizations"
   add_foreign_key "decidim_scopes", "decidim_organizations"
   add_foreign_key "decidim_scopes", "decidim_scope_types", column: "scope_type_id"
