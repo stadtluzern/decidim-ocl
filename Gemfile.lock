@@ -25,6 +25,18 @@ GIT
       decidim-core (~> 0.26.0)
 
 GIT
+  remote: https://github.com/openpoke/decidim-module-reporting-proposals
+  revision: ce06d882bdcbf0db26336268afbede643a22fadd
+  specs:
+    decidim-reporting_proposals (0.4.0)
+      decidim-admin (>= 0.25.0, < 0.27)
+      decidim-core (>= 0.25.0, < 0.27)
+      decidim-participatory_processes (>= 0.25.0, < 0.27)
+      decidim-proposals (>= 0.25.0, < 0.27)
+      decidim-templates (>= 0.25.0, < 0.27)
+      deface (>= 1.9)
+
+GIT
   remote: https://github.com/puzzle/decidim-module-antivirus.git
   revision: 7f37a0832850c3f37983f9c6989c89c26bfc9a5b
   specs:
@@ -385,12 +397,6 @@ GEM
       decidim-core (= 0.26.1)
       doc2text (~> 0.4.4)
       redcarpet (~> 3.5, >= 3.5.1)
-    decidim-reporting_proposals (0.2.0)
-      decidim-admin (>= 0.25.0, < 0.27)
-      decidim-core (>= 0.25.0, < 0.27)
-      decidim-participatory_processes (>= 0.25.0, < 0.27)
-      decidim-proposals (>= 0.25.0, < 0.27)
-      deface (>= 1.9)
     decidim-sortitions (0.26.1)
       decidim-admin (= 0.26.1)
       decidim-comments (= 0.26.1)
@@ -925,7 +931,7 @@ DEPENDENCIES
   decidim-navigation_maps (~> 1.3.0)
   decidim-proposals (= 0.26.1)
   decidim-question_captcha!
-  decidim-reporting_proposals
+  decidim-reporting_proposals!
   decidim-templates (= 0.26.1)
   decidim-term_customizer!
   delayed_job_active_record
@@ -947,7 +953,7 @@ DEPENDENCIES
   webpacker
 
 RUBY VERSION
-   ruby 2.7.2p137
+   ruby 2.7.8p225
 
 BUNDLED WITH
    2.4.7

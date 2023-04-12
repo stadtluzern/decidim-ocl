@@ -19,7 +19,7 @@ gem 'decidim-decidim_awesome', github: 'Platoniq/decidim-module-decidim_awesome'
 gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', branch: DECIDIM_VERSION, ref: '6d32dd1'
 gem 'decidim-navigation_maps', '~> 1.3.0'
 gem 'decidim-question_captcha', github: 'Kagemaru/decidim-module-question_captcha'
-gem 'decidim-reporting_proposals'
+gem 'decidim-reporting_proposals', git: "https://github.com/openpoke/decidim-module-reporting-proposals"
 gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', ref: 'develop'
 
 # TODO: These are not updated yet :(
