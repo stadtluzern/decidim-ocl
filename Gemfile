@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-DECIDIM_VERSION = '0.26.1'
+DECIDIM_VERSION = '0.26.5'
 
 ruby RUBY_VERSION
 
@@ -18,9 +18,9 @@ gem 'decidim-antivirus', github: 'puzzle/decidim-module-antivirus'
 gem 'decidim-decidim_awesome', github: 'Platoniq/decidim-module-decidim_awesome'
 gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', branch: DECIDIM_VERSION, ref: '6d32dd1'
 gem 'decidim-navigation_maps', '~> 1.3.0'
-gem 'decidim-question_captcha', github: 'Kagemaru/decidim-module-question_captcha'
+gem 'decidim-question_captcha', github: 'Kagemaru/decidim-module-question_captcha', ref: 'v0.26.5'
 gem 'decidim-reporting_proposals', git: "https://github.com/openpoke/decidim-module-reporting-proposals"
-gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', ref: 'develop'
+gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', ref: 'release/0.26-stable'
 
 # TODO: These are not updated yet :(
 # gem 'decidim-navbar_links', github: 'puzzle/decidim-module-navbar_links', tag: "v#{DECIDIM_VERSION}"
