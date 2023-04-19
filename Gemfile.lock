@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/openpoke/decidim-module-reporting-proposals
-  revision: ce06d882bdcbf0db26336268afbede643a22fadd
+  revision: d262eb662e19febc3f252804fb3e7ec6160abb7f
   specs:
     decidim-reporting_proposals (0.4.0)
       decidim-admin (>= 0.25.0, < 0.27)
@@ -655,7 +655,7 @@ GEM
     paper_trail (12.3.0)
       activerecord (>= 5.2)
       request_store (~> 1.1)
-    parallel (1.22.1)
+    parallel (1.23.0)
     parser (3.2.2.0)
       ast (~> 2.4.1)
     pg (1.1.4)
@@ -767,7 +767,7 @@ GEM
     rspec-cells (0.3.8)
       cells (>= 4.0.0, < 6.0.0)
       rspec-rails (>= 3.0.0, < 6.1.0)
-    rspec-core (3.12.1)
+    rspec-core (3.12.2)
       rspec-support (~> 3.12.0)
     rspec-expectations (3.12.2)
       diff-lcs (>= 1.2.0, < 2.0)
