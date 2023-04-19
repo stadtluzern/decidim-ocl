@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-DECIDIM_VERSION = '0.26.1'
+DECIDIM_VERSION = '0.26.5'
 
 ruby RUBY_VERSION
 
@@ -18,7 +18,7 @@ gem 'decidim-antivirus', github: 'puzzle/decidim-module-antivirus'
 gem 'decidim-decidim_awesome', github: 'Platoniq/decidim-module-decidim_awesome'
 gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', branch: DECIDIM_VERSION, ref: '6d32dd1'
 gem 'decidim-navigation_maps', '~> 1.3.0'
-gem 'decidim-question_captcha', github: 'Kagemaru/decidim-module-question_captcha', ref: 'v0.26.1'
+gem 'decidim-question_captcha', github: 'Kagemaru/decidim-module-question_captcha', ref: 'v0.26.5'
 gem 'decidim-reporting_proposals', git: "https://github.com/openpoke/decidim-module-reporting-proposals"
 gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', ref: 'release/0.26-stable'
 
@@ -29,7 +29,7 @@ gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', 
 gem 'acts_as_textcaptcha', '~> 4.5.1'
 gem 'aws-sdk-s3', require: false
 gem 'binding_of_caller'
-gem 'bootsnap', '~> 1.13.0'
+gem 'bootsnap'                # , '~> 1.3'
 gem 'byebug'                  # , '~> 11.0', platform: :mri
 gem 'dalli'
 gem 'delayed_job_active_record'
