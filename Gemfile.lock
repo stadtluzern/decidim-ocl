@@ -169,7 +169,7 @@ GEM
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
     bleib (0.0.12)
-    bootsnap (1.16.0)
+    bootsnap (1.13.0)
       msgpack (~> 1.2)
     browser (2.7.1)
     builder (3.2.4)
@@ -942,7 +942,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bleib
-  bootsnap
+  bootsnap (~> 1.13.0)
   byebug
   dalli
   decidim (= 0.26.1)
