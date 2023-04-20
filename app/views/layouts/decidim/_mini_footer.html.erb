@@ -1,4 +1,6 @@
-<% if current_organization.tenant_type == 'deinklima' %>
+<% custom_footer = %w[deinklima koeniz].include? current_organization.tenant_type %>
+
+<% if custom_footer %>
   <% # Here be dragons %>
 <% else %>
   <div class="mini-footer">

@@ -1,6 +1,8 @@
+<% custom_footer = %w[deinklima koeniz].include? current_organization.tenant_type %>
+
 <div class="main-footer">
-  <% if current_organization.tenant_type == 'deinklima' %>
-    <%= render partial: "layouts/decidim/deinklima_footer" %>
+  <% if custom_footer %>
+    <%= render partial: "layouts/decidim/#{current_organization.tenant_type}_footer" %>
   <% else %>
     <% if current_organization.official_img_footer.attached? %>
       <%= link_to current_organization.official_url, class: "main-footer__badge" do %>
