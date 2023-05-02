@@ -15,7 +15,7 @@ gem 'decidim-proposals', DECIDIM_VERSION
 gem 'decidim-templates', DECIDIM_VERSION
 
 gem 'decidim-antivirus', github: 'puzzle/decidim-module-antivirus'
-gem 'decidim-decidim_awesome', github: 'decidim-ice/decidim-module-decidim_awesome'
+gem 'decidim-decidim_awesome', github: 'Platoniq/decidim-module-decidim_awesome'
 gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', branch: DECIDIM_VERSION, ref: '6d32dd1'
 gem 'decidim-navigation_maps', '~> 1.3.0'
 gem 'decidim-question_captcha', github: 'Kagemaru/decidim-module-question_captcha', ref: 'v0.26.1'
