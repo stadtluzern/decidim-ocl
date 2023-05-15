@@ -52,6 +52,11 @@ end
 # Override default for surveys
 Decidim.find_component_manifest(:surveys).settings(:global).attributes[:clean_after_publish].default = false
 
+# Run this customization late, after decidim awesome has initialized
+Rails.application.config.after_initialize do
+  Decidim::Proposals::ProposalWizardCreateStepForm.include(DecidimOCL::Proposals::ProposalWizardCreateStepFormOverride)
+end
+
 module Decidim
   module Map
     module Provider
