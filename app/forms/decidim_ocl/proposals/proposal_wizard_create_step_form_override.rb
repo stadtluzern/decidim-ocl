@@ -19,7 +19,6 @@ module DecidimOCL
         }
 
         validate :body_is_not_bare_template, unless: ->(form) { form.override_validations? }
-        puts '***** OWN OVERRIDES CALLED *****'
       end
     end
   end
