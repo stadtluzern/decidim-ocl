@@ -27,9 +27,9 @@ GIT
 
 GIT
   remote: https://github.com/openpoke/decidim-module-reporting-proposals
-  revision: d262eb662e19febc3f252804fb3e7ec6160abb7f
+  revision: eae8d19661cea2f67545a15ab3269ce40f0a0150
   specs:
-    decidim-reporting_proposals (0.4.0)
+    decidim-reporting_proposals (0.4.1)
       decidim-admin (>= 0.25.0, < 0.27)
       decidim-core (>= 0.25.0, < 0.27)
       decidim-participatory_processes (>= 0.25.0, < 0.27)
