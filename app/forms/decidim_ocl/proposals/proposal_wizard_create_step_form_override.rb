@@ -10,8 +10,8 @@ module DecidimOCL
         clear_validators!
         puts Decidim::Proposals::ProposalWizardCreateStepForm.validators.inspect
 
-        validates :title, presence: false
-        validates :title, length: { in: 0..150 }
+        validates :title, presence: true
+        validates :title, length: { in: 3..150 }
         validates :body, presence: false, unless: ->(form) { form.override_validations? }
         validates :body, proposal_length: {
           minimum: 0,
