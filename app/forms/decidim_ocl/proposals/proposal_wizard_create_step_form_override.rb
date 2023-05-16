@@ -8,7 +8,6 @@ module DecidimOCL
 
       included do
         clear_validators!
-        puts Decidim::Proposals::ProposalWizardCreateStepForm.validators.inspect
 
         validates :title, presence: true
         validates :title, length: { in: 3..150 }
