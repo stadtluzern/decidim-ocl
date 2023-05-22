@@ -136,6 +136,10 @@ de:
         one: Kollaborativer Entwurf
         other: Kollaborative Entwürfe
   decidim:
+    assemblies:
+      assemblies:
+        show:
+          title: Organisationen
     application:
       geocoding:
         geocoded_address: Adresse
@@ -614,6 +618,19 @@ de:
         content_doesnt_exist: Diese Seite wurde leider nicht gefunden. Entschuldige.
         title: Ups!
     events:
+      accountability:
+        proposal_linked:
+          notification_title: 'Der Beitrag <a href="%{proposal_path}">%{proposal_title}</a> wurde in das Ergebnis <a href="%{resource_path}">%{resource_title}</a>umgewandelt.'
+          email_intro: 'Der Beitrag "%{proposal_title}" wurde in ein Ergebnis aufgenommen. Du kannst das auf dieser Seite sehen:
+'
+      comments:
+        comment_upvoted:
+          email_outro: 'Du hast diese Benachrichtigung erhalten, weil du Autor/in des Beitrags bist.'
+        comment_downvoted:
+          email_outro: 'Du hast diese Benachrichtigung erhalten, weil du Autor/in des Beitrags bist.'
+      blogs:
+        post_created:
+          notification_title: 'Der Beitrag <a href="%{resource_path}">%{resource_title}</a> wurde in %{participatory_space_title} veröffentlicht'
       meetings:
         meeting_closed:
           affected_user:
@@ -632,6 +649,70 @@ de:
           email_outro: Sie haben diese Benachrichtigung erhalten, weil Sie den Event "%{resource_title}" verfolgen. Sie können es aus dem vorherigen Link entfernen.
           email_subject: Der Event "%{resource_title}" beginnt in weniger als 48 Stunden.
       proposals:
+        proposal_published_for_admin:
+          notification_title_official: 'Die offizielle Meldung <a href="%{resource_path}">%{resource_title}</a> wurde in %{participatory_space_title} hinzugefügt.'
+          notification_title: 'Die Meldung <a href="%{resource_path}">%{resource_title}</a> wurde von %{author} zu %{participatory_space_title} hinzugefügt.'
+          email_intro: 'Der Beitrag <a href="%{resource_path}">%{resource_title}</a> wurde von %{author} zu %{participatory_space_title} hinzugefügt.'
+        proposal_update_scope:
+          notification_title: 'Das Thema des Beitrags <a href="%{resource_path}">%{resource_title}</a> wurde von einem Administrator aktualisiert.'
+          email_subject: 'Der Bereich des Beitrags %{resource_title} wurde aktualisiert'
+          email_outro: 'Du hast diese Benachrichtigung erhalten, weil du der Autor des Beitrags bist.'
+          email_intro: 'Ein Administrator hat den Bereich deines Beitrags „%{resource_title}“ aktualisiert, sieh es dir das auf dieser Seite an:'
+        proposal_update_category:
+          notification_title: 'Die Beitragskategorie <a href="%{resource_path}">%{resource_title}</a> wurde von einem Administrator aktualisiert.'
+          email_subject: 'Die Beitragskategorie %{resource_title} wurde aktualisiert'
+          email_outro: 'Du hast diese Benachrichtigung erhalten, weil du der Autor des Beitrags bist.'
+          email_intro: 'Ein Administrator hat die Kategorie deines Beitrags "%{resource_title}" aktualisiert, sieh es dir an:'
+        proposal_rejected:
+          follower:
+            notification_title: 'Der Beitrag <a href="%{resource_path}">%{resource_title}</a> wurde bearbeitet.'
+            email_subject: 'Ein Beitrag, dem du folgst, wurde bearbeitet'
+            email_intro: 'Der Beitrag "%{resource_title}" wurde bearbeitet. Du kannst die Antwort auf dieser Seite lesen:'
+          affected_user:
+            notification_title: 'Dein Beitrag <a href="%{resource_path}">%{resource_title}</a> wurde bearbeitet.'
+            email_subject: 'Dein Beitrag wurde bearbeitet'
+            email_intro: 'Dein Beitrag "%{resource_title}" wurde bearbeitet. Du kannst die Antwort auf dieser Seite lesen:'
+        proposal_published:
+          notification_title: 'Der <a href="%{resource_path}">%{resource_title}</a> Beitrag wurde von <a href="%{author_path}">%{author_name} %{author_nickname}</a>veröffentlicht.
+'
+          email_subject: 'Neuer Beitrag "%{resource_title}" von %{author_nickname}'
+          email_intro: '%{author_name} %{author_nickname}, dem du folgst, hat einen neuen Beitrag mit dem Namen "%{resource_title}" veröffentlicht. Sieh ihn dir an und rede mit:'
+        proposal_mentioned:
+          notification_title: 'Dein Beitrag "%{mentioned_proposal_title}" wurde <a href="%{resource_path}">hier</a> in den Kommentaren erwähnt.'
+          email_subject: 'Dein Beitrag "%{mentioned_proposal_title}" wurde erwähnt'
+          email_intro: 'Dein Beitrag "%{mentioned_proposal_title}" wurde <a href="%{resource_url}">hier</a> in den Kommentaren erwähnt.
+'
+        proposal_evaluating:
+          follower:
+            notification_title: 'Der <a href="%{resource_path}">%{resource_title}</a> Beitrag wird derzeit geprüft.'
+            email_subject: 'Ein Beitrag, dem du folgst, wird geprüft'
+            email_intro: 'Der Beitrag "%{resource_title}" wird derzeit geprüft. Das Resultat wird auf dieser Seite aufgeschaltet werden:'
+          affected_user:
+            notification_title: 'Dein Beitrag <a href="%{resource_path}">%{resource_title}</a> wird aktuell geprüft.'
+            email_subject: 'Dein Beitrag wird geprüft
+'
+            email_intro: 'Dein Beitrag "%{resource_title}" wird derzeit geprüft. Das Resultat wird auf dieser Seite aufgeschaltet werden:'
+        proposal_accepted:
+          follower:
+            notification_title: 'Der Beitrag <a href="%{resource_path}">%{resource_title}</a> wurde bearbeitet.'
+            email_subject: 'Ein Beitrag, dem du folgst, wurde bearbeitet
+'
+            email_intro: 'Der Beitrag "%{resource_title}" wurde bearbeitet. Du kannst die Antwort auf dieser Seite lesen:
+'
+          affected_user:
+            notification_title: 'Dein Beitrag <a href="%{resource_path}">%{resource_title}</a> wurde bearbeitet.'
+            email_subject: 'Dein Beitrag wurde bearbeitet'
+            email_intro: 'Dein Beitrag "%{resource_title}" wurde bearbeitet. Du kannst die Antwort auf dieser Seite lesen:'
+        admin:
+          proposal_note_created:
+            email_outro: 'Du hast diese Benachrichtigung erhalten, weil du als Admin diesen Beitrag bearbeiten kanst.'
+            email_intro: 'Jemand hat eine Notiz zum Beitrag "%{resource_title}" hinterlassen. Schau dir diese im <a href="%{admin_proposal_info_url}">Admin-Ansicht</a> an'
+            notification_title: 'Jemand hat eine Notiz für Beitrag <a href="%{resource_path}">%{resource_title}</a>erstellt. Du kannst diese über <a href="%{admin_proposal_info_path}">in der Admin-Ansicht</a> anzeigen'
+            email_subject: 'Jemand hat eine Notiz für Beitrag %{resource_title} erstellt.'
+        proposal_published_for_space:
+          email_subject: 'Neuer Beitrag "%{resource_title}" zu %{participatory_space_title} hinzugefügt'
+          email_intro: 'Der Beitrag "%{resource_title}" wurde zu "%{participatory_space_title}" hinzugefügt, welchem du folgst.'
+          notification_title: Dein Beitrag wurde veröffentlicht
         collaborative_draft_access_accepted:
           email_intro: '%{requester_name} wurde als Mitwirkende*r beim kollaborativen Entwurf <a href="%{resource_path}">%{resource_title}</a> akzeptiert.'
           email_outro: Du hast diese Mitteilung erhalten, weil du zum Bearbeiten von <a href="%{resource_path}">%{resource_title}</a> berechtigt bist.
@@ -830,6 +911,10 @@ de:
       upcoming_meeting_for_card:
         upcoming_meeting: Kommender Event
     proposals:
+      admin:
+        proposal_answers:
+          form:
+            not_answered: Nicht beantwortet
       application_helper:
         filter_origin_values:
           citizens: Einzelpersonen
