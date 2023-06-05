@@ -7,14 +7,14 @@ Decidim::Meetings::MeetingsController.class_eval do
 
   def default_filter_params
     {
-      date: ["past", "upcoming"],
-      search_text: "",
-      activity: "all",
+      search_text: '',
+      date: %w[past upcoming],
+      activity: 'all',
       scope_id: default_filter_scope_params,
-      space: default_filter_space_params,
-      type: default_filter_type_params,
+      category_id: default_filter_category_params,
+      state: nil,
       origin: default_filter_origin_params,
-      category_id: default_filter_category_params
+      type: default_filter_type_params
     }
   end
 end
