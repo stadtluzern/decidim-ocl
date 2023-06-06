@@ -1,0 +1,3 @@
+add_to_attributes '.wrapper > .row > h2 + .row'
+attributes :class => 'topics'
+original '89a8e4748590cc96b87ac91c346f0280fc690f24'

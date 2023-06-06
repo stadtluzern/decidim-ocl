@@ -1,0 +1,3 @@
+add_to_attributes '.wrapper'
+attributes :class => 'help-pages'
+original 'facbb8ce0d44625be5aa26911d4a627515fc1d5e'
