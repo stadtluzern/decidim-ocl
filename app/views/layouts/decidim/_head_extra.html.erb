@@ -37,3 +37,7 @@
 <noscript><p><img src="https://<%= subdomain %>.matomo.cloud/matomo.php?idsite=<%= site_id %>&amp;rec=1" style="border:0;" alt="" /></p></noscript>
 <!-- End Matomo Code -->
 <% end %>
+
+<script type="text/javascript">
+  window.tenantType = <%= current_organization&.tenant_type.to_json.html_safe %>
+</script>
