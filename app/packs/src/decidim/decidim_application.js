@@ -38,7 +38,6 @@ window.addEventListener("load", (event) => {
  * For tenants which have this activated, auto-scroll down to the tab navigation in processes.
  */
 window.addEventListener("load", (event) => {
-  console.log('tenant type', window.tenantType)
   if (!['koeniz', 'deinklima', 'dialogluzern', 'winterthur'].includes(window.tenantType)) return
 
   const process_nav = document.querySelector('#process-nav-content > ul');
@@ -50,5 +49,23 @@ window.addEventListener("load", (event) => {
 
   if (active_child != null) {
     process_nav.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
+  }
+});
+
+/**
+ * For tenants which have this activated, collapse the process navigation on mobile by default.
+ */
+window.addEventListener("load", (event) => {
+  if (!['koeniz'].includes(window.tenantType)) return
+
+  // Bug that appears on mobile devices but not on desktop browsers with narrow window width:
+  // The process navigation (list of components) is open on mobile devices for some reason.
+  // To work around this, we toggle the navigation collapse state on narrow screens.
+  if (window.innerWidth < 640) {
+    document.querySelectorAll('#process-nav-content').forEach((elem) => {
+      setTimeout(() => {
+        $(elem).trigger('toggle')
+      });
+    });
   }
 });
