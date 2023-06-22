@@ -29,6 +29,8 @@ window.addEventListener("load", (event) => {
         "dismissedHelpers",
         [...dismissedHelpers, id].join(",")
       );
+      $(".floating-helper", elem).foundation("toggle");
+      $(".floating-helper__wrapper", elem).foundation("toggle");
     }
   });
 
