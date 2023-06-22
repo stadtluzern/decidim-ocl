@@ -69,3 +69,25 @@ window.addEventListener("load", (event) => {
     });
   }
 });
+
+/**
+ * Scroll to beginning of step in a questionnaire
+ */
+document.addEventListener("DOMContentLoaded", () => {
+  if (!['koeniz'].includes(window.tenantType)) return
+
+  function scrollToStep() {
+    setTimeout(() => {
+      const step = $('.questionnaire-step:not(.hide)')[0];
+      step.scrollIntoView({behavior: "smooth"});
+    }, 1)
+  }
+
+  const buttons = document.querySelectorAll('.questionnaire-step a[data-toggle]');
+
+  buttons.forEach(button => {
+    button.removeAttribute('href');
+    $(button).on('click', () => scrollToStep());
+  });
+
+});
