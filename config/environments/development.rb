@@ -37,11 +37,13 @@ Rails.application.configure do
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.delivery_method = :letter_opener_web
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { address: 'localhost', port: 1025 }
+  # config.action_mailer.delivery_method = :letter_opener_web
 
-  LetterOpenerWeb.configure do |config|
-    config.letters_location = Rails.root.join('tmp/letter_opener')
-  end
+  # LetterOpenerWeb.configure do |config|
+  #   config.letters_location = Rails.root.join('tmp/letter_opener')
+  # end
   config.action_mailer.default_url_options = { port: 3000 }
 
   config.action_mailer.perform_caching = false
@@ -70,9 +72,14 @@ Rails.application.configure do
 
   # Add allowed hosts and deduplicate them
   hosts = ENV.fetch('RAILS_ALLOWED_HOSTS', '').split(',').map(&:strip)
-  host = ENV['RAILS_HOST']
-  config.hosts |= hosts if hosts.present?
-  config.hosts |= [host] if host.present?
+  host = ENV.fetch('RAILS_HOST', nil)
+
+  config.hosts = [
+    config.hosts,
+    hosts,
+    host,
+    /.+\.local/
+  ].flatten.compact
 
   # TODO Remove after fixing dev
   config.log_level = :info

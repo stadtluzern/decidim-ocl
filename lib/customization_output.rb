@@ -13,9 +13,9 @@ class CustomizationOutput
   end
 
   def puts_and_log
-    return if ENV['CUSTOMIZATION_OUTPUT']
+    return if ENV['CUSTOMIZATION_OUTPUT'].in? %w[false f 0]
 
-    puts to_s # rubocop:disable Rails/Output
+    puts self # rubocop:disable Rails/Output
     Rails.logger.info to_s
   end
 

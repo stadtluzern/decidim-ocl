@@ -5,7 +5,9 @@ require_relative '../../lib/customization_output'
 includes = [
   [Decidim::DiffCell,                             DecidimOCL::DiffCell],
   [Decidim::Proposals::ProposalMCell,             DecidimOCL::Proposals::ProposalMCell],
-  [Decidim::ParticipatoryProcesses::ProcessMCell, DecidimOCL::ParticipatoryProcesses::ProcessMCell]
+  [Decidim::ParticipatoryProcesses::ProcessMCell, DecidimOCL::ParticipatoryProcesses::ProcessMCell],
+  [Decidim::Comments::CommentActivityCell,        DecidimOCL::Comments::CommentActivityCell],
+  [Decidim::Proposals::PublishProposalEvent,      DecidimOCL::Proposals::PublishProposalEvent]
 ].each { |base, addition| base.include addition }
 
 prepends = [
