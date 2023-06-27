@@ -70,9 +70,14 @@ Rails.application.configure do
 
   # Add allowed hosts and deduplicate them
   hosts = ENV.fetch('RAILS_ALLOWED_HOSTS', '').split(',').map(&:strip)
-  host = ENV['RAILS_HOST']
-  config.hosts |= hosts if hosts.present?
-  config.hosts |= [host] if host.present?
+  host = ENV.fetch('RAILS_HOST', nil)
+
+  config.hosts = [
+    config.hosts,
+    hosts,
+    host,
+    /.+\.local$/
+  ].flatten.compact
 
   # TODO Remove after fixing dev
   config.log_level = :info
