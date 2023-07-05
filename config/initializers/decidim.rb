@@ -162,6 +162,10 @@ Decidim.configure do |config| # rubocop:disable Metrics/BlockLength
   #   api_key: Rails.application.secrets.etherpad[:api_key],
   #   api_version: Rails.application.secrets.etherpad[:api_version]
   # }
+
+  # Do not force admins to change their password every 90 days.
+  # NIST does not recommend expiring passwords: https://pages.nist.gov/800-63-FAQ/#q-b05
+  config.admin_password_expiration_days = 0
 end
 
 Rails.application.config.i18n.available_locales = Decidim.available_locales
