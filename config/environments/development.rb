@@ -16,18 +16,18 @@ Rails.application.configure do
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
-  if Rails.root.join('tmp', 'caching-dev.txt').exist?
-    config.action_controller.perform_caching = true
+  config.action_controller.perform_caching = if Rails.root.join('tmp', 'caching-dev.txt').exist?
+                                               true
 
-    # config.cache_store = :memory_store
-    # config.public_file_server.headers = {
-    #   'Cache-Control' => "public, max-age=#{2.days.to_i}"
-    # }
-  else
-    config.action_controller.perform_caching = false
+                                               # config.cache_store = :memory_store
+                                               # config.public_file_server.headers = {
+                                               #   'Cache-Control' => "public, max-age=#{2.days.to_i}"
+                                               # }
+                                             else
+                                               false
 
-    # config.cache_store = :null_store
-  end
+                                               # config.cache_store = :null_store
+                                             end
   memcached_host = ENV['RAILS_MEMCACHED_HOST'] || 'localhost'
   memcached_port = ENV['RAILS_MEMCACHED_PORT'] || '11211'
   config.cache_store = :mem_cache_store, "#{memcached_host}:#{memcached_port}"
@@ -65,9 +65,9 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   config.aspsms = {
-    user_key: ENV['ASPSMS_API_USER_KEY'],
-    password: ENV['ASPSMS_API_PASSWORD'],
-    affiliate_id: ENV['ASPSMS_AFFILIATE_ID']
+    user_key: ENV.fetch('ASPSMS_API_USER_KEY', nil),
+    password: ENV.fetch('ASPSMS_API_PASSWORD', nil),
+    affiliate_id: ENV.fetch('ASPSMS_AFFILIATE_ID', nil),
   }
 
   # Add allowed hosts and deduplicate them
