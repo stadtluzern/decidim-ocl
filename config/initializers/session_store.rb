@@ -4,7 +4,7 @@
 
 Rails.application.config.session_store(
   ActionDispatch::Session::CacheStore,
-  memcache_server: ['127.0.0.1'],
+  memcache_server: [ENV.fetch('RAILS_MEMCACHED_HOST', '127.0.0.1')],
   namespace: 'sessions',
   key: '_session',
   expire_after: 30.minutes,
