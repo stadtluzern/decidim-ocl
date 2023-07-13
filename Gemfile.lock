@@ -36,13 +36,6 @@ GIT
       decidim-core (~> 0.27.0)
 
 GIT
-  remote: https://github.com/openpoke/decidim-module-participatory-documents.git
-  revision: cfd0060f3528cdca41eb9c9fa03521a2c87b3e17
-  specs:
-    decidim-participatory_documents (0.2.0)
-      decidim-core (>= 0.27.0, < 0.28)
-
-GIT
   remote: https://github.com/openpoke/decidim-module-reporting-proposals.git
   revision: 25b9875fea2aaa4fbf75e1669ce001fc05b408e4
   branch: main
@@ -401,6 +394,8 @@ GEM
       icalendar (~> 2.5)
     decidim-pages (0.27.3)
       decidim-core (= 0.27.3)
+    decidim-participatory_documents (0.2.0)
+      decidim-core (>= 0.27.0, < 0.28)
     decidim-participatory_processes (0.27.3)
       decidim-core (= 0.27.3)
     decidim-proposals (0.27.3)
@@ -980,7 +975,7 @@ DEPENDENCIES
   decidim-dev (= 0.27.3)
   decidim-initiatives (= 0.27.3)
   decidim-jitsi_meetings!
-  decidim-participatory_documents!
+  decidim-participatory_documents
   decidim-proposals (= 0.27.3)
   decidim-question_captcha!
   decidim-reporting_proposals!
@@ -1008,4 +1003,4 @@ RUBY VERSION
    ruby 3.0.2p107
 
 BUNDLED WITH
-   2.4.13
+   2.4.7
