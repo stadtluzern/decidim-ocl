@@ -50,7 +50,7 @@ GIT
 
 GIT
   remote: https://github.com/puzzle/decidim-module-jitsi-meetings.git
-  revision: 2a6d7e60160c9bb0d8f8d531b7bb49a0551e0d86
+  revision: a38f13764ec7a119c5d4f37e0070ee44b5c33b87
   branch: 0.27.3
   specs:
     decidim-jitsi_meetings (0.27.3)
