@@ -18,7 +18,7 @@ gem 'decidim-antivirus', github: 'mainio/decidim-module-antivirus'
 gem 'decidim-decidim_awesome', github: 'decidim-ice/decidim-module-decidim_awesome'
 gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', branch: DECIDIM_VERSION
 gem 'decidim-question_captcha', github: 'OpenSourcePolitics/decidim-module-question_captcha', branch: 'release/0.27-stable'
-gem 'decidim-reporting_proposals', github: 'openpoke/decidim-module-reporting-proposals', branch: 'upgrade-0.27'
+gem 'decidim-reporting_proposals', github: 'openpoke/decidim-module-reporting-proposals', branch: 'main'
 gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', branch: 'master'
 
 # TODO: These are not updated yet :(
