@@ -19,6 +19,7 @@ gem 'decidim-decidim_awesome', github: 'decidim-ice/decidim-module-decidim_aweso
 gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', branch: DECIDIM_VERSION
 gem 'decidim-question_captcha', github: 'OpenSourcePolitics/decidim-module-question_captcha', branch: 'release/0.27-stable'
 gem 'decidim-reporting_proposals', github: 'openpoke/decidim-module-reporting-proposals', branch: 'main'
+gem 'decidim-participatory_documents', github: "openpoke/decidim-module-participatory-documents"
 gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', branch: 'master'
 
 # TODO: These are not updated yet :(
