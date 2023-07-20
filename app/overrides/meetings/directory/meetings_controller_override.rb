@@ -8,6 +8,7 @@ Decidim::Meetings::Directory::MeetingsController.class_eval do
   def default_filter_params
     {
       date: ["past", "upcoming"],
+      title_or_description_cont: "",
       search_text: "",
       activity: "all",
       scope_id: default_filter_scope_params,
