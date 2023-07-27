@@ -2,19 +2,17 @@
 
 Decidim::Meetings::MeetingsController.class_eval do
   def meetings
-    @meetings ||= paginate(search.result.order(start_time: :desc))
+    is_past_meetings = params.dig('filter', 'with_any_date')&.include?('past')
+    @meetings ||= paginate(custom_search.order(start_time: is_past_meetings ? :desc : :asc))
   end
 
-  def default_filter_params
-    {
-      search_text: '',
-      date: %w[past upcoming],
-      activity: 'all',
-      scope_id: default_filter_scope_params,
-      category_id: default_filter_category_params,
-      state: nil,
-      origin: default_filter_origin_params,
-      type: default_filter_type_params
-    }
+  private
+
+  def custom_search
+    upcoming = params.dig('filter', 'with_any_date')&.include?('upcoming')
+    base = search.result
+    return base unless upcoming
+
+    base.where(start_time: DateTime.now..)
   end
 end
