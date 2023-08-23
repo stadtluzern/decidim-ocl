@@ -45,8 +45,16 @@ GIT
       decidim-core (~> 0.27.0)
 
 GIT
+  remote: https://github.com/openpoke/decidim-module-participatory-documents.git
+  revision: 0b83ff71b52f162a4d821bbdf23cb49b72a0f7c4
+  branch: main
+  specs:
+    decidim-participatory_documents (0.2.0)
+      decidim-core (>= 0.27.0, < 0.28)
+
+GIT
   remote: https://github.com/openpoke/decidim-module-reporting-proposals.git
-  revision: 25b9875fea2aaa4fbf75e1669ce001fc05b408e4
+  revision: 57d3080ac0e43739684d7617e2aa2898459724d1
   branch: main
   specs:
     decidim-reporting_proposals (0.5.0)
@@ -403,8 +411,6 @@ GEM
       icalendar (~> 2.5)
     decidim-pages (0.27.4)
       decidim-core (= 0.27.4)
-    decidim-participatory_documents (0.2.0)
-      decidim-core (>= 0.27.0, < 0.28)
     decidim-participatory_processes (0.27.4)
       decidim-core (= 0.27.4)
     decidim-proposals (0.27.4)
@@ -985,7 +991,7 @@ DEPENDENCIES
   decidim-initiatives (= 0.27.4)
   decidim-jitsi_meetings!
   decidim-navigation_maps!
-  decidim-participatory_documents
+  decidim-participatory_documents!
   decidim-proposals (= 0.27.4)
   decidim-question_captcha!
   decidim-reporting_proposals!
