@@ -9,6 +9,15 @@ GIT
       deface (~> 1.6)
 
 GIT
+  remote: https://github.com/Platoniq/decidim-module-navigation_maps.git
+  revision: 03f02933552d3a2f30a9a8069de737fba9f73d15
+  branch: upgrade-0.27
+  specs:
+    decidim-navigation_maps (1.4.0)
+      decidim-admin (>= 0.27, < 0.28)
+      decidim-core (>= 0.27, < 0.28)
+
+GIT
   remote: https://github.com/decidim-ice/decidim-module-decidim_awesome.git
   revision: 8c1d23f1ad6433fe6a03bdafb8b5315d9871517c
   specs:
@@ -975,6 +984,7 @@ DEPENDENCIES
   decidim-dev (= 0.27.4)
   decidim-initiatives (= 0.27.4)
   decidim-jitsi_meetings!
+  decidim-navigation_maps!
   decidim-participatory_documents
   decidim-proposals (= 0.27.4)
   decidim-question_captcha!
@@ -1003,4 +1013,4 @@ RUBY VERSION
    ruby 3.0.2p107
 
 BUNDLED WITH
-   2.4.17
+   2.4.7
