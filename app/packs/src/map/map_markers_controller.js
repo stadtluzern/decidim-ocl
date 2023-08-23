@@ -28,7 +28,7 @@ export default function(baseClass) {
 
     setViewport() {
       if (this.config.markers.length === 0) {
-        const center = this.config.defaultCenter ? [this.config.defaultCenter.lat, this.config.defaultCenter.lng] : [0, 0];
+        const center = (this.config.defaultCenter?.lat) ? [this.config.defaultCenter.lat, this.config.defaultCenter.lng] : [0, 0];
         const bounds = new L.LatLngBounds([center, center]);
         this.map.fitBounds(bounds, {padding: [100, 100], maxZoom: this.getNoMarkerMaxZoom()});
       } else {
