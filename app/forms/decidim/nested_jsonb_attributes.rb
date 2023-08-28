@@ -40,12 +40,12 @@ module Decidim
             keys = f.to_s.split('.')
             if value == ''
               (keys[0...-1].reduce(field) do |hash, key|
-                hash[key].presence || (hash[key] = {})
+                hash[key.to_sym].presence || (hash[key.to_sym] = {})
               end).except(keys.last)
             else
               (keys[0...-1].reduce(field) do |hash, key|
-                hash[key].presence || (hash[key] = {})
-              end)[keys.last] = value
+                hash[key.to_sym].presence || (hash[key.to_sym] = {})
+              end)[keys.last.to_sym] = value
             end
             public_send("#{name}=", field)
           end
