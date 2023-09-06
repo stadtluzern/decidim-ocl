@@ -1,0 +1,12 @@
+<!-- insert_after ":root:last-child"
+     sequence :after => '2_add_map_config_override'
+     original 'bfd07a6dec462af577dcc6a14c11c36c90f3dc60'
+-->
+
+<div class="fieldset">
+  <h4><%= t("decidim.system.models.organization.fields.aspsms") %></h4>
+  <div class="field">
+    <%= f.text_field :aspsms_user_key %>
+    <%= f.text_field :aspsms_password %>
+  </div>
+</div>

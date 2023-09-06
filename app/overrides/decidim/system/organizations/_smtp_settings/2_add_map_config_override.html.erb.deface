@@ -1,0 +1,25 @@
+<!-- insert_after ":root:last-child"
+     sequence :after => '1_add_tenant_type_override'
+     original '24942cb2a7716abd80026065628ddbc3d478445e'
+-->
+
+<div class="fieldset">
+  <h4><%= t("decidim.system.models.organization.fields.map_config") %></h4>
+  <%= f.fields_for :map_config do %>
+    <div class="field">
+      <%= f.text_field :provider, placeholder: Decidim.maps.dig(:dynamic, :provider)&.to_s %>
+    </div>
+    <fieldset class="fieldset">
+      <legend><%= t(".fieldsets.map_config.default_center") %></legend>
+      <%= f.number_field :default_center_lat, placeholder: Decidim.maps.dig(:dynamic, :default_center, :lat)&.to_s %>
+      <%= f.number_field :default_center_lng, placeholder: Decidim.maps.dig(:dynamic, :default_center, :lng)&.to_s %>
+    </fieldset>
+    <fieldset class="fieldset">
+      <legend><%= t(".fieldsets.map_config.map_limits") %></legend>
+      <%= f.number_field :map_limits_lat_min, placeholder: Decidim.maps.dig(:dynamic, :map_limits, :lat_min)&.to_s %>
+      <%= f.number_field :map_limits_lng_min, placeholder: Decidim.maps.dig(:dynamic, :map_limits, :lng_min)&.to_s %>
+      <%= f.number_field :map_limits_lat_max, placeholder: Decidim.maps.dig(:dynamic, :map_limits, :lat_max)&.to_s %>
+      <%= f.number_field :map_limits_lng_max, placeholder: Decidim.maps.dig(:dynamic, :map_limits, :lng_max)&.to_s %>
+    </fieldset>
+  <% end %>
+</div>

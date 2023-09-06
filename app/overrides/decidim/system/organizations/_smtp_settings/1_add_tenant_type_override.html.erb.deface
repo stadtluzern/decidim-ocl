@@ -1,0 +1,13 @@
+<!-- insert_after ":root:last-child"
+     original 'dbf36955ab74774decae4826493bd594e2141f71'
+-->
+
+<div class="fieldset">
+  <h4><%= t("decidim.system.models.organization.fields.tenant_type") %></h4>
+  <div class="field">
+    <%= f.select :tenant_type,
+                 [:deinklima, :dialogluzern, :gemeinsamerspace, :koeniz, :winterthur],
+                 { include_blank: t("decidim.system.organizations.tenant_type.none") },
+                 { multiple: false } %>
+  </div>
+</div>
