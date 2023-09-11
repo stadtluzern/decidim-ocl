@@ -21,7 +21,7 @@ jobs:
 
     strategy:
       matrix:
-        ruby: ['2.7']  # TODO: Reenable 3.0 when it's compatible
+        ruby: ['3.0']
 
     services:
       postgres:
