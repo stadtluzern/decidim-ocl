@@ -64,6 +64,9 @@ Decidim.configure do |config| # rubocop:disable Metrics/BlockLength
   # Disable the default redirect to https, since we use nginx for ssl termination
   config.force_ssl = false
 
+  # Disable the PWA functionality including the "add to home screen" feature for now
+  config.service_worker_enabled = false
+
   # The number of reports which an object can receive before hiding it
   # config.max_reports_before_hiding = 3
 
