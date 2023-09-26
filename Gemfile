@@ -22,7 +22,7 @@ gem 'decidim-reporting_proposals', github: 'openpoke/decidim-module-reporting-pr
 gem 'decidim-participatory_documents', github: 'openpoke/decidim-module-participatory-documents', branch: 'main'
 gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', branch: 'master'
 
-gem 'decidim-navigation_maps', github: 'Platoniq/decidim-module-navigation_maps', branch: 'upgrade-0.27'
+gem 'decidim-navigation_maps', github: 'Platoniq/decidim-module-navigation_maps', branch: 'main'
 
 # TODO: These are not updated yet :(
 # gem 'decidim-navbar_links', github: 'puzzle/decidim-module-navbar_links', tag: "v#{DECIDIM_VERSION}"
