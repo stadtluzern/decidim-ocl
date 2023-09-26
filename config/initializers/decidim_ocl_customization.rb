@@ -11,11 +11,12 @@ includes = [
 ].each { |base, addition| base.include addition }
 
 prepends = [
-  [Decidim::ApplicationMailer,                             DecidimOCL::ApplicationMailer],
-  [Decidim::Proposals::Admin::ProposalNoteCreatedEvent,    DecidimOCL::Proposals::Admin::ProposalNoteCreatedEvent],
-  [Decidim::Forms::AnswerQuestionnaire,                    DecidimOCL::Forms::AnswerQuestionnaire],
-  [Decidim::Meetings::ContentBlocks::UpcomingMeetingsCell, DecidimOCL::Meetings::ContentBlocks::UpcomingMeetingsCell],
-  [Decidim::OrganizationLogoUploader,                      DecidimOCL::OrganizationLogoUploader]
+  [Decidim::ApplicationMailer,                                  DecidimOCL::ApplicationMailer],
+  [Decidim::Proposals::Admin::ProposalNoteCreatedEvent,         DecidimOCL::Proposals::Admin::ProposalNoteCreatedEvent],
+  [Decidim::Forms::AnswerQuestionnaire,                         DecidimOCL::Forms::AnswerQuestionnaire],
+  [Decidim::Meetings::ContentBlocks::UpcomingMeetingsCell,      DecidimOCL::Meetings::ContentBlocks::UpcomingMeetingsCell],
+  [Decidim::OrganizationLogoUploader,                           DecidimOCL::OrganizationLogoUploader],
+  [Decidim::ParticipatoryProcesses::ParticipatoryProcessHelper, DecidimOCL::ParticipatoryProcesses::ParticipatoryProcessHelper],
 ].each { |base, addition| base.prepend addition }
 
 override_path = Pathname.new('app/overrides')
