@@ -136,6 +136,11 @@ de:
         one: Kollaborativer Entwurf
         other: Kollaborative Entwürfe
   decidim:
+    participatory_documents:
+      admin:
+        suggestion_notes:
+          modal:
+            body: Rückmeldung
     assemblies:
       assemblies:
         show:
