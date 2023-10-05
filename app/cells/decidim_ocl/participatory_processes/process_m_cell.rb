@@ -9,15 +9,22 @@ module DecidimOCL
 
       included do
         def resource_image_path
-          model.attached_uploader(:hero_image).path || default_image
+          path_for(:hero_image) ||
+            path_for(:highlighted_content_banner_image) ||
+            default_image
         rescue StandardError
           default_image
         end
 
         private
 
+        def path_for(key)
+          model.attached_uploader(key).path
+        end
+
         def default_image
-          rails_blob_path(current_organization.highlighted_content_banner_image)
+          org = model.tenant_type.presence || 'organization'
+          "#{org}-default-image.png"
         end
       end
     end
