@@ -23,7 +23,7 @@ module DecidimOCL
         end
 
         def default_image
-          org = model.tenant_type.presence || 'organization'
+          org = model.organization&.tenant_type&.presence || 'organization'
           "#{org}-default-image.png"
         end
       end
