@@ -46,18 +46,18 @@ GIT
 
 GIT
   remote: https://github.com/openpoke/decidim-module-participatory-documents.git
-  revision: 0b83ff71b52f162a4d821bbdf23cb49b72a0f7c4
+  revision: be2f010333237ca784d7f53c858d17499ff859c9
   branch: main
   specs:
-    decidim-participatory_documents (0.2.0)
+    decidim-participatory_documents (0.2.1)
       decidim-core (>= 0.27.0, < 0.28)
 
 GIT
   remote: https://github.com/openpoke/decidim-module-reporting-proposals.git
-  revision: 5abb574cd9644bb55bb7728e5bf9800c512b92aa
+  revision: 899e38c7cb4496102617f266f0e640659e987839
   branch: main
   specs:
-    decidim-reporting_proposals (0.5.1)
+    decidim-reporting_proposals (0.5.2)
       decidim-admin (>= 0.27.0, < 0.28)
       decidim-core (>= 0.27.0, < 0.28)
       decidim-participatory_processes (>= 0.27.0, < 0.28)
