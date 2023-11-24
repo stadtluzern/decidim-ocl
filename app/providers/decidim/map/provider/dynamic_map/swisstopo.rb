@@ -17,8 +17,7 @@ module Decidim
             # @see Decidim::Map::DynamicMap::Builder#javascript_snippets
             def javascript_snippets
               [
-                  template.javascript_pack_tag("decidim/swisstopo"),
-                  template.javascript_pack_tag("decidim_proposals")
+                  template.javascript_pack_tag("decidim/swisstopo")
               ].join
             end
           end
