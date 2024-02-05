@@ -67,8 +67,8 @@ module DecidimOCL
           Rails.application.config.aspsms[:affiliate_id]
         end
 
-        def translated(key, *args)
-          I18n.t("decidim_ocl.verifications.sms.aspsms_gateway.#{key}", *args)
+        def translated(key, **args)
+          I18n.t("decidim_ocl.verifications.sms.aspsms_gateway.#{key}", **args)
         end
 
         def organization
