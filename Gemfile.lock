@@ -423,6 +423,11 @@ GEM
       decidim-comments (= 0.27.4)
       decidim-core (= 0.27.4)
       decidim-proposals (= 0.27.4)
+    decidim-survey_multiple_answers (0.26.2)
+      decidim-admin (>= 0.26.0, < 0.28.0)
+      decidim-core (>= 0.26.0, < 0.28.0)
+      decidim-forms (>= 0.26.0, < 0.28.0)
+      decidim-surveys (>= 0.26.0, < 0.28.0)
     decidim-surveys (0.27.4)
       decidim-core (= 0.27.4)
       decidim-forms (= 0.27.4)
@@ -995,6 +1000,7 @@ DEPENDENCIES
   decidim-proposals (= 0.27.4)
   decidim-question_captcha!
   decidim-reporting_proposals!
+  decidim-survey_multiple_answers (~> 0.26.2)
   decidim-templates (= 0.27.4)
   decidim-term_customizer!
   delayed_job_active_record
@@ -1019,4 +1025,4 @@ RUBY VERSION
    ruby 3.0.2p107
 
 BUNDLED WITH
-   2.4.7
+   2.4.18
