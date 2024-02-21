@@ -17,7 +17,7 @@
 # On Linux, the 'host: "localhost"' line below should be commented out to avoid 'password required' error.
 #
 default: &default
-  adapter: postgresql
+  adapter: <%= ENV.fetch('RAILS_DB_ADAPTER', 'postgresql') %>
   encoding: unicode
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling

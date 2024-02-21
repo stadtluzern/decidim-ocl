@@ -17,20 +17,12 @@ ARG BUILD_SCRIPT="set -uex \
     && echo \"deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main\" > /etc/apt/sources.list.d/nodesource.list \
     && apt-get update \
     && apt-get install nodejs -y \
-    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg -o /root/yarn-pubkey.gpg \
-    && apt-key add /root/yarn-pubkey.gpg \
-    && echo \"deb https://dl.yarnpkg.com/debian/ stable main\" > /etc/apt/sources.list.d/yarn.list \
-    && apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends nodejs \
-    && apt-get clean \
-    && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-    && truncate -s 0 /var/log/*log \
-    && npm install -g npm \
     && npm install -g yarn \
-    && yarn set version 1.22.10"
+    && yarn set version 1.22.19"
 ARG BUNDLE_WITHOUT="development:metrics:test"
-ARG BUNDLER_VERSION="2.3.12"
-ARG POST_BUILD_SCRIPT="yarn && bundle exec rails assets:precompile"
+ARG BUNDLER_VERSION="2.4.18"
+ARG POST_BUILD_SCRIPT="bundle exec rails assets:precompile"
+ARG RAILS_DB_ADAPTER="nulldb"
 ARG SKIP_MEMCACHE_CHECK="true"
 ARG RAILS_ENV="production"
 ARG SECRET_KEY_BASE="thisneedstobeset"
@@ -42,6 +34,17 @@ RUN    apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y ${BUILD_PACKAGES}
 
+# Installs nodejs as a dependency
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+ && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg -o /root/yarn-pubkey.gpg && apt-key add /root/yarn-pubkey.gpg \
+ && echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \ && apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
+    nodejs \
+ && apt-get clean \
+ && rm -rf /var/cache/apt/archives/* \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+ && truncate -s 0 /var/log/*log
+ 
 RUN [[ ${BUILD_SCRIPT} ]] && bash -c "${BUILD_SCRIPT}"
 
 # Install specific versions of dependencies
@@ -50,21 +53,28 @@ RUN gem install bundler:${BUNDLER_VERSION} --no-document
 # TODO: Load artifacts
 
 # set up app-src directory
-COPY . /app-src
+COPY ./Gemfile ./Gemfile.lock /app-src/
 WORKDIR /app-src
 
 # Run deployment
-RUN    bundle config set --local deployment 'true' \
-    && bundle config set --local without ${BUNDLE_WITHOUT} \
-    && bundle package \
-    && bundle install \
-    && bundle clean
+RUN bundle config set --local deployment 'true' \
+ && bundle config set --local without ${BUNDLE_WITHOUT} \
+ && bundle package \
+ && bundle install \
+ && bundle clean
+
+COPY ./package.json ./yarn.lock /app-src/
+RUN yarn
+
+# set up app-src directory
+COPY . /app-src
 
 RUN [[ ${POST_BUILD_SCRIPT} ]] && bash -c "${POST_BUILD_SCRIPT}"
 
 # TODO: Save artifacts
 
 RUN rm -rf vendor/cache/ .git
+
 
 ##################################################################
 #                            Run Stage                           #
@@ -80,7 +90,7 @@ SHELL ["/bin/bash", "-c"]
 RUN adduser --disabled-password --uid 1001 --gid 0 --gecos "" --shell /bin/bash app
 
 ARG BUNDLE_WITHOUT="development:metrics:test"
-ARG BUNDLER_VERSION="2.3.12"
+ARG BUNDLER_VERSION="2.4.18"
 ARG RUN_PACKAGES="clamav clamav-daemon git graphicsmagick libicu-dev libpq5 nodejs poppler-utils"
 ARG CUSTOMIZATION_OUTPUT="false"
 ENV TZ="Europe/Zurich"
