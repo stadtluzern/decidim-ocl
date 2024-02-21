@@ -2,7 +2,7 @@
 #                            Build Stage                         #
 ##################################################################
 
-FROM ruby:3.0.2 AS build
+FROM ruby:3.0.6 AS build
 
 # Set build shell
 SHELL ["/bin/bash", "-c"]
@@ -71,7 +71,7 @@ RUN rm -rf vendor/cache/ .git
 ##################################################################
 
 # This image will be replaced by Openshift
-FROM ruby:3.0.2-slim AS app
+FROM ruby:3.0.6-slim AS app
 
 # Set runtime shell
 SHELL ["/bin/bash", "-c"]
