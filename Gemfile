@@ -14,14 +14,14 @@ gem 'decidim-initiatives', DECIDIM_VERSION
 gem 'decidim-proposals', DECIDIM_VERSION
 gem 'decidim-templates', DECIDIM_VERSION
 
-gem 'decidim-antivirus', github: 'mainio/decidim-module-antivirus'
+gem 'decidim-antivirus', github: 'mainio/decidim-module-antivirus', branch: 'release/0.27-stable'
 gem 'decidim-decidim_awesome', github: 'decidim-ice/decidim-module-decidim_awesome'
 gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', branch: DECIDIM_VERSION
 gem 'decidim-question_captcha', github: 'OpenSourcePolitics/decidim-module-question_captcha', branch: 'release/0.27-stable'
 gem 'decidim-reporting_proposals', github: 'openpoke/decidim-module-reporting-proposals', branch: 'main'
 gem 'decidim-participatory_documents', github: 'openpoke/decidim-module-participatory-documents', branch: 'main'
 gem 'decidim-survey_multiple_answers', '~> 0.26.2'
-gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', branch: 'master'
+gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', branch: 'release/0.27-stable'
 
 gem 'decidim-navigation_maps', github: 'Platoniq/decidim-module-navigation_maps', branch: 'main'
 
@@ -29,7 +29,7 @@ gem 'decidim-navigation_maps', github: 'Platoniq/decidim-module-navigation_maps'
 # gem 'decidim-navbar_links', github: 'puzzle/decidim-module-navbar_links', tag: "v#{DECIDIM_VERSION}"
 # gem 'decidim-url_aliases', github: 'OpenSourcePolitics/decidim-urlaliases'
 
-gem 'acts_as_textcaptcha', '~> 4.5.1'
+gem 'acts_as_textcaptcha'
 gem 'aws-sdk-s3', require: false
 gem 'binding_of_caller'
 gem 'bootsnap'                # , '~> 1.3'

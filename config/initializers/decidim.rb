@@ -11,6 +11,7 @@ Decidim.configure do |config| # rubocop:disable Metrics/BlockLength
   config.available_locales = %i[en de fr it]
 
   config.maps = {
+    provider: :swisstopo,
     dynamic: {
       provider: :swisstopo,
       default_center: {
