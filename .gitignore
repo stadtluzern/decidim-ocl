@@ -41,9 +41,10 @@ public/uploads
 # Ignore changed bundle binstub
 bin/bundle
 
-# Ignore local environment variables file
-.env.local
-.envrc
+# Ignore server environment variables files and local .envrc
+.envrc.local
+/*.env
+/.env.*
 
 # Ignore local gems
 vendor/bundle
