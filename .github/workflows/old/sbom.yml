@@ -1,3 +1,4 @@
+---
 name: SBOM Generator
 
 on:
@@ -15,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install cdxgen
         run: |
@@ -27,7 +28,7 @@ jobs:
 
       - name: 'Push SBOM to dependency track'
         env:
-          PROJECT_NAME: decidim-luzern
+          PROJECT_NAME: decidim-zuerich
         run: |
           curl --verbose -s --location --request POST ${{ secrets.DEPENDENCY_TRACK_URL }} \
           --header "X-Api-Key: ${{ secrets.DEPENDENCY_TRACK_API_KEY }}" \
@@ -36,3 +37,4 @@ jobs:
           --form "projectName=${PROJECT_NAME:-$GITHUB_REPOSITORY}" \
           --form "projectVersion=latest" \
           --form "bom=@sbom-ruby.xml"
+  ...
