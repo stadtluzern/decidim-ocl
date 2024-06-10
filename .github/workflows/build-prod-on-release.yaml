@@ -1,7 +1,5 @@
 name: 'Build prod on release'
 
-# TODO: In the future, copy from INT kustomization the newTag, push the image to prod and retag PROD kustomization
-
 on:
   release:
     types:
