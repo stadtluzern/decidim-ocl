@@ -14,8 +14,8 @@ gem 'decidim-initiatives', DECIDIM_VERSION
 gem 'decidim-proposals', DECIDIM_VERSION
 gem 'decidim-templates', DECIDIM_VERSION
 
-gem 'decidim-antivirus', github: 'mainio/decidim-module-antivirus', branch: 'release/0.27-stable'
 gem 'decidim-anonymous_codes', github: 'openpoke/decidim-module-anonymous_codes'
+gem 'decidim-antivirus', github: 'mainio/decidim-module-antivirus', branch: 'release/0.27-stable'
 gem 'decidim-decidim_awesome', github: 'decidim-ice/decidim-module-decidim_awesome'
 gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', branch: DECIDIM_VERSION
 gem 'decidim-question_captcha', github: 'OpenSourcePolitics/decidim-module-question_captcha', branch: 'release/0.27-stable'
@@ -65,4 +65,4 @@ group :production do
   gem 'bleib'
 end
 
-gem "dotenv", "~> 3.1"
+gem 'dotenv', '~> 3.1'
