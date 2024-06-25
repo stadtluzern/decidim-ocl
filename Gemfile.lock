@@ -47,6 +47,17 @@ GIT
       decidim-core (~> 0.27.0)
 
 GIT
+  remote: https://github.com/openpoke/decidim-module-anonymous_codes.git
+  revision: 1b7f6d8d73a3cb72d915445e006c8e2a88c692cb
+  specs:
+    decidim-anonymous_codes (1.0)
+      decidim-admin (>= 0.27.0, < 0.28)
+      decidim-core (>= 0.27.0, < 0.28)
+      decidim-forms (>= 0.27.0, < 0.28)
+      decidim-surveys (>= 0.27.0, < 0.28)
+      deface (>= 1.9.0)
+
+GIT
   remote: https://github.com/openpoke/decidim-module-participatory-documents.git
   revision: 76957bf7bbceb3235eb912b64361ed4a4e521f8a
   branch: main
@@ -486,6 +497,7 @@ GEM
     doorkeeper (5.6.9)
       railties (>= 5)
     doorkeeper-i18n (4.0.1)
+    dotenv (3.1.0)
     dumb_delegator (1.0.0)
     e2mmap (0.1.0)
     erb_lint (0.0.37)
@@ -1002,6 +1014,7 @@ DEPENDENCIES
   byebug
   dalli
   decidim (= 0.27.5)
+  decidim-anonymous_codes!
   decidim-antivirus!
   decidim-conferences (= 0.27.5)
   decidim-decidim_awesome!
@@ -1017,6 +1030,7 @@ DEPENDENCIES
   decidim-templates (= 0.27.5)
   decidim-term_customizer!
   delayed_job_active_record
+  dotenv (~> 3.1)
   execjs
   faker
   letter_opener_web
@@ -1038,4 +1052,4 @@ RUBY VERSION
    ruby 3.0.6p216
 
 BUNDLED WITH
-   2.5.6
+   2.5.5
