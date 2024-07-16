@@ -127,3 +127,10 @@ de:
           sms_originator_max_11_alphabetic_characters: DECIDIM
           sms_text: '%{code} ist der persönliche Zugangscode auf %{organization}'
   hello: Hallo Welt
+activerecord:
+  devise:
+     registrations:
+       new:
+         captcha_legend: Sicherheitsfrage
+         captcha_instructions: Bitte beantworten Sie die folgende Sicherheitsfrage (Spamschutz).
+         textcaptcha_answer: Antwort
