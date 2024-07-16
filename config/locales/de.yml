@@ -44,6 +44,12 @@ de:
       not_found:
         content_doesnt_exist: Diese Seite wurde leider nicht gefunden. Wir bitten um Verständnis.
         title: Ups!
+      models:
+         user:
+           attributes:
+             textcaptcha_answer:
+               expired: Sie haben zu lange gebraucht, um die Frage zu beantworten. Bitte versuchen Sie es erneut.
+               incorrect: Die Antwort ist leider nicht korrekt, bitte versuchen Sie es erneut.
   decidim:
     admin:
       menu:
@@ -83,6 +89,12 @@ de:
         name: Aktuellste Blog-Einträge
         title: Aktuellste Blog-Einträge
         view_all: Alle anzeigen
+    devise:
+     registrations:
+       new:
+         captcha_legend: Sicherheitsfrage
+         captcha_instructions: Bitte beantworten Sie die folgende Sicherheitsfrage (Spamschutz).
+         textcaptcha_answer: Antwort
     participatory_processes:
       index:
         participatory_process_group:
@@ -127,10 +139,4 @@ de:
           sms_originator_max_11_alphabetic_characters: DECIDIM
           sms_text: '%{code} ist der persönliche Zugangscode auf %{organization}'
   hello: Hallo Welt
-activerecord:
-  devise:
-     registrations:
-       new:
-         captcha_legend: Sicherheitsfrage
-         captcha_instructions: Bitte beantworten Sie die folgende Sicherheitsfrage (Spamschutz).
-         textcaptcha_answer: Antwort
+
