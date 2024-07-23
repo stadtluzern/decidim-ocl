@@ -3,52 +3,40 @@ name: 'Reusable: Code Style Review'
 on:
   workflow_call:
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   lint:
     runs-on: 'ubuntu-latest'
 
+    # services:
+    #   postgres:
+    #     image: 'postgis/postgis:14-3.3-alpine'
+    #     env:
+    #       POSTGRESQL_PASSWORD: 'postgres'
+    #     ports: ['5432:5432']
+    #     options: >-
+    #       --health-cmd pg_isready
+    #       --health-interval 10s
+    #       --health-timeout 10s
+    #       --health-retries 10
+    #   memcached:
+    #     image: 'memcached:alpine'
+    #     ports: ['11211:11211']
+
+    env:
+      BUNDLE_PATH: 'vendor/bundle'
+      REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
+
     steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-
-      - name: 'Set up Ruby'
-        uses: actions/setup-ruby@v1
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+      - run: bundle install --jobs 4 --retry 3
+      - uses: reviewdog/action-rubocop@v2.12.0
         with:
-          ruby-version: '2.7'
-
-      - name: 'Set up Reviewdog'
-        env:
-          REVIEWDOG_INSTALLER: 'https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh'
-        run: |
-          mkdir -p $HOME/bin
-          curl -sfL ${REVIEWDOG_INSTALLER} | sh -s -- -b $HOME/bin
-
-      - name: 'Set up Rubocop'
-        run: 'gem install rubocop rubocop-minitest rubocop-performance rubocop-rails'
-
-      - name: 'Run Rubocop'
-        env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          rubocop |
-          $HOME/bin/reviewdog \
-          -f=rubocop \
-          -name="Rubocop" \
-          -reporter=github-pr-review \
-          -level=error \
-          -diff="git diff $DIFF_BRANCH"
-
-      - name: 'Set up Haml-lint'
-        run: 'gem install haml-lint'
-
-      - name: 'Run Haml-lint'
-        env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          haml-lint |
-          $HOME/bin/reviewdog \
-          -efm="%f:%l %m" \
-          -name="Haml-lint" \
-          -reporter=github-pr-review \
-          -level=error \
-          -diff="git diff $DIFF_BRANCH"
+          reporter: github-pr-review
+          level: error
+          reviewdog_flags: '-diff="git diff $DIFF_BRANCH"'
+          rubocop_extensions: rubocop-rails rubocop-performance rubocop-rspec rubocop-i18n rubocop-rake rubocop-faker
