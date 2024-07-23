@@ -9,9 +9,11 @@ on:
       - 'doc/**'
       - '**.md'
 jobs:
-  build_image:
-    uses: ./.github/actions/lint_test_build_update.yaml
+  build-image:
+    uses: ./.github/workflows/reusable_lint_test_build_update.yaml
     with:
       image_repo: "harbor.puzzle.ch/decidim/stlu/int/rails"
       configmanagement: "gitlab.puzzle.ch/pitc_ruby/decidim-configmanagement"
       kustomization_path: "./deployments/pitc-stlu-decidim-int/kustomization.yaml"
+
+

@@ -18,18 +18,18 @@ on:
 
 jobs: 
   lint:
-    uses: ./.github/actions/lint.yaml
+    uses: ./.github/workflows/reusable_lint.yaml
   test:
-    uses: ./.github/actions/tests.yaml
+    uses: ./.github/workflows/reusable_tests.yaml
   build:
     needs: [lint, test]
-    uses: ./.github/actions/build.yaml
+    uses: ./.github/workflows/reusable_build.yaml
     secrets: inherit
     with:
       repository_url: ${{ inputs.image_repo }}
   update_tag:
     needs: [build]
-    uses: ./.github/actions/update_image.yaml
+    uses: ./.github/workflows/reusable_update_image.yaml
     secrets: inherit
     with:
       repository: ${{ inputs.configmanagement }}
