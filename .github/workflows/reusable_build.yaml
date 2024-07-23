@@ -1,11 +1,5 @@
 name: 'Reusable: Build and push image'
 
-# This is a reusable build step, that is supposed to handle the generic task of building a docker
-# image and pushing it to a repo.
-# This action should be as generic as possible. Maybe extract it to a repo
-#
-# TODO: Could be made more customizable with: `jq`, `fromJSON`, `toJSON` and `join`
-
 on:
   workflow_call:
     inputs:

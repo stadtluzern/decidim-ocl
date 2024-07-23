@@ -68,10 +68,9 @@ jobs:
           JSON: ${{ inputs.json }}
         with:
           cmd: |
-            ls -lha
-          # TAG=$(echo "${JSON}" | yq -r '.tags[] | select(. | test("sha-"))')
-          # echo $TAG
-          # yq -i '.images.[] | select(.name == env(IMAGE_REF)) += {"newTag": env(TAG)}' "${FILE}"
+            TAG=$(echo "${JSON}" | yq -r '.tags[] | select(. | test("sha-"))')
+            echo $TAG
+            yq -i '.images.[] | select(.name == env(IMAGE_REF)) += {"newTag": env(TAG)}' "${FILE}"
       - name: Commit & push back to repository
         env:
           IMAGE_REF: ${{ inputs.image_ref }}
