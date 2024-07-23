@@ -12,7 +12,7 @@ jobs:
       postgres:
         image: 'postgis/postgis:14-3.3-alpine'
         env:
-          POSTGRESQL_PASSWORD: 'postgres'
+          POSTGRES_PASSWORD: 'postgres'
         ports: ['5432:5432']
         options: >-
           --health-cmd pg_isready

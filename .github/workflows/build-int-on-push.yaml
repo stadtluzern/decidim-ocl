@@ -8,12 +8,14 @@ on:
     paths-ignore:
       - 'doc/**'
       - '**.md'
+
 jobs:
   build-image:
     uses: ./.github/workflows/reusable_lint_test_build_update.yaml
     with:
-      image_repo: "harbor.puzzle.ch/decidim/stlu/int/rails"
-      configmanagement: "gitlab.puzzle.ch/pitc_ruby/decidim-configmanagement"
+      image_repo: "https://harbor.puzzle.ch"
+      image_url: "harbor.puzzle.ch/decidim/stlu-int-rails"
+      configmanagement: "gitlab.puzzle.ch/pitc_ruby/decidim-configmanagement/"
+      configmanagement_branch: "feature/cloudscale"
       kustomization_path: "./deployments/pitc-stlu-decidim-int/kustomization.yaml"
-
-
+    secrets: inherit
