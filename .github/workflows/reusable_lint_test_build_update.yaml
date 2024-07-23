@@ -4,13 +4,21 @@ on:
   workflow_call:
     inputs:
       image_repo:
-        description: "Image repo to push image to"
+        description: "Image repo"
+        type: string
+        required: true
+      image_url:
+        description: "URL to push image to"
         type: string
         required: true
       configmanagement:
         description: "Configmanagement to write image tag to"
         type: string
         required: true
+      configmanagement_branch:
+        description: "Configmanagement branch to put the image tag into"
+        type: string
+        required: false
       kustomization_path:
         description: "Path to kustomization file"
         type: string
@@ -24,14 +32,19 @@ jobs:
   build:
     needs: [lint, test]
     uses: ./.github/workflows/reusable_build.yaml
-    secrets: inherit
+    secrets:
+      REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+      REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
     with:
       repository_url: ${{ inputs.image_repo }}
+      images: ${{ inputs.image_url }}
+      flavor: latest=true
   update_tag:
     needs: [build]
     uses: ./.github/workflows/reusable_update_image.yaml
     secrets: inherit
     with:
       repository: ${{ inputs.configmanagement }}
+      repository_branch: ${{ inputs.configmanagement_branch }}
       file: ${{ inputs.kustomization_path }}
-      json: ${{ jobs.build.outputs.json }}
+      json: ${{ needs.build.outputs.json }}
