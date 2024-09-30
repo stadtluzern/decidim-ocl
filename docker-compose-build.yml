@@ -43,7 +43,7 @@ services:
       - pg-data:/var/lib/postgresql/data
   cache:
     image: memcached:1.5-alpine
-    command: [ memcached, -l, '0.0.0.0', -p, '11211' ]
+    command: [memcached, -l, '0.0.0.0', -p, '11211']
 
   adminer:
     image: adminer
@@ -63,7 +63,7 @@ services:
     depends_on: []
     ports: []
     entrypoint: []
-    command: [ rake, 'jobs:work' ]
+    command: [rake, 'jobs:work']
 
 volumes:
   node_modules: {}
