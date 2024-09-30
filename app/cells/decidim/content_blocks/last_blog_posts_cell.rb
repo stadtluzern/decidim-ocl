@@ -77,11 +77,11 @@ module Decidim
 
         @activities ||=
           Decidim::ActionLog
-            .where(visibility: %w(public-only all))
-            .where(organization: current_organization)
-            .where(resource_type: "Decidim::Blogs::Post")
-            .where(action: "create")
-            .order(created_at: :desc)
+          .where(visibility: %w(public-only all))
+          .where(organization: current_organization)
+          .where(resource_type: "Decidim::Blogs::Post")
+          .where(action: "create")
+          .order(created_at: :desc)
       end
 
       def activities_to_show

@@ -14,7 +14,7 @@ class StatusControllerTest < ActionController::TestCase
 
   def test_readiness
     endpoint_test :readiness
-    end
+  end
 
   private
 
