@@ -17,8 +17,6 @@ ActiveRecord::Schema.define(version: 2024_10_22_104754) do
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
   enable_extension "fuzzystrmatch"
-  enable_extension "postgis_tiger_geocoder"
-  enable_extension "postgis_topology"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
