@@ -19,10 +19,8 @@ end
 def memcache_configured?
   if Rails.env.production?
     ENV['RAILS_MEMCACHED_HOST'].present?
-  elsif Rails.env.development?
-    true
   else
-    false
+    Rails.env.development?
   end
 end
 

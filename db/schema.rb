@@ -13,7 +13,6 @@
 ActiveRecord::Schema.define(version: 2024_11_01_162638) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "fuzzystrmatch"
   enable_extension "ltree"
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
