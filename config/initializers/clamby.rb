@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-Clamby.configure(
-  stream: true
-)
+return unless Object.const_defined?('Clamby')
+
+Clamby.configure(stream: true)
