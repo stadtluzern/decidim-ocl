@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_06_25_091114) do
+ActiveRecord::Schema.define(version: 2024_11_01_162638) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "fuzzystrmatch"
   enable_extension "ltree"
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
@@ -506,6 +507,8 @@ ActiveRecord::Schema.define(version: 2024_06_25_091114) do
     t.string "decidim_participatory_space_type"
     t.integer "decidim_participatory_space_id"
     t.datetime "deleted_at"
+    t.integer "up_votes_count", default: 0, null: false
+    t.integer "down_votes_count", default: 0, null: false
     t.index ["created_at"], name: "index_decidim_comments_comments_on_created_at"
     t.index ["decidim_author_id", "decidim_author_type"], name: "index_decidim_comments_comments_on_decidim_author"
     t.index ["decidim_author_id"], name: "decidim_comments_comment_author"
@@ -856,6 +859,35 @@ ActiveRecord::Schema.define(version: 2024_06_25_091114) do
     t.string "badge_name", null: false
     t.integer "value", default: 0, null: false
     t.index ["user_id"], name: "index_decidim_gamification_badge_scores_on_user_id"
+  end
+
+  create_table "decidim_guest_meeting_registration_registration_requests", force: :cascade do |t|
+    t.bigint "decidim_organization_id"
+    t.bigint "decidim_meetings_meetings_id"
+    t.integer "decidim_user_id"
+    t.jsonb "form_data"
+    t.string "email", null: false
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.string "cancellation_token"
+    t.string "session_token"
+    t.index ["decidim_meetings_meetings_id"], name: "index_guest_meeting_registration_mm_on_organization_id"
+    t.index ["decidim_organization_id"], name: "index_guest_meeting_registration_rr_on_organization_id"
+    t.index ["decidim_user_id"], name: "index_guest_meeting_registration_uid_on_organization_id"
+  end
+
+  create_table "decidim_guest_meeting_registration_settings", force: :cascade do |t|
+    t.boolean "enable_guest_registration", default: false
+    t.bigint "decidim_organization_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "enable_registration_confirmation", default: false
+    t.boolean "enable_cancellation", default: false
+    t.boolean "disable_account_confirmation", default: false
+    t.index ["decidim_organization_id"], name: "index_guest_meeting_registration_settings_on_organization_id"
   end
 
   create_table "decidim_hashtags", force: :cascade do |t|
@@ -1759,6 +1791,7 @@ ActiveRecord::Schema.define(version: 2024_06_25_091114) do
     t.jsonb "body"
     t.integer "comments_count", default: 0, null: false
     t.integer "follows_count", default: 0, null: false
+    t.integer "valuation_assignments_count", default: 0
     t.index "md5((body)::text)", name: "decidim_proposals_proposal_body_search"
     t.index "md5((title)::text)", name: "decidim_proposals_proposal_title_search"
     t.index ["created_at"], name: "index_decidim_proposals_proposals_on_created_at"
@@ -2295,6 +2328,9 @@ ActiveRecord::Schema.define(version: 2024_06_25_091114) do
   add_foreign_key "decidim_debates_debates", "decidim_scopes"
   add_foreign_key "decidim_editor_images", "decidim_organizations"
   add_foreign_key "decidim_editor_images", "decidim_users", column: "decidim_author_id"
+  add_foreign_key "decidim_guest_meeting_registration_registration_requests", "decidim_meetings_meetings", column: "decidim_meetings_meetings_id"
+  add_foreign_key "decidim_guest_meeting_registration_registration_requests", "decidim_organizations"
+  add_foreign_key "decidim_guest_meeting_registration_settings", "decidim_organizations"
   add_foreign_key "decidim_identities", "decidim_organizations"
   add_foreign_key "decidim_initiatives_settings", "decidim_organizations"
   add_foreign_key "decidim_navigation_maps_blueprint_areas", "decidim_navigation_maps_blueprints"
