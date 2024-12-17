@@ -20,7 +20,7 @@ ARG BUILD_SCRIPT="set -uex \
     && npm install -g yarn \
     && yarn set version 1.22.19"
 ARG BUNDLE_WITHOUT="development:metrics:test"
-ARG BUNDLER_VERSION="2.4.18"
+ARG BUNDLER_VERSION="2.5.6"
 ARG POST_BUILD_SCRIPT="bundle exec rails assets:precompile"
 ARG RAILS_DB_ADAPTER="nulldb"
 ARG SKIP_MEMCACHE_CHECK="true"
@@ -36,15 +36,15 @@ RUN    apt-get update \
 
 # Installs nodejs as a dependency
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
- && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg -o /root/yarn-pubkey.gpg && apt-key add /root/yarn-pubkey.gpg \
- && echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \ && apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
+    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg -o /root/yarn-pubkey.gpg && apt-key add /root/yarn-pubkey.gpg \
+    && echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \ && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
     nodejs \
- && apt-get clean \
- && rm -rf /var/cache/apt/archives/* \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
- && truncate -s 0 /var/log/*log
- 
+    && apt-get clean \
+    && rm -rf /var/cache/apt/archives/* \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && truncate -s 0 /var/log/*log
+
 RUN [[ ${BUILD_SCRIPT} ]] && bash -c "${BUILD_SCRIPT}"
 
 # Install specific versions of dependencies
@@ -58,10 +58,10 @@ WORKDIR /app-src
 
 # Run deployment
 RUN bundle config set --local deployment 'true' \
- && bundle config set --local without ${BUNDLE_WITHOUT} \
- && bundle package \
- && bundle install \
- && bundle clean
+    && bundle config set --local without ${BUNDLE_WITHOUT} \
+    && bundle package \
+    && bundle install \
+    && bundle clean
 
 COPY ./package.json ./yarn.lock /app-src/
 RUN yarn
@@ -90,7 +90,7 @@ SHELL ["/bin/bash", "-c"]
 RUN adduser --disabled-password --uid 1001 --gid 0 --gecos "" --shell /bin/bash app
 
 ARG BUNDLE_WITHOUT="development:metrics:test"
-ARG BUNDLER_VERSION="2.4.18"
+ARG BUNDLER_VERSION="2.5.6"
 ARG RUN_PACKAGES="clamav clamav-daemon git graphicsmagick libicu-dev libpq5 nodejs poppler-utils"
 ARG CUSTOMIZATION_OUTPUT="false"
 ENV TZ="Europe/Zurich"
@@ -127,17 +127,17 @@ RUN    mkdir /var/run/clamav \
     && chown clamav /run/clamav \
     && sed -i 's/^chown/# chown/' /etc/init.d/clamav-daemon \
     && chgrp -R 0 /app-src \
-                  /var/log/clamav \
-                  /var/lib/clamav \
-                  /var/run/clamav \
-                  /run/clamav \
+    /var/log/clamav \
+    /var/lib/clamav \
+    /var/run/clamav \
+    /run/clamav \
     && chmod -R u+w,g=u /app-src \
-                        /var/log/clamav \
-                        /var/lib/clamav \
-                        /var/run/clamav \
-                        /run/clamav \
-                        /run/clamav \
-                        /opt/bin/start_clamd \
+    /var/log/clamav \
+    /var/lib/clamav \
+    /var/run/clamav \
+    /run/clamav \
+    /run/clamav \
+    /opt/bin/start_clamd \
     && freshclam
 
 
