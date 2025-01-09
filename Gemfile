@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-DECIDIM_VERSION = '0.27.5'
+DECIDIM_VERSION = '0.27.9'
 
 ruby RUBY_VERSION
 
@@ -14,12 +14,13 @@ gem 'decidim-initiatives', DECIDIM_VERSION
 gem 'decidim-proposals', DECIDIM_VERSION
 gem 'decidim-templates', DECIDIM_VERSION
 
+gem 'decidim-anonymous_codes', github: 'openpoke/decidim-module-anonymous_codes'
 gem 'decidim-antivirus', github: 'mainio/decidim-module-antivirus', branch: 'release/0.27-stable'
 gem 'decidim-decidim_awesome', github: 'decidim-ice/decidim-module-decidim_awesome'
 gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', branch: DECIDIM_VERSION
+gem 'decidim-participatory_documents', github: 'openpoke/decidim-module-participatory-documents', branch: 'main'
 gem 'decidim-question_captcha', github: 'OpenSourcePolitics/decidim-module-question_captcha', branch: 'release/0.27-stable'
 gem 'decidim-reporting_proposals', github: 'openpoke/decidim-module-reporting-proposals', branch: 'main'
-gem 'decidim-participatory_documents', github: 'openpoke/decidim-module-participatory-documents', branch: 'main'
 gem 'decidim-survey_multiple_answers', '~> 0.26.2'
 gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', branch: 'release/0.27-stable'
 
@@ -63,3 +64,5 @@ end
 group :production do
   gem 'bleib'
 end
+
+gem 'dotenv', '~> 3.1'

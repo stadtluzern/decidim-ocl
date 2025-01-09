@@ -7,7 +7,7 @@ Rails.application.config.session_store(
   memcache_server: [ENV.fetch('RAILS_MEMCACHED_HOST', '127.0.0.1')],
   namespace: 'sessions',
   key: '_session',
-  expire_after: 30.minutes,
+  expire_after: 24.hours,
   secure: Rails.env.production?,
   same_site: :lax
 )
@@ -19,10 +19,8 @@ end
 def memcache_configured?
   if Rails.env.production?
     ENV['RAILS_MEMCACHED_HOST'].present?
-  elsif Rails.env.development?
-    true
   else
-    false
+    Rails.env.development?
   end
 end
 

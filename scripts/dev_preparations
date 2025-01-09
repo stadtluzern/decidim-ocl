@@ -1,3 +1,5 @@
+#!../bin/rails runner
+# vim: et:ts=2:sw=2:tw=0:wm=0:fdm=marker
 # frozen_string_literal: true
 
 class DevPreparations

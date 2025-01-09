@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_22_103255) do
+ActiveRecord::Schema.define(version: 2024_11_01_162638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
@@ -133,6 +133,41 @@ ActiveRecord::Schema.define(version: 2024_02_22_103255) do
     t.index ["decidim_user_id", "decidim_amendable_id", "decidim_amendable_type"], name: "index_on_amender_and_amendable"
     t.index ["decidim_user_id"], name: "index_decidim_amendments_on_decidim_user_id"
     t.index ["state"], name: "index_decidim_amendments_on_state"
+  end
+
+  create_table "decidim_anonymous_codes_groups", force: :cascade do |t|
+    t.jsonb "title"
+    t.datetime "expires_at"
+    t.boolean "active", default: true, null: false
+    t.integer "max_reuses", default: 1, null: false
+    t.integer "tokens_count", default: 0, null: false
+    t.string "resource_type"
+    t.bigint "resource_id"
+    t.bigint "decidim_organization_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["decidim_organization_id"], name: "decidim_anonymous_codes_groups_on_organization"
+    t.index ["resource_type", "resource_id"], name: "decidim_anonymous_codes_groups_on_resource"
+  end
+
+  create_table "decidim_anonymous_codes_token_resources", force: :cascade do |t|
+    t.bigint "token_id", null: false
+    t.string "resource_type", null: false
+    t.bigint "resource_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["resource_type", "resource_id"], name: "decidim_anonymous_codes_token_resources_on_resource"
+    t.index ["token_id"], name: "decidim_anonymous_codes_token_resources_on_token"
+  end
+
+  create_table "decidim_anonymous_codes_tokens", force: :cascade do |t|
+    t.string "token", null: false
+    t.integer "usage_count", default: 0, null: false
+    t.bigint "group_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["group_id"], name: "decidim_anonymous_codes_tokens_on_group"
+    t.index ["token", "group_id"], name: "index_anonymous_codes_token_group_uniqueness", unique: true
   end
 
   create_table "decidim_area_types", force: :cascade do |t|
@@ -471,6 +506,8 @@ ActiveRecord::Schema.define(version: 2024_02_22_103255) do
     t.string "decidim_participatory_space_type"
     t.integer "decidim_participatory_space_id"
     t.datetime "deleted_at"
+    t.integer "up_votes_count", default: 0, null: false
+    t.integer "down_votes_count", default: 0, null: false
     t.index ["created_at"], name: "index_decidim_comments_comments_on_created_at"
     t.index ["decidim_author_id", "decidim_author_type"], name: "index_decidim_comments_comments_on_decidim_author"
     t.index ["decidim_author_id"], name: "decidim_comments_comment_author"
@@ -821,6 +858,35 @@ ActiveRecord::Schema.define(version: 2024_02_22_103255) do
     t.string "badge_name", null: false
     t.integer "value", default: 0, null: false
     t.index ["user_id"], name: "index_decidim_gamification_badge_scores_on_user_id"
+  end
+
+  create_table "decidim_guest_meeting_registration_registration_requests", force: :cascade do |t|
+    t.bigint "decidim_organization_id"
+    t.bigint "decidim_meetings_meetings_id"
+    t.integer "decidim_user_id"
+    t.jsonb "form_data"
+    t.string "email", null: false
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.string "cancellation_token"
+    t.string "session_token"
+    t.index ["decidim_meetings_meetings_id"], name: "index_guest_meeting_registration_mm_on_organization_id"
+    t.index ["decidim_organization_id"], name: "index_guest_meeting_registration_rr_on_organization_id"
+    t.index ["decidim_user_id"], name: "index_guest_meeting_registration_uid_on_organization_id"
+  end
+
+  create_table "decidim_guest_meeting_registration_settings", force: :cascade do |t|
+    t.boolean "enable_guest_registration", default: false
+    t.bigint "decidim_organization_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "enable_registration_confirmation", default: false
+    t.boolean "enable_cancellation", default: false
+    t.boolean "disable_account_confirmation", default: false
+    t.index ["decidim_organization_id"], name: "index_guest_meeting_registration_settings_on_organization_id"
   end
 
   create_table "decidim_hashtags", force: :cascade do |t|
@@ -1724,6 +1790,7 @@ ActiveRecord::Schema.define(version: 2024_02_22_103255) do
     t.jsonb "body"
     t.integer "comments_count", default: 0, null: false
     t.integer "follows_count", default: 0, null: false
+    t.integer "valuation_assignments_count", default: 0
     t.index "md5((body)::text)", name: "decidim_proposals_proposal_body_search"
     t.index "md5((title)::text)", name: "decidim_proposals_proposal_title_search"
     t.index ["created_at"], name: "index_decidim_proposals_proposals_on_created_at"
@@ -2242,6 +2309,7 @@ ActiveRecord::Schema.define(version: 2024_02_22_103255) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "decidim_anonymous_codes_groups", "decidim_organizations"
   add_foreign_key "decidim_area_types", "decidim_organizations"
   add_foreign_key "decidim_areas", "decidim_area_types", column: "area_type_id"
   add_foreign_key "decidim_areas", "decidim_organizations"
@@ -2259,6 +2327,9 @@ ActiveRecord::Schema.define(version: 2024_02_22_103255) do
   add_foreign_key "decidim_debates_debates", "decidim_scopes"
   add_foreign_key "decidim_editor_images", "decidim_organizations"
   add_foreign_key "decidim_editor_images", "decidim_users", column: "decidim_author_id"
+  add_foreign_key "decidim_guest_meeting_registration_registration_requests", "decidim_meetings_meetings", column: "decidim_meetings_meetings_id"
+  add_foreign_key "decidim_guest_meeting_registration_registration_requests", "decidim_organizations"
+  add_foreign_key "decidim_guest_meeting_registration_settings", "decidim_organizations"
   add_foreign_key "decidim_identities", "decidim_organizations"
   add_foreign_key "decidim_initiatives_settings", "decidim_organizations"
   add_foreign_key "decidim_navigation_maps_blueprint_areas", "decidim_navigation_maps_blueprints"
