@@ -20,7 +20,7 @@ ARG BUILD_SCRIPT="set -uex \
     && npm install -g yarn \
     && yarn set version 1.22.19"
 ARG BUNDLE_WITHOUT="development:metrics:test"
-ARG BUNDLER_VERSION="2.4.18"
+ARG BUNDLER_VERSION="2.5.6"
 ARG POST_BUILD_SCRIPT="bundle exec rails assets:precompile"
 ARG RAILS_DB_ADAPTER="nulldb"
 ARG SKIP_MEMCACHE_CHECK="true"
@@ -90,7 +90,7 @@ SHELL ["/bin/bash", "-c"]
 RUN adduser --disabled-password --uid 1001 --gid 0 --gecos "" --shell /bin/bash app
 
 ARG BUNDLE_WITHOUT="development:metrics:test"
-ARG BUNDLER_VERSION="2.4.18"
+ARG BUNDLER_VERSION="2.5.6"
 ARG RUN_PACKAGES="clamav clamav-daemon git graphicsmagick libicu-dev libpq5 nodejs poppler-utils"
 ARG CUSTOMIZATION_OUTPUT="false"
 ENV TZ="Europe/Zurich"
