@@ -138,5 +138,13 @@ de:
         aspsms_gateway:
           sms_originator_max_11_alphabetic_characters: DECIDIM
           sms_text: '%{code} ist der persönliche Zugangscode auf %{organization}'
+    reply_to:
+      default:
+      deinklima: 
+      dialogluzern:
+      gemeinsamerspace: 
+      koeniz: 
+      winterthur:
+
   hello: Hallo Welt
 
