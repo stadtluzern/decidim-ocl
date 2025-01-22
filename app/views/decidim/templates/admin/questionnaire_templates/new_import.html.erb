@@ -1,0 +1,9 @@
+<% add_decidim_page_title(t("templates", scope: "decidim.admin.titles")) %>
+<% content_for :title do %>
+  <%= t("templates", scope: "decidim.admin.titles") %>
+<% end %>
+
+
+<%= decidim_form_for(@form, url: import_questionnaire_template_path, html: { class: "form new_questionnaire_template" }) do |f| %>
+  <%= render partial: "input_form", object: f, locals: {form: f} %>
+<% end %>

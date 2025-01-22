@@ -1,0 +1,6 @@
+<!--
+  insert_before ".card-title > erb[silent]:last-child"
+  original 'aefc8e355300ccc5af0592fb2e7c1e5eb7a2ba6d'
+-->
+        <%#= link_to t("actions.import", scope: "decidim.admin", name: t("template.name", scope: "decidim.models").downcase), [:new_import, :questionnaire_template], class: "button tiny button--title new" %>
+        <%= link_to "Importieren", [:new_import, :questionnaire_template], class: "button tiny button--title new" %>
