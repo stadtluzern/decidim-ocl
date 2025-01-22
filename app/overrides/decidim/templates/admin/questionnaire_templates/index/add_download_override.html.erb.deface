@@ -1,0 +1,7 @@
+<!--
+  insert_before "td.table-list__actions > erb:nth-last-child(2)"
+  original '7461ff7628cd41495f01feee053377231a0bb7d0'
+-->
+                <% if allowed_to?(:copy, :template, questionnaire_template: template) %>
+                  <%= icon_link_to "data-transfer-download", export_questionnaire_template_path(template), t("actions.export", scope: "decidim.admin") %>
+                <% end %>
