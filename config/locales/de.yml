@@ -109,6 +109,23 @@ de:
           enabled: Omniauth aktiviert
         tenant_type:
           none: None
+    templates:
+      admin:
+        questionnaire_templates:
+          import:
+            failed: |-
+              Der Import ist fehlgeschlagen:
+
+              %{messages}
+          input_form:
+            save: Speichern
+            survey_template_upload: 
+              label: Fragebogenvorlage hochladen
+              button_label: Vorlage auswählen
+              help: Die Vorlage muss im .json Format sein
+            template_title: Fragebogenvorlage importieren
+          validation:
+            not_json: Die ausgewählte Datei war kein .json
   decidim_ocl:
     devise:
       # dialogluzern:
