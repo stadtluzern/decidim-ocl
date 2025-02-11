@@ -6,6 +6,7 @@ class DevPreparations
   class << self
     def all
       localize_hosts
+      reset_password_updated_at
     end
 
     def localize_hosts
@@ -17,6 +18,11 @@ class DevPreparations
         puts "Changing '#{old_host}' to '#{new_host}'."
         org.update_attribute(:host, new_host)
       end
+    end
+
+    def reset_password_updated_at
+      Decidim::User.all.update_all(password_updated_at: DateTime.now)
+      puts 'Reset all updated_at fields.'
     end
   end
 end
