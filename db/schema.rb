@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_11_01_162638) do
+ActiveRecord::Schema.define(version: 2025_02_11_203142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
@@ -1147,6 +1147,10 @@ ActiveRecord::Schema.define(version: 2024_11_01_162638) do
     t.string "state"
     t.integer "iframe_access_level", default: 0
     t.integer "iframe_embed_type", default: 0
+    t.boolean "enable_guest_registration", default: false
+    t.boolean "enable_registration_confirmation", default: false
+    t.boolean "enable_cancellation", default: false
+    t.boolean "disable_account_confirmation", default: false
     t.index ["decidim_author_id", "decidim_author_type"], name: "index_decidim_meetings_meetings_on_author"
     t.index ["decidim_author_id"], name: "index_decidim_meetings_meetings_on_decidim_author_id"
     t.index ["decidim_component_id"], name: "index_decidim_meetings_meetings_on_decidim_component_id"
