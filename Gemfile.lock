@@ -11,7 +11,7 @@ GIT
 GIT
   remote: https://github.com/Platoniq/decidim-module-navigation_maps.git
   revision: 52c7f017ea5e3b3e817b411a6bb445800c45dda7
-  branch: main
+  branch: release/0.27-stable
   specs:
     decidim-navigation_maps (1.4.0)
       decidim-admin (>= 0.27, < 0.28)
@@ -29,9 +29,10 @@ GIT
 
 GIT
   remote: https://github.com/decidim-ice/decidim-module-decidim_awesome.git
-  revision: 2a34c57248150d7c7eae77bd1ba7c64f211d60b7
+  revision: b74e2d8e8d493139addf8b7a58d3bd43fc0f4c5e
+  branch: release/0.27-stable
   specs:
-    decidim-decidim_awesome (0.10.2)
+    decidim-decidim_awesome (0.10.4)
       decidim-admin (>= 0.26.0, < 0.28)
       decidim-core (>= 0.26.0, < 0.28)
       deface (>= 1.5)
@@ -77,8 +78,8 @@ GIT
 
 GIT
   remote: https://github.com/openpoke/decidim-module-reporting-proposals.git
-  revision: 899e38c7cb4496102617f266f0e640659e987839
-  branch: main
+  revision: 03c063b3e5d9ff6e241b9afc9db8c2c5efc9c301
+  branch: release/0.27-stable
   specs:
     decidim-reporting_proposals (0.5.2)
       decidim-admin (>= 0.27.0, < 0.28)

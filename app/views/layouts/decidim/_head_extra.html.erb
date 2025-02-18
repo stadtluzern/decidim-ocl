@@ -1,4 +1,8 @@
 <%
+    # HACK: This file contains Hacks to get decidim_awesome to work. They need to be removed on upgrade.
+%>
+
+<%
   if Rails.env.production?
     domain = request.env['SERVER_NAME']
     prod = ENV.fetch('SENTRY_CURRENT_ENV')=='production'
@@ -41,3 +45,18 @@
 <script type="text/javascript">
   window.tenantType = <%= current_organization&.tenant_type.to_json.html_safe %>
 </script>
+
+<%# Insert according to https://github.com/decidim-ice/decidim-module-decidim_awesome/blob/release/0.27-stable/app/overrides/layouts/decidim/_head/add_awesome_tags.html.erb.deface %>
+
+<%= stylesheet_pack_tag "decidim_decidim_awesome", media: "all" %>
+<%= render(partial: "layouts/decidim/decidim_awesome/custom_styles") if awesome_scoped_styles.present? %>
+
+<%= render partial: "layouts/decidim/decidim_awesome/awesome_config" %>
+<%# This will render scripts only on Decidim 0.27 %>
+<% content_for :js_content do %>
+  <%= javascript_pack_tag "decidim_decidim_awesome", defer: false %>
+  <%= javascript_pack_tag("decidim_decidim_awesome_custom_fields") if Decidim::DecidimAwesome.enabled?(:proposal_custom_fields) %>
+  <% if show_public_intergram? %>
+    <%= render partial: "layouts/decidim/decidim_awesome/intergram_widget", locals: { settings: organization_awesome_config[:intergram_for_public_settings] } %>
+  <% end %>
+<% end %>
