@@ -140,10 +140,10 @@ de:
           sms_text: '%{code} ist der persönliche Zugangscode auf %{organization}'
     reply_to:
       default:
-      deinklima: 
+      deinklima: info@deinklima.ch 
       dialogluzern:
       gemeinsamerspace: 
-      koeniz: 
+      koeniz: info@impulskoeniz.ch
       winterthur:
 
   hello: Hallo Welt
