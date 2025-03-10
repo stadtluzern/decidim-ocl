@@ -59,6 +59,7 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+  config.action_view.raise_on_missing_translations = false
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
@@ -82,9 +83,10 @@ Rails.application.configure do
   ].flatten.compact
 
   # TODO Remove after fixing dev
-  config.log_level = :info
+  config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'debug').to_sym
 
-  config.lograge.enabled = true
+  # Do not use log rage by default
+  config.lograge.enabled = ENV.fetch('RAILS_LOGRAGE_ENABLED', 'false').in?(%w[true t on enabled 1])
   config.lograge.ignore_actions = ['StatusController#health', 'StatusController#readiness']
   config.lograge.custom_payload do |controller|
     {
@@ -99,4 +101,6 @@ Rails.application.configure do
       params: event.payload[:params].except(*exceptions)
     }
   end
+
+  config.deface.enabled = !(ENV.fetch('DISABLE_DEFACE', 'false').in? %w[true t on enabled 1])
 end

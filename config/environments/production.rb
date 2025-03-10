@@ -41,7 +41,7 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :warn
+  config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'warn').to_sym
 
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
@@ -118,7 +118,7 @@ Rails.application.configure do
   }
 
   # Use log rage
-  config.lograge.enabled = true
+  config.lograge.enabled = ENV.fetch('RAILS_LOGRAGE_ENABLED', 'true').in?(%w[true t on enabled 1])
   config.lograge.ignore_actions = ['StatusController#health', 'StatusController#readiness']
   config.lograge.custom_payload do |controller|
     {
@@ -134,5 +134,5 @@ Rails.application.configure do
     }
   end
 
-  config.deface.enabled = !(ENV['DISABLE_DEFACE'].to_s.in? %w[true on 1])
+  config.deface.enabled = !(ENV.fetch('DISABLE_DEFACE', 'true').in? %w[true t on enabled 1])
 end

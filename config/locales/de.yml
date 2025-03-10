@@ -136,6 +136,7 @@ de:
     verifications:
       sms:
         aspsms_gateway:
+          error: Wenn die SMS Verifizierung aktiviert wurde, müssen sowohl der User Key, als auch das Password angegeben werden
           sms_originator_max_11_alphabetic_characters: DECIDIM
           sms_text: '%{code} ist der persönliche Zugangscode auf %{organization}'
     reply_to:
