@@ -1,3 +1,7 @@
+# syntax=docker/dockerfile:1
+# check=skip=SecretsUsedInArgOrEnv
+# We need to set SECRET_KEY_BASE so rails works... 
+
 ##################################################################
 #                            Build Stage                         #
 ##################################################################
@@ -11,17 +15,22 @@ SHELL ["/bin/bash", "-c"]
 USER root
 
 ARG BUILD_PACKAGES="git libicu-dev libpq-dev ca-certificates curl gnupg"
-ARG BUILD_SCRIPT="set -uex \
-    && mkdir -p /etc/apt/keyrings \
-    && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
-    && echo \"deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main\" > /etc/apt/sources.list.d/nodesource.list \
-    && apt-get update \
-    && apt-get install nodejs -y \
-    && npm install -g yarn \
-    && yarn set version 1.22.19"
+ARG BUILD_SCRIPT="\
+  set -uex \
+  && mkdir -p /etc/apt/keyrings \
+  && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+  && echo \"deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main\" > /etc/apt/sources.list.d/nodesource.list \
+  && apt-get update \
+  && apt-get install nodejs -y \
+  && npm install -g yarn \
+  && yarn set version 1.22.19 \
+"
 ARG BUNDLE_WITHOUT="development:metrics:test"
 ARG BUNDLER_VERSION="2.5.6"
-ARG POST_BUILD_SCRIPT="bundle exec rails assets:precompile"
+ARG POST_BUILD_SCRIPT="\
+  bundle exec rails assets:precompile \
+  && bundle exec rails deface:precompile \
+"
 ARG RAILS_DB_ADAPTER="nulldb"
 ARG SKIP_MEMCACHE_CHECK="true"
 ARG RAILS_ENV="production"
