@@ -37,6 +37,7 @@ gem 'binding_of_caller'
 gem 'bootsnap'                # , '~> 1.3'
 gem 'byebug'                  # , '~> 11.0', platform: :mri
 gem 'dalli'
+gem 'deface'
 gem 'delayed_job_active_record'
 gem 'faker'                   # , '~> 1.9'
 gem 'lograge'

@@ -1045,6 +1045,7 @@ DEPENDENCIES
   decidim-survey_multiple_answers (~> 0.26.2)
   decidim-templates (= 0.27.9)
   decidim-term_customizer!
+  deface
   delayed_job_active_record
   dotenv (~> 3.1)
   execjs
