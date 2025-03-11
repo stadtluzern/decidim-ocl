@@ -59,7 +59,7 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-  config.i18n.raise_on_missing_translations = true
+  config.i18n.raise_on_missing_translations = false
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
@@ -101,5 +101,5 @@ Rails.application.configure do
     }
   end
 
-  config.deface.enabled = !(ENV.fetch('DISABLE_DEFACE', 'false').in? %w[true t on enabled 1])
+  config.deface.enabled = ENV.fetch("DEFACE_ENABLED", "0") == '1'
 end

@@ -134,5 +134,8 @@ Rails.application.configure do
     }
   end
 
-  config.deface.enabled = !(ENV.fetch('DISABLE_DEFACE', 'true').in? %w[true t on enabled 1])
+  # Disable Deface dynamic overrides, and use precompiled files. 
+  # to compile: `SKIP_MEMCACHE_CHECK=1 DEFACE_ENABLED=1 bundle exec rails deface:precompile`
+  # to check compiled views: `./app/compiled_views`
+  config.deface.enabled = ENV.fetch("DEFACE_ENABLED", "0") == '1'
 end
