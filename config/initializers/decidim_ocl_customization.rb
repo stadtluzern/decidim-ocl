@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
-require_relative '../../lib/customization_output'
+require_relative '../../lib/decidim_customization'
+require_relative '../../lib/puzzle_rails_pry_prompt'
+
+PuzzleRailsPryPrompt.set_prompt
 
 INCLUDES = [
   [Decidim::DiffCell,                             DecidimOCL::DiffCell],
@@ -16,64 +19,18 @@ PREPENDS = [
   [Decidim::Forms::AnswerQuestionnaire,                         DecidimOCL::Forms::AnswerQuestionnaire],
   [Decidim::Meetings::ContentBlocks::UpcomingMeetingsCell,      DecidimOCL::Meetings::ContentBlocks::UpcomingMeetingsCell],
   [Decidim::OrganizationLogoUploader,                           DecidimOCL::OrganizationLogoUploader],
-  [Decidim::ParticipatoryProcesses::ParticipatoryProcessHelper, DecidimOCL::ParticipatoryProcesses::ParticipatoryProcessHelper],
+  [Decidim::ParticipatoryProcesses::ParticipatoryProcessHelper, DecidimOCL::ParticipatoryProcesses::ParticipatoryProcessHelper]
 ].freeze
 
-OVERRIDE_PATHS = ['app/overrides'].freeze
+OVERRIDE_PATHS = [
+  'app/overrides'
+].freeze
 
-def load_customizations
-  ignored = ignore_override_paths(OVERRIDE_PATHS)
-
-  disabled = ENV.fetch('DISABLE_CUSTOMIZATION', '')
-  return if disabled.in? %w[true t 1]
-
-  disabled = disabled.split(',')
-
-  included = load_includes(INCLUDES, disabled)
-  prepended = load_prepends(PREPENDS, disabled)
-  overridden = load_overrides(ignored, disabled)
-
-  CustomizationOutput.puts_and_log(includes: included, prepends: prepended, overrides: overridden)
-end
-
-def load_includes(includes, disabled)
-  includes.each do |base, addition|
-    next if addition.in?(disabled)
-
-    base.include addition
-  end
-end
-
-def load_prepends(prepends, disabled)
-  prepends.each do |base, addition|
-    next if addition.in?(disabled)
-
-    base.prepend addition
-  end
-end
-
-def ignore_override_paths(paths)
-  paths
-    .map { |p| Pathname.new(p) }
-    .each { |p| Rails.autoloaders.main.ignore(p) }
-end
-
-def load_overrides(paths, disabled)
-  paths =
-    paths
-    .map { |p| p.glob('**/*_override.rb') }
-    .flatten
-    .map { |p| p.expand_path.to_s }
-    .reject { |p| p.in? disabled }
-
-  Rails.application.config.after_initialize do
-    paths.each { |override| load override }
-  end
-
-  paths
-end
-
-load_customizations
+DecidimCustomization.new(
+  includes: INCLUDES,
+  prepends: PREPENDS,
+  overrides: OVERRIDE_PATHS
+).log_and_load
 
 # v Specially handled things (here be dragons) v
 

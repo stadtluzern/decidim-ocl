@@ -28,12 +28,12 @@ Rails.application.configure do
 
                                                # config.cache_store = :null_store
                                              end
-  memcached_host = ENV['RAILS_MEMCACHED_HOST'] || 'localhost'
-  memcached_port = ENV['RAILS_MEMCACHED_PORT'] || '11211'
+  memcached_host = ENV.fetch('RAILS_MEMCACHED_HOST', nil) || 'localhost'
+  memcached_port = ENV.fetch('RAILS_MEMCACHED_PORT', nil) || '11211'
   config.cache_store = :mem_cache_store, "#{memcached_host}:#{memcached_port}"
 
   # Store uploaded files on the local file system (see config/storage.yml for options)
-  config.active_storage.service = ENV['ACTIVE_STORAGE_SERVICE']&.to_sym || :local
+  config.active_storage.service = ENV.fetch('ACTIVE_STORAGE_SERVICE', nil)&.to_sym || :local
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = true
@@ -59,7 +59,7 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-  config.action_view.raise_on_missing_translations = false
+  config.i18n.raise_on_missing_translations = true
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
@@ -68,7 +68,7 @@ Rails.application.configure do
   config.aspsms = {
     user_key: ENV.fetch('ASPSMS_API_USER_KEY', nil),
     password: ENV.fetch('ASPSMS_API_PASSWORD', nil),
-    affiliate_id: ENV.fetch('ASPSMS_AFFILIATE_ID', nil),
+    affiliate_id: ENV.fetch('ASPSMS_AFFILIATE_ID', nil)
   }
 
   # Add allowed hosts and deduplicate them
@@ -82,7 +82,6 @@ Rails.application.configure do
     /.+\.local/
   ].flatten.compact
 
-  # TODO Remove after fixing dev
   config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'debug').to_sym
 
   # Do not use log rage by default
