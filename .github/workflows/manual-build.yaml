@@ -3,14 +3,37 @@ name: 'Manual build without tests'
 on:
   workflow_dispatch:
     inputs:
-      image_repo:
-        description: "Image repo to push image to"
+      repository_url:
+        description: 'Url to push build image to'
         type: string
         required: true
+        default: "https://harbor.puzzle.ch"
+      images:
+        description: 'Images arguments for docker/metadata-action'
+        type: string
+        required: true
+        default: "harbor.puzzle.ch/decidim/stlu-int-rails"
+      flavor:
+        description: 'Flavor argument for docker/metadata-action'
+        type: string
+        required: false
+        default: "latest=true"
+      tags:
+        description: 'Tags argument for docker/metadata-action'
+        type: string
+        required: false
+        default: |
+          type=semver,pattern={{version}},priority=1000
+          type=schedule,priority=900
+          type=sha,format=long,priority=800
+
 
 jobs:
   build:
     uses: ./.github/workflows/reusable_build.yaml
     secrets: inherit
     with:
-      repository_url: ${{ inputs.image_repo }}
+      repository_url: ${{ inputs.repository_url }}
+      images: ${{ inputs.images }}
+      flavor: ${{ inputs.flavor }}
+      tags: ${{ inputs.tags }}
