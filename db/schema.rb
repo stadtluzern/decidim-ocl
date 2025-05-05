@@ -878,17 +878,6 @@ ActiveRecord::Schema.define(version: 2025_02_11_203142) do
     t.index ["decidim_user_id"], name: "index_guest_meeting_registration_uid_on_organization_id"
   end
 
-  create_table "decidim_guest_meeting_registration_settings", force: :cascade do |t|
-    t.boolean "enable_guest_registration", default: false
-    t.bigint "decidim_organization_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.boolean "enable_registration_confirmation", default: false
-    t.boolean "enable_cancellation", default: false
-    t.boolean "disable_account_confirmation", default: false
-    t.index ["decidim_organization_id"], name: "index_guest_meeting_registration_settings_on_organization_id"
-  end
-
   create_table "decidim_hashtags", force: :cascade do |t|
     t.bigint "decidim_organization_id"
     t.string "name"
@@ -2333,7 +2322,6 @@ ActiveRecord::Schema.define(version: 2025_02_11_203142) do
   add_foreign_key "decidim_editor_images", "decidim_users", column: "decidim_author_id"
   add_foreign_key "decidim_guest_meeting_registration_registration_requests", "decidim_meetings_meetings", column: "decidim_meetings_meetings_id"
   add_foreign_key "decidim_guest_meeting_registration_registration_requests", "decidim_organizations"
-  add_foreign_key "decidim_guest_meeting_registration_settings", "decidim_organizations"
   add_foreign_key "decidim_identities", "decidim_organizations"
   add_foreign_key "decidim_initiatives_settings", "decidim_organizations"
   add_foreign_key "decidim_navigation_maps_blueprint_areas", "decidim_navigation_maps_blueprints"

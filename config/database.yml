@@ -29,7 +29,7 @@ default: &default
 
 development:
   <<: *default
-  database: <%= ENV['RAILS_DEV_DB_NAME'] || ENV['RAILS_DB_NAME'] || 'decidim_luzern_development' %>
+  database: <%= ENV['RAILS_DEV_DB_NAME'] || ENV['RAILS_DB_NAME'] || 'decidim_stlu_prod' %>
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.

@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-DECIDIM_VERSION = '0.27.9'
+DECIDIM_VERSION = '0.29.2'
 
 ruby RUBY_VERSION
 
@@ -14,18 +14,18 @@ gem 'decidim-initiatives', DECIDIM_VERSION
 gem 'decidim-proposals', DECIDIM_VERSION
 gem 'decidim-templates', DECIDIM_VERSION
 
-gem 'decidim-anonymous_codes', github: 'openpoke/decidim-module-anonymous_codes'
-gem 'decidim-antivirus', github: 'mainio/decidim-module-antivirus', branch: 'release/0.27-stable'
-gem 'decidim-decidim_awesome', github: 'decidim-ice/decidim-module-decidim_awesome', branch: 'release/0.27-stable'
-gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', branch: DECIDIM_VERSION
-gem 'decidim-participatory_documents', github: 'openpoke/decidim-module-participatory-documents', branch: 'main'
-gem 'decidim-question_captcha', github: 'OpenSourcePolitics/decidim-module-question_captcha', branch: 'release/0.27-stable'
-gem 'decidim-reporting_proposals', github: 'openpoke/decidim-module-reporting-proposals', branch: 'release/0.27-stable'
-gem 'decidim-survey_multiple_answers', '~> 0.26.2'
-gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', branch: 'release/0.27-stable'
+# gem 'decidim-anonymous_codes', github: 'openpoke/decidim-module-anonymous_codes'
+# gem 'decidim-antivirus', github: 'mainio/decidim-module-antivirus', branch: 'release/0.27-stable'
+gem 'decidim-decidim_awesome', github: 'decidim-ice/decidim-module-decidim_awesome'
+# gem 'decidim-jitsi_meetings', github: 'puzzle/decidim-module-jitsi-meetings', branch: DECIDIM_VERSION
+# gem 'decidim-participatory_documents', github: 'openpoke/decidim-module-participatory-documents', branch: 'main'
+# gem 'decidim-question_captcha', github: 'OpenSourcePolitics/decidim-module-question_captcha', branch: 'release/0.29-stable'
+# gem 'decidim-reporting_proposals', github: 'openpoke/decidim-module-reporting-proposals', branch: 'release/0.29-stable'
+# gem 'decidim-survey_multiple_answers', '~> 0.26.2'
+# gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', branch: 'release/0.27-stable'
 
-gem 'decidim-navigation_maps', github: 'Platoniq/decidim-module-navigation_maps', branch: 'release/0.27-stable'
-gem 'decidim-guest_meeting_registration', github: 'alecslupu-pfa/guest-meeting-registration', branch: 'release/0.27-stable'
+gem 'decidim-navigation_maps', github: 'Platoniq/decidim-module-navigation_maps', branch: 'upgrade/0.29.0'
+# gem 'decidim-guest_meeting_registration', github: 'alecslupu-pfa/guest-meeting-registration', branch: 'release/0.27-stable'
 
 # TODO: These are not updated yet :(
 # gem 'decidim-navbar_links', github: 'puzzle/decidim-module-navbar_links', tag: "v#{DECIDIM_VERSION}"
