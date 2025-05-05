@@ -9,7 +9,7 @@
 #
 # Also we don't use -onbuild as they're deprecated
 # https://github.com/docker-library/official-images/issues/2076
-FROM ruby:3.0.2 as dev
+FROM ruby:3.0.6 as dev
 LABEL maintainer="beltrame@puzzle.ch"
 
 # Installs system dependencies
@@ -65,8 +65,8 @@ RUN mkdir /db-init && chown 1000 /db-init
 USER decidim
 
 # Update system gems
-RUN gem install bundler:2.4.7
-RUN gem update --system
+RUN gem install bundler:2.5.23
+#RUN gem update --system
 
 # Copy Gemfile and install bundle dependencies
 COPY --chown=decidim:decidim Gemfile Gemfile.lock ${APP_HOME}
