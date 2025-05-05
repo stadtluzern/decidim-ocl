@@ -35,7 +35,6 @@ Decidim::Templates::Admin::QuestionnaireTemplatesController.class_eval do
   private
 
   def error_redirect
-    binding.pry
     messages =
       survey_form
       .errors[:survey_template_upload]
