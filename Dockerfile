@@ -6,7 +6,7 @@
 #                            Build Stage                         #
 ##################################################################
 
-FROM ruby:3.0.6 AS build
+FROM ruby:3.1.1 AS build
 
 # Set build shell
 SHELL ["/bin/bash", "-c"]

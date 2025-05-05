@@ -10,20 +10,20 @@
 # We return the default image if there is no photo.
 # Also, we implement some logic for calculating the number of followers.
 
-Decidim::Meetings::MeetingMCell.module_eval do
-  def resource_image_path
-    Nokogiri::HTML
-        .parse(translated_attribute(model.description))
-        .css('img')
-        .first
-        &.attr('src') || "#{current_organization.tenant_type.presence || 'organization'}-default-image.png"
-  end
-
-  def followers_count
-    if model.respond_to?(:followers_count)
-      model.followers_count
-    else
-      model.followers.count
-    end
-  end
-end
+# Decidim::Meetings::MeetingMCell.module_eval do
+#   def resource_image_path
+#     Nokogiri::HTML
+#         .parse(translated_attribute(model.description))
+#         .css('img')
+#         .first
+#         &.attr('src') || "#{current_organization.tenant_type.presence || 'organization'}-default-image.png"
+#   end
+#
+#   def followers_count
+#     if model.respond_to?(:followers_count)
+#       model.followers_count
+#     else
+#       model.followers.count
+#     end
+#   end
+# end
