@@ -1315,29 +1315,29 @@
     tom-select "2.2.2"
     wc-datepicker "^0.5.2"
 
-"@decidim/dev@^0.29.1":
-  version "0.29.1"
-  resolved "https://registry.npmjs.org/@decidim/dev/-/dev-0.29.1.tgz"
-  integrity sha512-A5GQWj2NLJDhqsD/b5e/+xUOZcWdmauEWkZaLN/DWdHbQgsb3jYuoOEN3A4nUR1HxHH6auUp+LktWxAzypOBaA==
+"@decidim/dev@^0.29.3":
+  version "0.29.3"
+  resolved "https://registry.npmjs.org/@decidim/dev/-/dev-0.29.3.tgz"
+  integrity sha512-WTsOKhCEnrGfmyHXc0U917IMehrkTG1c9rhdVmhdKqbVzCwbKPrX20x2+RIMrQtX+f0sqOYBdB1eEXgjIToUIQ==
   dependencies:
     "@linthtml/linthtml" "^0.9.6"
     axe-core "^4.7.2"
     markdownlint-cli "^0.35.0"
 
-"@decidim/eslint-config@^0.29.1":
-  version "0.29.1"
-  resolved "https://registry.npmjs.org/@decidim/eslint-config/-/eslint-config-0.29.1.tgz"
-  integrity sha512-jpIPLO8iYy906ch6yGWYkkn1fRka1OgjgrGCfqAdGn9E6zypjWJ1Su9UcWxxATKrqBCUsrKwE228tHctbzzmsg==
+"@decidim/eslint-config@^0.29.3":
+  version "0.29.3"
+  resolved "https://registry.npmjs.org/@decidim/eslint-config/-/eslint-config-0.29.3.tgz"
+  integrity sha512-HGSdWGAurhmN78kAQG//79Sew5iiAAOMTXLwpTnGfxiJJ0390AWNsrIdAwOphsSxcTApOmfK5R+iGAI8Cih1PQ==
 
-"@decidim/prettier-config@^0.29.1":
-  version "0.29.1"
-  resolved "https://registry.npmjs.org/@decidim/prettier-config/-/prettier-config-0.29.1.tgz"
-  integrity sha512-aTf5VAEUr6Z341O39JwnGGmonN1XgAUt/t5mFS7d9RteNgceAad6BotoJ3mwLKJguBqdt4SPZ8aaGS11xqIPWg==
+"@decidim/prettier-config@^0.29.3":
+  version "0.29.3"
+  resolved "https://registry.npmjs.org/@decidim/prettier-config/-/prettier-config-0.29.3.tgz"
+  integrity sha512-UtB+OxME1K6COz3jyQBjQalH8waEZtP+I3serkxNqfgKezW/4jsKGYZ7H/WVRRXbh8+JAfCsUTqDsbAZrXgQrg==
 
-"@decidim/stylelint-config@^0.29.1":
-  version "0.29.1"
-  resolved "https://registry.npmjs.org/@decidim/stylelint-config/-/stylelint-config-0.29.1.tgz"
-  integrity sha512-K/6uGomEgCJ2aFA6VghZpP8PhN9Ydz27cJmThPmnRCPJ9UPfCHaGvkJ4zSt/a/5LGZM8hR8CmnrVm7QxYGLBSA==
+"@decidim/stylelint-config@^0.29.3":
+  version "0.29.3"
+  resolved "https://registry.npmjs.org/@decidim/stylelint-config/-/stylelint-config-0.29.3.tgz"
+  integrity sha512-b543PMPPjUU2zsZ+RfivakolSJvsS3gW9WoOfGG31TQttVlo1Ko15/tct3j8flCrOGH6CcirocQ4GT1+x4f0cg==
 
 "@decidim/webpacker@^0.29.3":
   version "0.29.3"
@@ -6248,10 +6248,10 @@ graphql-ws@5.12.1, "graphql-ws@>= 4.5.0":
   resolved "https://registry.npmjs.org/graphql-ws/-/graphql-ws-5.12.1.tgz"
   integrity sha512-umt4f5NnMK46ChM2coO36PTFhHouBrK9stWWBczERguwYrGnPNxJ9dimU6IyOBfOkC6Izhkg4H8+F51W/8CYDg==
 
-graphql@^16.0.0:
-  version "16.11.0"
-  resolved "https://registry.npmjs.org/graphql/-/graphql-16.11.0.tgz"
-  integrity sha512-mS1lbMsxgQj6hge1XZ6p7GPhbrtFwUFYi3wRzXAC/FmYnyXMTvvI3td3rjmQ2u8ewXueaSvRPWaEcgVVOT9Jnw==
+graphql@^15.0.0:
+  version "15.10.1"
+  resolved "https://registry.npmjs.org/graphql/-/graphql-15.10.1.tgz"
+  integrity sha512-BL/Xd/T9baO6NFzoMpiMD7YUZ62R6viR5tp/MULVEnbYJXZA//kRNW7J0j1w/wXArgL0sCxhDfK5dczSKn3+cg==
 
 handle-thing@^2.0.0:
   version "2.0.1"
@@ -7077,7 +7077,7 @@ jsonpointer@^5.0.0:
 
 jsrender@^1.0.15:
   version "1.0.15"
-  resolved "https://registry.npmjs.org/jsrender/-/jsrender-1.0.15.tgz"
+  resolved "https://registry.yarnpkg.com/jsrender/-/jsrender-1.0.15.tgz#d7e04175cf41c4ff9dc4a45902abbc85cc7867d8"
   integrity sha512-OodS9veJzdkxj0zqWTEDyHm5MdwpeaBA11X3W06n3wTP7XifCv1JwaNpY6jn0KIltzgm3nM1Gi/tccslMEai1w==
   dependencies:
     through2 "^3.0.1"
