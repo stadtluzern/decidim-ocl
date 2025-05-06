@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-DECIDIM_VERSION = '0.28.5'
+DECIDIM_VERSION = '0.29.2'
 
 ruby RUBY_VERSION
 
@@ -15,15 +15,15 @@ gem 'decidim-proposals', DECIDIM_VERSION
 gem 'decidim-templates', DECIDIM_VERSION
 
 #gem 'decidim-anonymous_codes', github: 'openpoke/decidim-module-anonymous_codes' # deactivated because no compatible version for decidim 0.28 exists
-gem 'decidim-antivirus', github: 'mainio/decidim-module-antivirus', branch: 'main'
-gem 'decidim-decidim_awesome', github: 'decidim-ice/decidim-module-decidim_awesome', branch: 'release/0.28-stable'
-gem 'decidim-participatory_documents', github: 'openpoke/decidim-module-participatory-documents', branch: 'upgrade-0.28'
+#gem 'decidim-antivirus', github: 'puzzle/decidim-module-antivirus', branch: 'release/0.29-stable' # temporarily deactivated until we have a working puzzle fork compatible with 0.29
+gem 'decidim-decidim_awesome', github: 'decidim-ice/decidim-module-decidim_awesome', branch: 'main'
+gem 'decidim-participatory_documents', github: 'openpoke/decidim-module-participatory-documents', branch: 'upgrade-0.29'
 #gem 'decidim-question_captcha', github: 'OpenSourcePolitics/decidim-module-question_captcha', branch: 'release/0.27-stable' # deactivated because no compatible version for decidim 0.28 exists
-gem 'decidim-reporting_proposals', github: 'openpoke/decidim-module-reporting-proposals', branch: 'main'
+gem 'decidim-reporting_proposals', github: 'openpoke/decidim-module-reporting-proposals', branch: 'release/0.29-stable'
 #gem 'decidim-survey_multiple_answers', '~> 0.26.2' # deactivated because no compatible version for decidim 0.28 exists
-#gem 'decidim-term_customizer', github: 'mainio/decidim-module-term_customizer', branch: 'release/0.27-stable' # deactivated because no compatible version for decidim 0.28 exists
+gem 'decidim-term_customizer', github: 'OpenSourcePolitics/decidim-module-term_customizer', branch: 'master'
 
-gem 'decidim-navigation_maps', github: 'Platoniq/decidim-module-navigation_maps', branch: 'release/0.28-stable'
+gem 'decidim-navigation_maps', github: 'Platoniq/decidim-module-navigation_maps', branch: 'main'
 #gem 'decidim-guest_meeting_registration', github: 'alecslupu-pfa/guest-meeting-registration', branch: 'release/0.27-stable' # deactivated because no compatible version for decidim 0.28 exists
 
 # TODO: These are not updated yet :(

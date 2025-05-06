@@ -52,6 +52,8 @@ vendor/bundle
 /public/packs
 /public/packs-test
 /public/decidim-packs
+/public/sw.js
+/public/sw.js.map
 /node_modules
 /yarn-error.log
 yarn-debug.log*

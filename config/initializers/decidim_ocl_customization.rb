@@ -6,20 +6,20 @@ require_relative '../../lib/puzzle_rails_pry_prompt'
 PuzzleRailsPryPrompt.set_prompt
 
 INCLUDES = [
-  [Decidim::DiffCell,                             DecidimOCL::DiffCell],
+  #[Decidim::DiffCell,                             DecidimOCL::DiffCell],
   #[Decidim::Proposals::ProposalMCell,             DecidimOCL::Proposals::ProposalMCell],
   #[Decidim::ParticipatoryProcesses::ProcessMCell, DecidimOCL::ParticipatoryProcesses::ProcessMCell],
-  [Decidim::Comments::CommentActivityCell,        DecidimOCL::Comments::CommentActivityCell],
-  [Decidim::Proposals::PublishProposalEvent,      DecidimOCL::Proposals::PublishProposalEvent]
+  #[Decidim::Comments::CommentActivityCell,        DecidimOCL::Comments::CommentActivityCell],
+  #[Decidim::Proposals::PublishProposalEvent,      DecidimOCL::Proposals::PublishProposalEvent]
 ].freeze
 
 PREPENDS = [
-  [Decidim::ApplicationMailer,                                  DecidimOCL::ApplicationMailer],
-  [Decidim::Proposals::Admin::ProposalNoteCreatedEvent,         DecidimOCL::Proposals::Admin::ProposalNoteCreatedEvent],
-  [Decidim::Forms::AnswerQuestionnaire,                         DecidimOCL::Forms::AnswerQuestionnaire],
+  #[Decidim::ApplicationMailer,                                  DecidimOCL::ApplicationMailer],
+  #[Decidim::Proposals::Admin::ProposalNoteCreatedEvent,         DecidimOCL::Proposals::Admin::ProposalNoteCreatedEvent],
+  #[Decidim::Forms::AnswerQuestionnaire,                         DecidimOCL::Forms::AnswerQuestionnaire],
   #[Decidim::Meetings::ContentBlocks::UpcomingMeetingsCell,      DecidimOCL::Meetings::ContentBlocks::UpcomingMeetingsCell],
-  [Decidim::OrganizationLogoUploader,                           DecidimOCL::OrganizationLogoUploader],
-  [Decidim::ParticipatoryProcesses::ParticipatoryProcessHelper, DecidimOCL::ParticipatoryProcesses::ParticipatoryProcessHelper]
+  #[Decidim::OrganizationLogoUploader,                           DecidimOCL::OrganizationLogoUploader],
+  #[Decidim::ParticipatoryProcesses::ParticipatoryProcessHelper, DecidimOCL::ParticipatoryProcesses::ParticipatoryProcessHelper]
 ].freeze
 
 OVERRIDE_PATHS = [
@@ -58,7 +58,7 @@ Decidim.find_component_manifest(:surveys).settings(:global).attributes[:clean_af
 
 # Run this customization late, after decidim awesome has initialized
 Rails.application.config.after_initialize do
-  Decidim::Proposals::ProposalWizardCreateStepForm.include(DecidimOCL::Proposals::ProposalWizardCreateStepFormOverride)
+  #Decidim::Proposals::ProposalWizardCreateStepForm.include(DecidimOCL::Proposals::ProposalWizardCreateStepFormOverride)
 end
 
 module Decidim
