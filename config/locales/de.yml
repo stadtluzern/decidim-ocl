@@ -79,12 +79,6 @@ de:
       cleaner:
         name: Bereinigung
     content_blocks:
-      html2:
-        name: HTML-Block 2
-      html3:
-        name: HTML-Block 3
-      html4:
-        name: HTML-Block 4
       last_blog_posts:
         name: Aktuellste Blog-Einträge
         title: Aktuellste Blog-Einträge

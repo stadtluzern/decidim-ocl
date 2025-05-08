@@ -46,12 +46,6 @@ en:
         name: Latest surveys
         title: Latest surveys
         view_all: View all
-      html2:
-        name: HTML block 2
-      html3:
-        name: HTML block 3
-      html4:
-        name: HTML block 4
     admin:
       filters:
         state_eq:
