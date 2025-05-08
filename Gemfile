@@ -20,7 +20,7 @@ gem 'decidim-decidim_awesome', github: 'decidim-ice/decidim-module-decidim_aweso
 gem 'decidim-participatory_documents', github: 'openpoke/decidim-module-participatory-documents', branch: 'upgrade-0.29'
 #gem 'decidim-question_captcha', github: 'OpenSourcePolitics/decidim-module-question_captcha', branch: 'release/0.27-stable' # deactivated because no compatible version for decidim 0.28 exists
 gem 'decidim-reporting_proposals', github: 'openpoke/decidim-module-reporting-proposals', branch: 'release/0.29-stable'
-#gem 'decidim-survey_multiple_answers', '~> 0.26.2' # deactivated because no compatible version for decidim 0.28 exists
+gem 'decidim-survey_multiple_answers', github: 'OpenSourcePolitics/decidim-module-survey_multiple_answers', branch: 'bump/0.29'
 gem 'decidim-term_customizer', github: 'OpenSourcePolitics/decidim-module-term_customizer', branch: 'master'
 
 gem 'decidim-navigation_maps', github: 'Platoniq/decidim-module-navigation_maps', branch: 'main'
