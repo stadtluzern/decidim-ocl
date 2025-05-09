@@ -149,6 +149,10 @@ Decidim.configure do |config| # rubocop:disable Metrics/BlockLength
     }
   }
 
+  config.content_security_policies_extra = {
+    "connect-src" => "photon.komoot.io"
+  }
+
   if Rails.application.secrets.maps.present? && Rails.application.secrets.maps[:static_provider].present?
     static_provider = Rails.application.secrets.maps[:static_provider]
     dynamic_provider = Rails.application.secrets.maps[:dynamic_provider]
