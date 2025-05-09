@@ -68,3 +68,4 @@ group :production do
 end
 
 gem 'dotenv', '~> 3.1'
+gem 'wicked_pdf', '~> 2.6.3'
