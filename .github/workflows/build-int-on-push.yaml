@@ -1,10 +1,9 @@
-name: 'Build INT on push to master'
+name: 'Build Upgrade on push to upgrade branch'
 
 on:
   push:
     branches:
-      - 'master'
-      - 'feature/cloudscale'
+      - 'upgrade'
     paths-ignore:
       - 'doc/**'
       - '**.md'
@@ -14,8 +13,8 @@ jobs:
     uses: ./.github/workflows/reusable_lint_test_build_update.yaml
     with:
       image_repo: "https://harbor.puzzle.ch"
-      image_url: "harbor.puzzle.ch/decidim/stlu-int-rails"
+      image_url: "harbor.puzzle.ch/decidim/stlu-dev-rails"
       configmanagement: "gitlab.puzzle.ch/pitc_ruby/deployments/decidim/"
       configmanagement_branch: "main"
-      kustomization_path: "./deployments/pitc-stlu-decidim-int/kustomization.yaml"
+      kustomization_path: "./deployments/pitc-stlu-decidim-dev/kustomization.yaml"
     secrets: inherit
