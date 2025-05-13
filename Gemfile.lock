@@ -59,6 +59,13 @@ GIT
       decidim-proposals (>= 0.29.2, < 0.30)
       deface (>= 1.9)
 
+GIT
+  remote: https://github.com/puzzle/nulldb.git
+  revision: e6b6be7f90a3dfeee8c214579f2f13ffd3b5d5cc
+  specs:
+    activerecord-nulldb-adapter (1.1.1)
+      activerecord (>= 6.0, < 8.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -118,8 +125,6 @@ GEM
     activerecord (7.0.8.7)
       activemodel (= 7.0.8.7)
       activesupport (= 7.0.8.7)
-    activerecord-nulldb-adapter (1.0.1)
-      activerecord (>= 5.2.0, < 7.2)
     activestorage (7.0.8.7)
       actionpack (= 7.0.8.7)
       activejob (= 7.0.8.7)
@@ -964,7 +969,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  activerecord-nulldb-adapter
+  activerecord-nulldb-adapter!
   acts_as_textcaptcha
   aws-sdk-s3
   better_errors

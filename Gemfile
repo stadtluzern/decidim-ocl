@@ -31,10 +31,7 @@ gem 'decidim-navigation_maps', github: 'Platoniq/decidim-module-navigation_maps'
 # gem 'decidim-navbar_links', github: 'puzzle/decidim-module-navbar_links', tag: "v#{DECIDIM_VERSION}"
 # gem 'decidim-url_aliases', github: 'OpenSourcePolitics/decidim-urlaliases'
 
-# Null DB
-gem 'activerecord-nulldb-adapter'
-gem 'puzzle/nulldb'
-
+gem 'activerecord-nulldb-adapter', github: 'puzzle/nulldb'
 gem 'acts_as_textcaptcha'
 gem 'aws-sdk-s3', require: false
 gem 'binding_of_caller'
