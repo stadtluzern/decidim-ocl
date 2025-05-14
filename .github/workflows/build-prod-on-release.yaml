@@ -9,10 +9,13 @@ on:
     branches: 
       - master
 jobs:
-  build_image:
-    uses: ./.github/workflows/lint_test_build_update.yaml
-    secrets: inherit
+  build-image:
+    uses: ./.github/workflows/reusable_lint_test_build_update.yaml
     with:
-      image_repo: "harbor.puzzle.ch/decidim/stlu/prod/rails"
-      configmanagement: "gitlab.puzzle.ch/pitc_ruby/decidim-configmanagement"
-      kustomization_path: "./deployments/pitc-stlu-decidim-prod/kustomization.yaml"
+      image_repo: "https://harbor.puzzle.ch"
+      image_url: "harbor.puzzle.ch/decidim/stlu-prod-rails"
+      configmanagement: "gitlab.puzzle.ch/pitc_ruby/deployments/decidim/"
+      configmanagement_branch: "main"
+      kustomization_path: "./deployments/pitc-decidim-stlu-prod/kustomization.yaml"
+      identifier: "stlu-prod"
+    secrets: inherit

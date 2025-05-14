@@ -1,6 +1,38 @@
 name: 'Build Upgrade on push to upgrade branch'
 
 on:
+  workflow_dispatch:
+    inputs:
+      image_repo:
+        description: 'Image repo'
+        type: string
+        required: false
+        default: 'https://harbor.puzzle.ch'
+      image_url:
+        description: 'URL to push image to'
+        type: string
+        required: false
+        default: 'harbor.puzzle.ch/decidim/stlu-dev-rails'
+      configmanagement:
+        description: 'Configmanagement to write image tag to'
+        type: string
+        required: false
+        default: 'gitlab.puzzle.ch/pitc_ruby/deployments/decidim/'
+      configmanagement_branch:
+        description: 'Configmanagement branch to put the image tag into'
+        type: string
+        required: false
+        default: 'main'
+      kustomization_path:
+        description: 'Path to kustomization file'
+        type: string
+        required: true
+        default: './deployments/pitc-decidim-stlu-dev/kustomization.yaml'
+      identifier:
+        description: 'Identifier for commit-message, could be a namespace or project-name'
+        type: string
+        required: false
+        default: 'stlu-dev'
   push:
     branches:
       - 'upgrade'
@@ -12,9 +44,10 @@ jobs:
   build-image:
     uses: ./.github/workflows/reusable_lint_test_build_update.yaml
     with:
-      image_repo: "https://harbor.puzzle.ch"
-      image_url: "harbor.puzzle.ch/decidim/stlu-dev-rails"
-      configmanagement: "gitlab.puzzle.ch/pitc_ruby/deployments/decidim/"
-      configmanagement_branch: "main"
-      kustomization_path: "./deployments/pitc-stlu-decidim-dev/kustomization.yaml"
+      image_repo: ${{ inputs.image_repo || 'https://harbor.puzzle.ch' }}
+      image_url: ${{ inputs.image_url || 'harbor.puzzle.ch/decidim/stlu-dev-rails' }}
+      configmanagement: ${{ inputs.configmanagement || 'gitlab.puzzle.ch/pitc_ruby/deployments/decidim/' }}
+      configmanagement_branch: ${{ inputs.configmanagement_branch || 'main' }}
+      kustomization_path: ${{ inputs.kustomization_path || './deployments/pitc-decidim-stlu-dev/kustomization.yaml' }}
+      identifier: ${{ inputs.identifier || 'stlu-dev' }}
     secrets: inherit
