@@ -6,7 +6,6 @@ require_relative '../../lib/puzzle_rails_pry_prompt'
 PuzzleRailsPryPrompt.set_prompt
 
 INCLUDES = [
-  #[Decidim::DiffCell,                             DecidimOCL::DiffCell],
   #[Decidim::Proposals::ProposalMCell,             DecidimOCL::Proposals::ProposalMCell],
   #[Decidim::ParticipatoryProcesses::ProcessMCell, DecidimOCL::ParticipatoryProcesses::ProcessMCell],
   #[Decidim::Comments::CommentActivityCell,        DecidimOCL::Comments::CommentActivityCell],
