@@ -6,8 +6,6 @@ require_relative '../../lib/puzzle_rails_pry_prompt'
 PuzzleRailsPryPrompt.set_prompt
 
 INCLUDES = [
-  #[Decidim::Comments::CommentActivityCell,        DecidimOCL::Comments::CommentActivityCell],
-  #[Decidim::Proposals::PublishProposalEvent,      DecidimOCL::Proposals::PublishProposalEvent]
 ].freeze
 
 PREPENDS = [
