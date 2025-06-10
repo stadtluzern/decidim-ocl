@@ -19,6 +19,16 @@ GIT
       decidim-core (~> 0.29.0)
 
 GIT
+  remote: https://github.com/OpenSourcePolitics/guest-meeting-registration.git
+  revision: a0ad48b581e1b1576d38e00f168ef8885a7d8133
+  branch: bump/module_to_0.29
+  specs:
+    decidim-guest_meeting_registration (0.29.2)
+      decidim-core (~> 0.29)
+      decidim-meetings (~> 0.29)
+      deface (>= 1.9)
+
+GIT
   remote: https://github.com/Platoniq/decidim-module-navigation_maps.git
   revision: 349e4e37360639f396f7228d9ecbad614e340535
   branch: main
@@ -980,6 +990,7 @@ DEPENDENCIES
   decidim-conferences (= 0.29.3)
   decidim-decidim_awesome!
   decidim-dev (= 0.29.3)
+  decidim-guest_meeting_registration!
   decidim-initiatives (= 0.29.3)
   decidim-navigation_maps!
   decidim-participatory_documents!

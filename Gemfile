@@ -24,7 +24,7 @@ gem 'decidim-survey_multiple_answers', github: 'OpenSourcePolitics/decidim-modul
 gem 'decidim-term_customizer', github: 'OpenSourcePolitics/decidim-module-term_customizer', branch: 'master'
 
 gem 'decidim-navigation_maps', github: 'Platoniq/decidim-module-navigation_maps', branch: 'main'
-# gem 'decidim-guest_meeting_registration', github: 'alecslupu-pfa/guest-meeting-registration', branch: 'release/0.27-stable' # deactivated because no compatible version for decidim 0.28 exists
+gem 'decidim-guest_meeting_registration', github: 'OpenSourcePolitics/guest-meeting-registration', branch: 'bump/module_to_0.29'
 
 # TODO: These are not updated yet :(
 # gem 'decidim-navbar_links', github: 'puzzle/decidim-module-navbar_links', tag: "v#{DECIDIM_VERSION}"
