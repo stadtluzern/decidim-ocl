@@ -12,7 +12,6 @@ INCLUDES = [
 
 PREPENDS = [
   #[Decidim::ApplicationMailer,                                  DecidimOCL::ApplicationMailer],
-  #[Decidim::Proposals::Admin::ProposalNoteCreatedEvent,         DecidimOCL::Proposals::Admin::ProposalNoteCreatedEvent],
   #[Decidim::Forms::AnswerQuestionnaire,                         DecidimOCL::Forms::AnswerQuestionnaire],
   #[Decidim::Meetings::ContentBlocks::UpcomingMeetingsCell,      DecidimOCL::Meetings::ContentBlocks::UpcomingMeetingsCell],
   #[Decidim::OrganizationLogoUploader,                           DecidimOCL::OrganizationLogoUploader],
