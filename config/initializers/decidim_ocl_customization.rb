@@ -9,7 +9,6 @@ INCLUDES = [
 ].freeze
 
 PREPENDS = [
-  #[Decidim::OrganizationLogoUploader,                           DecidimOCL::OrganizationLogoUploader],
 ].freeze
 
 OVERRIDE_PATHS = [
