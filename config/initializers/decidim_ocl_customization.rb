@@ -12,7 +12,6 @@ INCLUDES = [
 
 PREPENDS = [
   #[Decidim::OrganizationLogoUploader,                           DecidimOCL::OrganizationLogoUploader],
-  #[Decidim::ParticipatoryProcesses::ParticipatoryProcessHelper, DecidimOCL::ParticipatoryProcesses::ParticipatoryProcessHelper]
 ].freeze
 
 OVERRIDE_PATHS = [

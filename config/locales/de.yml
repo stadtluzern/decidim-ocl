@@ -121,10 +121,6 @@ de:
         attribution: <a href="https://www.swisstopo.ch/" target="_blank">swisstopo</a>
         basic: Landeskarte
         satellite: Satellit
-    participatory_processes:
-      participatory_process_helper:
-        step_dates:
-          no_dates: Kein Datum angegeben
     surveys:
       survey_answered_mailer:
         answered:
