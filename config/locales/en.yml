@@ -56,6 +56,10 @@ en:
           description: What projects would you allocate budget to? Vote on as many ideas as you with before reaching the total spendable sum. You must invest at least %{minimum_budget}. Confirm your final selection by clicking on "Vote".
           title: Decide on the budget!
     components:
+      surveys:
+        settings:
+          global:
+            notified_email: Send notifications emails to
       accountability:
         name: Implementation
       comment:

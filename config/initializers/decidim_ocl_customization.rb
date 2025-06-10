@@ -12,7 +12,6 @@ INCLUDES = [
 
 PREPENDS = [
   #[Decidim::ApplicationMailer,                                  DecidimOCL::ApplicationMailer],
-  #[Decidim::Forms::AnswerQuestionnaire,                         DecidimOCL::Forms::AnswerQuestionnaire],
   #[Decidim::Meetings::ContentBlocks::UpcomingMeetingsCell,      DecidimOCL::Meetings::ContentBlocks::UpcomingMeetingsCell],
   #[Decidim::OrganizationLogoUploader,                           DecidimOCL::OrganizationLogoUploader],
   #[Decidim::ParticipatoryProcesses::ParticipatoryProcessHelper, DecidimOCL::ParticipatoryProcesses::ParticipatoryProcessHelper]
@@ -64,5 +63,20 @@ module Decidim
         autoload :Swisstopo, 'decidim/map/provider/dynamic_map/swisstopo'
       end
     end
+  end
+end
+
+ActiveSupport::Notifications.subscribe "answer_questionnaire.after" do |event|
+  has_component = questionnaire.questionnaire_for.respond_to? :component
+  return unless has_component
+
+  component = questionnaire.questionnaire_for.component
+  return unless component.manifest_name == 'surveys'
+
+  email = component.try(:settings).try(:notified_email)
+  id = form.context.session_token
+
+  if email.present?
+    DecidimOCL::Surveys::SurveyAnsweredMailer.answered(email, component, id).deliver_now
   end
 end

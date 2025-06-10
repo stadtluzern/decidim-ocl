@@ -76,6 +76,10 @@ de:
           hello: Guten Tag
           subject: Ihr Konto ist inaktiv
     components:
+      surveys:
+        settings:
+          global:
+            notified_email: Benachrichtigungs-Mails senden an
       cleaner:
         name: Bereinigung
     content_blocks:
