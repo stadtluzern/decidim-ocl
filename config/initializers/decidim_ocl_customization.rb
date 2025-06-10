@@ -11,7 +11,6 @@ INCLUDES = [
 ].freeze
 
 PREPENDS = [
-  #[Decidim::ApplicationMailer,                                  DecidimOCL::ApplicationMailer],
   #[Decidim::OrganizationLogoUploader,                           DecidimOCL::OrganizationLogoUploader],
   #[Decidim::ParticipatoryProcesses::ParticipatoryProcessHelper, DecidimOCL::ParticipatoryProcesses::ParticipatoryProcessHelper]
 ].freeze
