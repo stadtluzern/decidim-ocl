@@ -18,7 +18,6 @@ gem 'decidim-templates', DECIDIM_VERSION
 # gem 'decidim-antivirus', github: 'puzzle/decidim-module-antivirus', branch: 'release/0.29-stable' # temporarily deactivated until we have a working puzzle fork compatible with 0.29
 gem 'decidim-decidim_awesome', github: 'decidim-ice/decidim-module-decidim_awesome', branch: 'main'
 gem 'decidim-participatory_documents', github: 'openpoke/decidim-module-participatory-documents', branch: 'upgrade-0.29'
-# gem 'decidim-question_captcha', github: 'OpenSourcePolitics/decidim-module-question_captcha', branch: 'release/0.27-stable' # deactivated because no compatible version for decidim 0.28 exists
 gem 'decidim-reporting_proposals', github: 'openpoke/decidim-module-reporting-proposals', branch: 'release/0.29-stable'
 gem 'decidim-survey_multiple_answers', github: 'OpenSourcePolitics/decidim-module-survey_multiple_answers',
                                        branch: 'bump/0.29'
@@ -32,7 +31,6 @@ gem 'decidim-navigation_maps', github: 'Platoniq/decidim-module-navigation_maps'
 # gem 'decidim-url_aliases', github: 'OpenSourcePolitics/decidim-urlaliases'
 
 gem 'activerecord-nulldb-adapter', github: 'puzzle/nulldb'
-gem 'acts_as_textcaptcha'
 gem 'aws-sdk-s3', require: false
 gem 'binding_of_caller'
 gem 'bootsnap'                # , '~> 1.3'
