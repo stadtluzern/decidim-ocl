@@ -12,7 +12,6 @@ INCLUDES = [
 
 PREPENDS = [
   #[Decidim::ApplicationMailer,                                  DecidimOCL::ApplicationMailer],
-  #[Decidim::Meetings::ContentBlocks::UpcomingMeetingsCell,      DecidimOCL::Meetings::ContentBlocks::UpcomingMeetingsCell],
   #[Decidim::OrganizationLogoUploader,                           DecidimOCL::OrganizationLogoUploader],
   #[Decidim::ParticipatoryProcesses::ParticipatoryProcessHelper, DecidimOCL::ParticipatoryProcesses::ParticipatoryProcessHelper]
 ].freeze
