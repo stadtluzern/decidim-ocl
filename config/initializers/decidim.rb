@@ -150,7 +150,8 @@ Decidim.configure do |config| # rubocop:disable Metrics/BlockLength
   }
 
   config.content_security_policies_extra = {
-    "connect-src" => "photon.komoot.io"
+    "connect-src" => "photon.komoot.io",
+    "img-src" => "*.geo.admin.ch",
   }
 
   if Rails.application.secrets.maps.present? && Rails.application.secrets.maps[:static_provider].present?
