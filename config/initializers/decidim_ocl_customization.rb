@@ -3,74 +3,78 @@
 require_relative '../../lib/decidim_customization'
 require_relative '../../lib/puzzle_rails_pry_prompt'
 
-PuzzleRailsPryPrompt.set_prompt
+Rails.application.config.to_prepare do
+  PuzzleRailsPryPrompt.set_prompt
 
-INCLUDES = [
-].freeze
+  INCLUDES = [
+  ].freeze
 
-PREPENDS = [
-].freeze
+  PREPENDS = [
+    # [Decidim::System::RegisterOrganization, DecidimOCL::System::RegisterOrganization],
+    [Decidim::System::UpdateOrganization, DecidimOCL::System::UpdateOrganization]
+  ].freeze
 
-OVERRIDE_PATHS = [
-  'app/overrides'
-].freeze
+  OVERRIDE_PATHS = [
+    'app/overrides'
+  ].freeze
 
-DecidimCustomization.new(
-  includes: INCLUDES,
-  prepends: PREPENDS,
-  overrides: OVERRIDE_PATHS
-).log_and_load
+  DecidimCustomization.new(
+    includes: INCLUDES,
+    prepends: PREPENDS,
+    overrides: OVERRIDE_PATHS
+  ).log_and_load
 
-# v Specially handled things (here be dragons) v
+  # v Specially handled things (here be dragons) v
 
-# Add the Devise custom scope to the Decidim config
-# Find all instances with: <% scope = Decidim.config.devise_custom_scope.(@organization) %>
-Decidim.config[:devise_custom_scope] = lambda { |org, base = nil|
-  base ||= %i[decidim_ocl devise]
+  # Add the Devise custom scope to the Decidim config
+  # Find all instances with: <% scope = Decidim.config.devise_custom_scope.(@organization) %>
+  Decidim.config[:devise_custom_scope] = lambda { |org, base = nil|
+    base ||= %i[decidim_ocl devise]
 
-  org_scope = (org.tenant_type.presence || 'other').to_sym
+    org_scope = (org.tenant_type.presence || 'other').to_sym
 
-  # Ensure that the current tenant is using custom translations for the devise mails
-  base + [org_scope] if I18n.t(org_scope, scope: base, default: nil)
-}
+    # Ensure that the current tenant is using custom translations for the devise mails
+    base + [org_scope] if I18n.t(org_scope, scope: base, default: nil)
+  }
 
-# Setup a controller hook to setup the sms gateway before the
-# request is processed. This is done through a notification to
-# get access to the `current_*` environment variables within
-# Decidim. Taken and adapted from the term_customizer module.
-ActiveSupport::Notifications.subscribe 'start_processing.action_controller' do |_name, _started, _finished, _unique_id, data|
-  DecidimOCL::Verifications::Sms::AspsmsGateway.organization = data[:headers].env['decidim.current_organization']
-end
+  # Setup a controller hook to setup the sms gateway before the
+  # request is processed. This is done through a notification to
+  # get access to the `current_*` environment variables within
+  # Decidim. Taken and adapted from the term_customizer module.
+  ActiveSupport::Notifications.subscribe 'start_processing.action_controller' do |_name, _started, _finished, _unique_id, data|
+    DecidimOCL::Verifications::Sms::AspsmsGateway.organization = data[:headers].env['decidim.current_organization']
+  end
 
-# Override default for surveys
-Decidim.find_component_manifest(:surveys).settings(:global).attributes[:clean_after_publish].default = false
+  # Override default for surveys
+  Decidim.find_component_manifest(:surveys).settings(:global).attributes[:clean_after_publish].default = false
 
-# Run this customization late, after decidim awesome has initialized
-Rails.application.config.after_initialize do
-  #Decidim::Proposals::ProposalWizardCreateStepForm.include(DecidimOCL::Proposals::ProposalWizardCreateStepFormOverride)
-end
+  # Run this customization late, after decidim awesome has initialized
+  Rails.application.config.after_initialize do
+    #Decidim::Proposals::ProposalWizardCreateStepForm.include(DecidimOCL::Proposals::ProposalWizardCreateStepFormOverride)
+  end
 
-module Decidim
-  module Map
-    module Provider
-      module DynamicMap
-        autoload :Swisstopo, 'decidim/map/provider/dynamic_map/swisstopo'
+  module Decidim
+    module Map
+      module Provider
+        module DynamicMap
+          autoload :Swisstopo, 'decidim/map/provider/dynamic_map/swisstopo'
+        end
       end
     end
   end
-end
 
-ActiveSupport::Notifications.subscribe "answer_questionnaire.after" do |event|
-  has_component = questionnaire.questionnaire_for.respond_to? :component
-  return unless has_component
+  ActiveSupport::Notifications.subscribe "answer_questionnaire.after" do |event|
+    has_component = questionnaire.questionnaire_for.respond_to? :component
+    return unless has_component
 
-  component = questionnaire.questionnaire_for.component
-  return unless component.manifest_name == 'surveys'
+    component = questionnaire.questionnaire_for.component
+    return unless component.manifest_name == 'surveys'
 
-  email = component.try(:settings).try(:notified_email)
-  id = form.context.session_token
+    email = component.try(:settings).try(:notified_email)
+    id = form.context.session_token
 
-  if email.present?
-    DecidimOCL::Surveys::SurveyAnsweredMailer.answered(email, component, id).deliver_now
+    if email.present?
+      DecidimOCL::Surveys::SurveyAnsweredMailer.answered(email, component, id).deliver_now
+    end
   end
 end

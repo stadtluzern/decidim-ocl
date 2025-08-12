@@ -26,4 +26,4 @@ Decidim::System::UpdateOrganizationForm.class_eval do
 end
 
 #Decidim::System::RegisterOrganization.prepend DecidimOCL::System::RegisterOrganization
-Decidim::System::UpdateOrganization.prepend DecidimOCL::System::UpdateOrganization
+#Decidim::System::UpdateOrganization.prepend DecidimOCL::System::UpdateOrganization

@@ -1,37 +1,15 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# The following keys must be escaped otherwise they will not be retrieved by
-# the default I18n backend:
-#
-# true, false, on, off, yes, no
-#
-# Instead, surround them with single quotes.
-#
-# en:
-#   'true': 'foo'
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
-
+---
 de:
   activemodel:
     attributes:
+      confirmation:
+        verification_code: Verification code
+      initiative:
+        offline_votes_for_scope: Offline votes for scope
+      initiatives_committee_member:
+        user: User
+      mobile_phone:
+        mobile_phone_number: Mobile phone number
       organization:
         delete_admin_logs: Löschen von Admin-Protokollen zulassen
         delete_admin_logs_after: Admin-Protokolle löschen nach (Tage, standardmässig 365)
@@ -41,19 +19,69 @@ de:
     errors:
       internal_server_error:
         try_later: Bitte später noch einmal versuchen.
+      models:
+        user:
+          attributes:
+            textcaptcha_answer:
+              expired: Sie haben zu lange gebraucht, um die Frage zu beantworten. Bitte versuchen Sie es erneut.
+              incorrect: Die Antwort ist leider nicht korrekt, bitte versuchen Sie es erneut.
       not_found:
         content_doesnt_exist: Diese Seite wurde leider nicht gefunden. Wir bitten um Verständnis.
         title: Ups!
-      models:
-         user:
-           attributes:
-             textcaptcha_answer:
-               expired: Sie haben zu lange gebraucht, um die Frage zu beantworten. Bitte versuchen Sie es erneut.
-               incorrect: Die Antwort ist leider nicht korrekt, bitte versuchen Sie es erneut.
   decidim:
     admin:
+      actions:
+        add: Add
+        configure: Configure
+        confirm_destroy: Confirm destroy
+        destroy: Destroy
+        duplicate: Duplicate
+        edit: Edit
+        new_assembly: New assembly
+        preview: Preview
+      assemblies:
+        index:
+          not_published: Not published
+          private: Private
+          public: Public
+          published: Published
+      filters:
+        state_eq:
+          label: State
       menu:
         clean: Datenbereinigung
+      models:
+        assembly:
+          fields:
+            created_at: Created at
+            private: Private
+            promoted: Promoted
+            published: Published
+            title: Title
+        navbar_link:
+          fields:
+            link: Link
+            title: Title
+            weight: Weight
+        scope_type:
+          fields:
+            name: Name
+            plural: Plural
+      navbar_links:
+        no_links: No links
+      titles:
+        assemblies: Assemblies
+        navbar_links: Navbar links
+        scope_types: Scope types
+    assemblies:
+      assembly_members:
+        index:
+          members: Members
+    budgets:
+      projects:
+        budget_summary:
+          description: What projects would you allocate budget to? Vote on as many ideas as you with before reaching the total spendable sum. You must invest at least %{minimum_budget}. Confirm your final selection by clicking on "Vote".
+          title: Decide on the budget!
     cleaner:
       admin:
         organization_cleaner:
@@ -75,43 +103,177 @@ de:
           greetings: Freundliche Grüsse,<br/>%{organization_name}<br/><a href="%{organization_url}">%{organization_url}</a>
           hello: Guten Tag
           subject: Ihr Konto ist inaktiv
+    comments:
+      comments:
+        create:
+          error: Error
     components:
+      accountability:
+        name: Implementation
+      cleaner:
+        name: Bereinigung
+      comment:
+        report:
+          action: Send report
+          description: Why is this content inappropriate?
+          details: Additional comments
+          reasons:
+            does_not_belong: It does not belong on this platform for other reasons.
+            offensive: It is racist, anti-semitic, sexist, homophobic or otherwise discriminating or threatening.
+            spam: It is obviously spam, unsolicited advertising or similar.
+          title: Report a problem
       surveys:
         settings:
           global:
             notified_email: Benachrichtigungs-Mails senden an
-      cleaner:
-        name: Bereinigung
     content_blocks:
       last_blog_posts:
         name: Aktuellste Blog-Einträge
         title: Aktuellste Blog-Einträge
         view_all: Alle anzeigen
+      last_surveys:
+        name: Latest surveys
+        title: Latest surveys
+        view_all: View all
     devise:
-     registrations:
-       new:
-         captcha_legend: Sicherheitsfrage
-         captcha_instructions: Bitte beantworten Sie die folgende Sicherheitsfrage (Spamschutz).
-         textcaptcha_answer: Antwort
+      omniauth_registrations:
+        new:
+          nickname_help: Your alias on "%{organization}". May not contain spaces or special characters.
+          password_help: "%{minimun_characters} characters minimum, must not be too common (e.g. 123456) and must be different from your nickname and your email."
+          username_help: Public name that appears on your posts. In order to guarantee anonymity, you may choose any name.
+      registrations:
+        new:
+          captcha_instructions: Bitte beantworten Sie die folgende Sicherheitsfrage (Spamschutz).
+          captcha_legend: Sicherheitsfrage
+          nickname_help: Your alias on "%{organization}". May not contain spaces or special characters.
+          password_help: "%{minimun_characters} characters minimum, must not be too common (e.g. 123456) and must be different from your nickname and your email."
+          textcaptcha_answer: Antwort
+          username_help: Public name that appears on your posts. In order to guarantee anonymity, you may choose any name.
+      shared:
+        newsletter_modal:
+          buttons:
+            check: Keep unchecked
+            unckeck: Check and continue
+          notice: |-
+            <p>Hey, are you sure you don't want to receive a newsletter?<br>
+            Please consider ticking the newsletter checkbox below again. It is very important for us that you can receive occasional emails to make important announcements. You can always change this on your notification settings page.</p>
+            <p>If you don't tick the box you might be missing relevant information about new participatory opportunities within the platform. If you still want to avoid receiving newsletters, we perfectly understand you decision.</p>
+            <p>Thanks for reading this!</p>
+    follows:
+      create:
+        participatory_space: Already following %{space_name}
+    groups:
+      form:
+        email_help: Email help
+        name_help: Name help
+        nickname_help: Nickname help
+    initiatives:
+      admin:
+        committee_requests:
+          index:
+            approve: Approve
+            confirm_revoke: Confirm revoke
+            no_members_yet: No members yet
+            revoke: Revoke
+            title: Title
+        initiatives:
+          form:
+            attachments: Attachments
+            settings: Settings
+            title: Title
+      create_initiative:
+        share_committee_link:
+          continue: Continue
+          invite_to_committee_help: Invite to committee help
+      form:
+        add_attachments: Add attachments
+        attachment_legend: Attachment legend
+        delete_attachment: Delete attachment
+      initiatives_mailer:
+        creation_subject: Creation subject
+        more_information: More information
+        promotal_committee_help: Promotal committee help
+    menu:
+      help: Info & Help
+    pages:
+      home:
+        footer_sub_hero:
+          footer_sub_hero_body: Develop ideas. Discuss. Decide.
+          footer_sub_hero_headline: "%{organization} - your participatory platform."
+      index:
+        subheading: Here you will find questions and answers about %{name}.
+      terms_and_conditions:
+        refuse:
+          modal_body: Modal body
+          modal_btn_continue: Modal btn continue
+          modal_btn_exit: Modal btn exit
+          modal_button: Modal button
+          modal_close: Modal close
+          modal_title: Modal title
     participatory_processes:
       index:
         participatory_process_group:
           more_info: Mehr anzeigen
+      participatory_process_groups:
+        highlighted_meetings:
+          past_meetings_meetings: Past events
+          upcoming_meetings: Upcoming events
+    participatory_spaces:
+      highlighted_meetings:
+        past_meetings_meetings: Past events
+        upcoming_meetings: Upcoming events
+    proposals:
+      proposals:
+        filters:
+          activity: Kind
+        preview:
+          update_position: Update position
     system:
       models:
         organization:
           fields:
+            aspsms: ASPSMS
+            map_config: map_config
             tenant_type: special features
       organizations:
         omniauth_settings:
           enabled: Omniauth aktiviert
+          oidc:
+            issuer: Issuer
+            client_id: Client ID
+            client_secret: Client Secret
+            redirect_url: Redirect URL
+        smtp_settings:
+          2_add_map_config_override:
+            fieldsets:
+              map_config:
+                default_center: Default center
+                map_limits: Map limits
+          fieldsets:
+            map_config:
+              default_center: Default center
+              map_limits: Map limits
         tenant_type:
           none: None
+    url_aliases:
+      admin:
+        '':
+          'no': 'No'
+          'yes': 'Yes'
+        models:
+          redirect_rule:
+            fields:
+              active: Active
+              destination: Destination
+              id: Id
+              source: Source
+              source_is_case_sensitive: Source is case sensitive
+        redirect_rules:
+          no_redirect_rules: No redirect rules
+        titles:
+          redirect_rules: Redirect rules
   decidim_ocl:
-    devise:
-      # dialogluzern:
-      # deinklima:
-      # impulskoeniz:
+    devise: Devise
     maps:
       gis_lu:
         attribution: <a href="https://www.gis.stadtluzern.ch/" target="_blank">GIS LU</a>
@@ -121,6 +283,13 @@ de:
         attribution: <a href="https://www.swisstopo.ch/" target="_blank">swisstopo</a>
         basic: Landeskarte
         satellite: Satellit
+    reply_to:
+      default: Default
+      deinklima: info@deinklima.ch
+      dialogluzern: Dialogluzern
+      gemeinsamerspace: Gemeinsamerspace
+      koeniz: info@impulskoeniz.ch
+      winterthur: Winterthur
     surveys:
       survey_answered_mailer:
         answered:
@@ -132,14 +301,30 @@ de:
         aspsms_gateway:
           error: Wenn die SMS Verifizierung aktiviert wurde, müssen sowohl der User Key, als auch das Password angegeben werden
           sms_originator_max_11_alphabetic_characters: DECIDIM
-          sms_text: '%{code} ist der persönliche Zugangscode auf %{organization}'
-    reply_to:
-      default:
-      deinklima: info@deinklima.ch 
-      dialogluzern:
-      gemeinsamerspace: 
-      koeniz: info@impulskoeniz.ch
-      winterthur:
-
+          sms_text: "%{code} ist der persönliche Zugangscode auf %{organization}"
+  default: Default
+  devise:
+    mailer:
+      confirmation_instructions:
+        subject: Confirm E-Mail
+      reset_password_instructions:
+        action: Change my password
+        greeting: Hello %{recipient}!
+        instruction: 'Someone has requested a link to reset the password connected to this account. You can do this by clicking the following link:'
+        instruction_2: If you did not request this change, you may ignore this email.
+        instruction_3: Your password will only reset once you click the link and set a new one.
+        subject: Reset password
   hello: Hallo Welt
-
+  layouts:
+    decidim:
+      assembly_navigation:
+        assembly_member_menu_item: Members (%{count})
+        assembly_menu_item: Assembly menu item
+      cookie_warning:
+        description_html: This site uses cookies. By continuing to browse the site, you agree to our use of cookies. We also use Matomo for anonymous user statistics. Find out more about it %{link}.
+        link_label: here
+        ok: I agree
+      footer:
+        cc_by_license: Cc by license
+        decidim_logo: Decidim logo
+        made_with_open_source: Made with open source
