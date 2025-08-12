@@ -1,0 +1,2 @@
+insert_after ':root:last-child'
+partial 'layouts/decidim/admin/header_extra'
