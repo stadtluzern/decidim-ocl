@@ -31,8 +31,7 @@ class DevEnv
       new_host = "#{parts[..-2].join('.')}.local"
 
       print "−".white.bright + " Changing '#{old_host}' to '#{new_host}'...\r"
-      org.host = new_host
-      org.save!
+      org.update_attribute(:host, new_host)
 
       puts "✔".green.bright + " Changed host '#{old_host}' to '#{new_host}'!"
     rescue StandardError => e
