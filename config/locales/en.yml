@@ -16,6 +16,13 @@ en:
         delete_inactive_users: Inaktive Teilnehmende löschen
         delete_inactive_users_after: Inaktive Teilnehmende löschen nach (Tage, standardmässig 390)
         delete_inactive_users_email_after: E-Mail zur bevorstehenden Konto-Löschung versenden nach Inaktivität von (Tagen, standardmässig 365)
+
+        default_center_lat: Default Center Latitude
+        default_center_lng: Default Center Longtitude
+        map_limits_lat_min: Minimum Latitude
+        map_limits_lng_min: Minimum Longtitude
+        map_limits_lat_max: Maximum Latitude
+        map_limits_lng_max: Maximum Longtitude
     errors:
       internal_server_error:
         try_later: Bitte später noch einmal versuchen.
@@ -233,8 +240,8 @@ en:
         organization:
           fields:
             aspsms: ASPSMS
-            map_config: map_config
-            tenant_type: special features
+            map_config: Map Configuration
+            tenant_type: Special Features
       organizations:
         omniauth_settings:
           enabled: Omniauth aktiviert
@@ -243,16 +250,11 @@ en:
             client_id: Client ID
             client_secret: Client Secret
             redirect_url: Redirect URL
-        smtp_settings:
-          2_add_map_config_override:
-            fieldsets:
-              map_config:
-                default_center: Default center
-                map_limits: Map limits
+        advanced_settings:
           fieldsets:
             map_config:
-              default_center: Default center
-              map_limits: Map limits
+              default_center: Default Center
+              map_limits: Map Limits
         tenant_type:
           none: None
     url_aliases:
