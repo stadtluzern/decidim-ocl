@@ -72,7 +72,7 @@ class PuzzleRailsPryPrompt
     private
 
     def prompt_exists?
-      Pry::Prompt.all.include?(:puzzle_rails)
+      Pry::Prompt.all.keys.include?('puzzle_rails')
     end
 
     def apply_helpers(obj, actions)
