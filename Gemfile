@@ -38,6 +38,7 @@ gem 'byebug'                  # , '~> 11.0', platform: :mri
 gem 'dalli'
 gem 'deface'
 gem 'delayed_job_active_record'
+gem 'delayed_cron_job'
 gem 'faker'                   # , '~> 1.9'
 gem 'lograge'
 gem 'prometheus_exporter'

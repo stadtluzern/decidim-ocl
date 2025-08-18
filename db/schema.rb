@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_05_06_121329) do
+ActiveRecord::Schema[7.0].define(version: 2025_08_15_082451) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
   enable_extension "pg_trgm"
@@ -904,6 +904,17 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_06_121329) do
     t.index ["decidim_meetings_meetings_id"], name: "index_guest_meeting_registration_mm_on_organization_id"
     t.index ["decidim_organization_id"], name: "index_guest_meeting_registration_rr_on_organization_id"
     t.index ["decidim_user_id"], name: "index_guest_meeting_registration_uid_on_organization_id"
+  end
+
+  create_table "decidim_guest_meeting_registration_settings", force: :cascade do |t|
+    t.boolean "enable_guest_registration", default: false
+    t.bigint "decidim_organization_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "enable_registration_confirmation", default: false
+    t.boolean "enable_cancellation", default: false
+    t.boolean "disable_account_confirmation", default: false
+    t.index ["decidim_organization_id"], name: "index_guest_meeting_registration_settings_on_organization_id"
   end
 
   create_table "decidim_hashtags", force: :cascade do |t|
@@ -2237,6 +2248,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_06_121329) do
     t.string "queue"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
+    t.string "cron"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
@@ -2353,6 +2365,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_06_121329) do
   add_foreign_key "decidim_editor_images", "decidim_users", column: "decidim_author_id"
   add_foreign_key "decidim_guest_meeting_registration_registration_requests", "decidim_meetings_meetings", column: "decidim_meetings_meetings_id"
   add_foreign_key "decidim_guest_meeting_registration_registration_requests", "decidim_organizations"
+  add_foreign_key "decidim_guest_meeting_registration_settings", "decidim_organizations"
   add_foreign_key "decidim_identities", "decidim_organizations"
   add_foreign_key "decidim_initiatives_settings", "decidim_organizations"
   add_foreign_key "decidim_navigation_maps_blueprint_areas", "decidim_navigation_maps_blueprints"
