@@ -5,4 +5,4 @@ Online-Partizipationsverfahren für OCL
 [Installationsguide für Openshift](./doc/installation_openshift.md)
 
 # Referenzen
-Dieses Open-Source repository für die Decidim-OCL basiert auf [Decidim](https://github.com/decidim/decidim).
+Dieses Open-Source repository für die Decidim-OCL basiert auf [Decidim](https://github.com/decidim/decidim) und nutzt die Version 0.29.4.
