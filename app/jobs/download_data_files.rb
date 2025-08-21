@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RemoveExpiredDownloadYourDataFiles < CronJob
+class DownloadDataFiles < CronJob
   self.cron_expression = '0 0 * * *'
 
   def perform
