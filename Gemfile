@@ -18,7 +18,7 @@ gem 'decidim-anonymous_codes', github: 'openpoke/decidim-module-anonymous_codes'
 gem 'decidim-antivirus', github: 'puzzle/decidim-module-antivirus', branch: 'master'
 gem 'decidim-decidim_awesome', github: 'decidim-ice/decidim-module-decidim_awesome', branch: 'main'
 gem 'decidim-participatory_documents', github: 'openpoke/decidim-module-participatory-documents', branch: 'upgrade-0.29'
-gem 'decidim-reporting_proposals', github: 'openpoke/decidim-module-reporting-proposals', branch: 'release/0.29-stable'
+gem 'decidim-reporting_proposals', github: 'openpoke/decidim-module-reporting-proposals', branch: 'upgrade-29.4', ref: '0ca71f9'
 gem 'decidim-survey_multiple_answers', github: 'OpenSourcePolitics/decidim-module-survey_multiple_answers',
                                        branch: 'bump/0.29'
 gem 'decidim-term_customizer', github: 'OpenSourcePolitics/decidim-module-term_customizer', branch: 'master'
@@ -57,7 +57,7 @@ end
 group :development do
   gem 'letter_opener_web'     # , '~> 1.3'
   gem 'listen'                # , '~> 3.1'
-  gem 'solargraph'
+  gem 'ruby-lsp'
   gem 'web-console'           # , '~> 3.5'
 end
 
