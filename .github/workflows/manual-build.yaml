@@ -3,8 +3,8 @@ name: 'Manual build without tests'
 on:
   workflow_dispatch:
     inputs:
-      repository_url:
-        description: 'Url to push build image to'
+      image_repo:
+        description: "Image repo to push image to"
         type: string
         required: true
         default: "https://harbor.puzzle.ch"
@@ -27,13 +27,12 @@ on:
           type=schedule,priority=900
           type=sha,format=long,priority=800
 
-
 jobs:
   build:
     uses: ./.github/workflows/reusable_build.yaml
     secrets: inherit
     with:
-      repository_url: ${{ inputs.repository_url }}
+      repository_url: ${{ inputs.image_repo }}
       images: ${{ inputs.images }}
       flavor: ${{ inputs.flavor }}
       tags: ${{ inputs.tags }}

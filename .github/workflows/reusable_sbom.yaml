@@ -1,4 +1,4 @@
-name: 'Reusable: Send SBOM to a dependency tracker'
+name: "Reusable: Send SBOM to a dependency tracker"
 
 # This is a reusable build step, that is supposed to handle the generic task of
 # sending a SBOM somewhere.
@@ -10,32 +10,33 @@ on:
   workflow_call:
     inputs:
       dependency_tracker_url:
-        description: 'Url to send SBOM to'
+        description: "Url to send SBOM to"
         type: string
         required: true
       project:
-        description: 'Project name'
+        description: "Project name"
         type: string
         required: false
       project_version:
-        description: 'Project version'
+        description: "Project version"
         type: string
         required: false
 
     secrets:
       DEPENDENCY_TRACKER_TOKEN:
-        description: 'Token for the dependency tracker'
+        description: "Token for the dependency tracker"
         required: true
 
 jobs:
   sbom:
     environment: deploy
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
     steps:
       - uses: anchore/sbom-action@0
-        format: cyclonedx
-        output-file: sbom.xml
-      - name: 'Push SBOM to dependency tracker'
+        with:
+          format: cyclonedx
+          output-file: sbom.xml
+      - name: "Push SBOM to dependency tracker"
         env:
           URL: ${{ inputs.dependency_tracker_url }}
           PROJECT: ${{ inputs.project }}
