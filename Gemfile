@@ -6,14 +6,16 @@ DECIDIM_VERSION = '0.29.4'
 
 ruby RUBY_VERSION
 
-gem 'execjs' # , '2.7.0'
-
+# Decidim
 gem 'decidim', DECIDIM_VERSION
+
+# Internal Modules
 gem 'decidim-conferences', DECIDIM_VERSION
 gem 'decidim-initiatives', DECIDIM_VERSION
 gem 'decidim-proposals', DECIDIM_VERSION
 gem 'decidim-templates', DECIDIM_VERSION
 
+# External Modules
 gem 'decidim-anonymous_codes',
     github: 'openpoke/decidim-module-anonymous_codes',
     branch: 'main',
@@ -58,13 +60,14 @@ gem 'decidim-term_customizer',
 gem 'activerecord-nulldb-adapter', github: 'puzzle/nulldb'
 gem 'aws-sdk-s3', require: false
 gem 'binding_of_caller'
-gem 'bootsnap'                # , '~> 1.3'
-gem 'byebug'                  # , '~> 11.0', platform: :mri
+gem 'bootsnap'
+gem 'byebug'
 gem 'dalli'
 gem 'deface'
 gem 'delayed_cron_job'
 gem 'delayed_job_active_record'
-gem 'faker'                   # , '~> 1.9'
+gem 'execjs'
+gem 'faker'
 gem 'lograge'
 gem 'prometheus_exporter'
 gem 'pry-byebug'
@@ -72,22 +75,21 @@ gem 'pry-rails'
 gem 'puma'
 gem 'sentry-raven'
 gem 'sprockets-rails'
-gem 'uglifier'                # , '~> 4.1'
+gem 'uglifier'
 
-group :development, :test     do
+group :development, :test do
   gem 'better_errors'
   gem 'decidim-dev', DECIDIM_VERSION
 end
 
 group :development do
-  gem 'letter_opener_web'     # , '~> 1.3'
-  gem 'listen'                # , '~> 3.1'
+  gem 'dotenv'
+  gem 'letter_opener_web'
+  gem 'listen'
   gem 'ruby-lsp'
-  gem 'web-console'           # , '~> 3.5'
+  gem 'web-console'
 end
 
 group :production do
   gem 'bleib'
 end
-
-gem 'dotenv', '~> 3.1'

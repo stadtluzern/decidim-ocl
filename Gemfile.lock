@@ -1036,7 +1036,7 @@ DEPENDENCIES
   deface
   delayed_cron_job
   delayed_job_active_record
-  dotenv (~> 3.1)
+  dotenv
   execjs
   faker
   letter_opener_web
