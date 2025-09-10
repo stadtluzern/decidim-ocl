@@ -10,11 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_08_15_082451) do
+ActiveRecord::Schema[7.0].define(version: 2025_09_10_113344) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
+
+  create_table "active_hashcash_stamps", force: :cascade do |t|
+    t.string "version", null: false
+    t.integer "bits", null: false
+    t.date "date", null: false
+    t.string "resource", null: false
+    t.string "ext", null: false
+    t.string "rand", null: false
+    t.string "counter", null: false
+    t.string "request_path"
+    t.string "ip_address"
+    t.jsonb "context"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.index ["counter", "rand", "date", "resource", "bits", "version", "ext"], name: "index_active_hashcash_stamps_unique", unique: true
+    t.index ["ip_address", "created_at"], name: "index_active_hashcash_stamps_on_ip_address_and_created_at", where: "(ip_address IS NOT NULL)"
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -904,17 +921,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_08_15_082451) do
     t.index ["decidim_meetings_meetings_id"], name: "index_guest_meeting_registration_mm_on_organization_id"
     t.index ["decidim_organization_id"], name: "index_guest_meeting_registration_rr_on_organization_id"
     t.index ["decidim_user_id"], name: "index_guest_meeting_registration_uid_on_organization_id"
-  end
-
-  create_table "decidim_guest_meeting_registration_settings", force: :cascade do |t|
-    t.boolean "enable_guest_registration", default: false
-    t.bigint "decidim_organization_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "enable_registration_confirmation", default: false
-    t.boolean "enable_cancellation", default: false
-    t.boolean "disable_account_confirmation", default: false
-    t.index ["decidim_organization_id"], name: "index_guest_meeting_registration_settings_on_organization_id"
   end
 
   create_table "decidim_hashtags", force: :cascade do |t|
@@ -2365,7 +2371,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_08_15_082451) do
   add_foreign_key "decidim_editor_images", "decidim_users", column: "decidim_author_id"
   add_foreign_key "decidim_guest_meeting_registration_registration_requests", "decidim_meetings_meetings", column: "decidim_meetings_meetings_id"
   add_foreign_key "decidim_guest_meeting_registration_registration_requests", "decidim_organizations"
-  add_foreign_key "decidim_guest_meeting_registration_settings", "decidim_organizations"
   add_foreign_key "decidim_identities", "decidim_organizations"
   add_foreign_key "decidim_initiatives_settings", "decidim_organizations"
   add_foreign_key "decidim_navigation_maps_blueprint_areas", "decidim_navigation_maps_blueprints"
