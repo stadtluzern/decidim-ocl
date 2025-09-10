@@ -1,6 +1,7 @@
 GIT
   remote: https://github.com/OpenSourcePolitics/decidim-module-survey_multiple_answers.git
   revision: 971ad38a2955b5f495b7f2ed719589cd329cf269
+  ref: 971ad38
   branch: bump/0.29
   specs:
     decidim-survey_multiple_answers (0.29.2)
@@ -12,6 +13,7 @@ GIT
 GIT
   remote: https://github.com/OpenSourcePolitics/decidim-module-term_customizer.git
   revision: 3da4973f52649534fa9cc2acaaa4d89176a19351
+  ref: 3da4973
   branch: master
   specs:
     decidim-term_customizer (0.29.0)
@@ -20,7 +22,8 @@ GIT
 
 GIT
   remote: https://github.com/OpenSourcePolitics/guest-meeting-registration.git
-  revision: a0ad48b581e1b1576d38e00f168ef8885a7d8133
+  revision: 19e3998acafa5af237dc04fb7b605de20c0dd18d
+  ref: 19e3998
   branch: bump/module_to_0.29
   specs:
     decidim-guest_meeting_registration (0.29.2)
@@ -31,7 +34,8 @@ GIT
 GIT
   remote: https://github.com/Platoniq/decidim-module-navigation_maps.git
   revision: 349e4e37360639f396f7228d9ecbad614e340535
-  branch: main
+  ref: 349e4e3
+  branch: release/0.29-stable
   specs:
     decidim-navigation_maps (1.6.0)
       decidim-admin (>= 0.29, < 0.30)
@@ -39,10 +43,12 @@ GIT
 
 GIT
   remote: https://github.com/decidim-ice/decidim-module-decidim_awesome.git
-  revision: ccb89b5eda6dba04658a70f34a38a97f1ecddf02
-  branch: main
+  revision: afd2111fec6db1039a5145eaeef270c6686b6d14
+  ref: afd2111
+  branch: release/0.29-stable
   specs:
-    decidim-decidim_awesome (0.12.1)
+    decidim-decidim_awesome (0.12.4)
+      active_hashcash (~> 0.4.0)
       decidim-admin (>= 0.29.1, < 0.30)
       decidim-core (>= 0.29.1, < 0.30)
       deface (>= 1.5)
@@ -51,6 +57,8 @@ GIT
 GIT
   remote: https://github.com/openpoke/decidim-module-anonymous_codes.git
   revision: 8323978480579ac290a52cdb2de10a6a27f6fa70
+  ref: 8323978
+  branch: main
   specs:
     decidim-anonymous_codes (1.1)
       decidim-admin (>= 0.29.0, < 0.30)
@@ -61,8 +69,9 @@ GIT
 
 GIT
   remote: https://github.com/openpoke/decidim-module-participatory-documents.git
-  revision: fef67cf0b3d85d50061d25855e38cfbfbfd377d1
-  branch: upgrade-0.29
+  revision: 9c632e086d0e0328ad28f3fb1370bc239439be66
+  ref: 9c632e0
+  branch: main
   specs:
     decidim-participatory_documents (0.4.0)
       decidim-admin (>= 0.29, < 0.30)
@@ -84,6 +93,7 @@ GIT
 GIT
   remote: https://github.com/puzzle/decidim-module-antivirus.git
   revision: bc3cb4d217d71e47921285535624936f5587cbff
+  ref: bc3cb4d
   branch: master
   specs:
     decidim-antivirus (0.29.0)
@@ -146,6 +156,8 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    active_hashcash (0.4.0)
+      rails (>= 5.2.0)
     active_link_to (1.0.5)
       actionpack
       addressable
