@@ -114,7 +114,7 @@ RUN    export DEBIAN_FRONTEND=noninteractive \
     && rm libpaper1*.deb \
     # Install the Packages we need at runtime
     && apt-get -y install ${RUN_PACKAGES} \
-    vim-tiny curl \
+    neovim curl \
     # Clean up after ourselves
     && unset DEBIAN_FRONTEND
 
