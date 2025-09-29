@@ -1,0 +1,9 @@
+<!-- insert_bottom '.main-bar__links-desktop__item-wrapper' -->
+
+<% if current_organization.tenant_type&.to_sym == :dialogluzern %>
+<div>
+    <a class="main-bar__links-desktop__item" aria-label="Schadenmelder" href="https://dialogluzern.ch/assemblies/schadenmelden/f/498/">
+      <img style="width: 1.25rem; height: 1.25rem" aria-hidden="true" src="/images/luzern-glaenzt-logo.svg" /><span style="font-size: 14px; line-height: 18px;">Schäden melden</span>
+    </a>
+</div>
+<% end %>
