@@ -3,15 +3,18 @@
 require_relative '../../lib/decidim_customization'
 require_relative '../../lib/puzzle_rails_pry_prompt'
 
+# rubocop:disable Metrics/BlockLength, Lint/ConstantDefinitionInBlock
+
 Rails.application.config.to_prepare do
   PuzzleRailsPryPrompt.set_prompt
 
-  INCLUDES = [
-  ].freeze
+  INCLUDES = [].freeze
 
   PREPENDS = [
     # [Decidim::System::RegisterOrganization, DecidimOCL::System::RegisterOrganization],
-    [Decidim::System::UpdateOrganization, DecidimOCL::System::UpdateOrganization]
+    [Decidim::System::UpdateOrganization,                   DecidimOCL::System::UpdateOrganization],
+    # [Decidim::GuestMeetingRegistration::CreateRegistration, DecidimOCL::GuestMeetingRegistration::CreateRegistration],
+    [Decidim::Surveys::SurveyConfirmationMailer,            DecidimOCL::Surveys::SurveyConfirmationMailer]
   ].freeze
 
   OVERRIDE_PATHS = [
@@ -50,7 +53,7 @@ Rails.application.config.to_prepare do
 
   # Run this customization late, after decidim awesome has initialized
   Rails.application.config.after_initialize do
-    #Decidim::Proposals::ProposalWizardCreateStepForm.include(DecidimOCL::Proposals::ProposalWizardCreateStepFormOverride)
+    # Decidim::Proposals::ProposalWizardCreateStepForm.include(DecidimOCL::Proposals::ProposalWizardCreateStepFormOverride)
   end
 
   module Decidim
@@ -63,7 +66,7 @@ Rails.application.config.to_prepare do
     end
   end
 
-  ActiveSupport::Notifications.subscribe "answer_questionnaire.after" do |event|
+  ActiveSupport::Notifications.subscribe 'answer_questionnaire.after' do |event|
     has_component = questionnaire.questionnaire_for.respond_to? :component
     return unless has_component
 
@@ -73,8 +76,8 @@ Rails.application.config.to_prepare do
     email = component.try(:settings).try(:notified_email)
     id = form.context.session_token
 
-    if email.present?
-      DecidimOCL::Surveys::SurveyAnsweredMailer.answered(email, component, id).deliver_now
-    end
+    DecidimOCL::Surveys::SurveyAnsweredMailer.answered(email, component, id).deliver_now if email.present?
   end
 end
+
+# rubocop:enable Metrics/BlockLength, Lint/ConstantDefinitionInBlock
