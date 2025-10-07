@@ -39,7 +39,7 @@ gem 'decidim-navigation_maps',
 gem 'decidim-participatory_documents',
     github: 'openpoke/decidim-module-participatory-documents',
     branch: 'main',
-    ref: '9c632e0'
+    ref: 'cd69101'
 gem 'decidim-reporting_proposals',
     github: 'openpoke/decidim-module-reporting-proposals',
     branch: 'upgrade-29.4',
