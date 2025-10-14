@@ -146,14 +146,14 @@ de:
       omniauth_registrations:
         new:
           nickname_help: Your alias on "%{organization}". May not contain spaces or special characters.
-          password_help: "%{minimun_characters} characters minimum, must not be too common (e.g. 123456) and must be different from your nickname and your email."
+          password_help: "%{minimum_characters} characters minimum, must not be too common (e.g. 123456) and must be different from your nickname and your email."
           username_help: Public name that appears on your posts. In order to guarantee anonymity, you may choose any name.
       registrations:
         new:
           captcha_instructions: Bitte beantworten Sie die folgende Sicherheitsfrage (Spamschutz).
           captcha_legend: Sicherheitsfrage
           nickname_help: Your alias on "%{organization}". May not contain spaces or special characters.
-          password_help: "%{minimun_characters} characters minimum, must not be too common (e.g. 123456) and must be different from your nickname and your email."
+          password_help: "%{minimum_characters} characters minimum, must not be too common (e.g. 123456) and must be different from your nickname and your email."
           textcaptcha_answer: Antwort
           username_help: Public name that appears on your posts. In order to guarantee anonymity, you may choose any name.
       shared:
