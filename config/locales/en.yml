@@ -115,6 +115,40 @@ en:
         create:
           error: Error
     components:
+      reporting_proposals:
+        settings:
+          global:
+            awesome_voting_manifest: Support type
+            awesome_voting_manifest_help_html: <span class="text-alert">Be aware that
+              changing this setting in the middle of a votation period can result
+              in innacurate or unexpected results.</span><br>Note also that this setting
+              can only be edited if the component has no supports yet.
+            awesome_voting_manifest_options:
+              default: Simple vote (default)
+              voting_cards: Voting using coloured cards
+            default_sort_order_options:
+              az: A-Z (Alphabetical)
+              supported_first: Supported first
+              supported_last: Supported last
+              za: Z-A (Reverse alphabetical)
+            limit_pending_amendments: Allow only one pending amendment on each proposal.
+            sort_orders_enabled: Enabled sorting types
+            voting_cards_box_title: Title for the voting box
+            voting_cards_box_title_help: Default is "Vote on this proposal". Use "-"
+              to hide it.
+            voting_cards_instructions: Support instructions/help (dismissible modal
+              window)
+            voting_cards_instructions_help: Default is "Please read the election rules
+              carefully to understand how your vote will be used by %{organization}""
+            voting_cards_show_abstain: Add an abstention option
+            voting_cards_show_modal_help: Show instructions/help modal when support
+              is clicked
+          step:
+            default_sort_order_options:
+              az: A-Z (Alphabetical)
+              supported_first: Supported first
+              supported_last: Supported last
+              za: Z-A (Reverse alphabetical)
       accountability:
         name: Implementation
       cleaner:
