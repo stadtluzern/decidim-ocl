@@ -17,7 +17,7 @@ module Decidim
             # @see Decidim::Map::DynamicMap::Builder#append_assets
             def append_assets
               template.append_stylesheet_pack_tag("decidim_map")
-              template.append_javascript_pack_tag("decidim/swisstopo", defer: false)
+              template.append_javascript_pack_tag("decidim/swisstopo")
             end
           end
         end
