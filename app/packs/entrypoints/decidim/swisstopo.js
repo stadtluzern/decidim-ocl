@@ -8,6 +8,7 @@ import DragMarkersController from 'src/decidim/map/controller/drag_marker.js'
 import MapStaticController from 'src/decidim/map/controller/static.js'
 import CustomMapMarkersController from '../../src/map/map_markers_controller'
 import CustomDragMarkerController from '../../src/map/drag_marker_controller'
+import CustomStaticMapController from '../../src/map/static_map_controller'
 
 ((exports) => {
   const $ = exports.$; // eslint-disable-line
@@ -82,7 +83,8 @@ import CustomDragMarkerController from '../../src/map/drag_marker_controller'
     }
 
     if (config.type === 'static') {
-      return new MapStaticController(mapId, config);
+      const controllerClass = CustomStaticMapController(SwisstopoMapController(MapStaticController));
+      return new controllerClass(mapId, config);
     }
 
     const controllerClass = (config.type === 'drag-marker') ?
