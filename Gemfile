@@ -2,21 +2,37 @@
 
 source 'https://rubygems.org'
 
-DECIDIM_VERSION = '0.29.5'
+DECIDIM_VERSION = '0.29.6'
 
 ruby RUBY_VERSION
 
 # Decidim
 gem 'decidim',
-  github: 'openpoke/decidim',
-  branch: '0.29-backports',
-  ref: '7928d98'
+    github: 'openpoke/decidim',
+    branch: '0.29-backports',
+    ref: '181cfc4'
+gem 'decidim-conferences',
+    github: 'openpoke/decidim',
+    branch: '0.29-backports',
+    ref: '181cfc4'
+gem 'decidim-initiatives',
+    github: 'openpoke/decidim',
+    branch: '0.29-backports',
+    ref: '181cfc4'
+gem 'decidim-proposals',
+    github: 'openpoke/decidim',
+    branch: '0.29-backports',
+    ref: '181cfc4'
+gem 'decidim-templates',
+    github: 'openpoke/decidim',
+    branch: '0.29-backports',
+    ref: '181cfc4'
 
 # Internal Modules
-gem 'decidim-conferences', DECIDIM_VERSION
-gem 'decidim-initiatives', DECIDIM_VERSION
-gem 'decidim-proposals', DECIDIM_VERSION
-gem 'decidim-templates', DECIDIM_VERSION
+# gem 'decidim-conferences', DECIDIM_VERSION
+# gem 'decidim-initiatives', DECIDIM_VERSION
+# gem 'decidim-proposals', DECIDIM_VERSION
+# gem 'decidim-templates', DECIDIM_VERSION
 
 # External Modules
 gem 'decidim-anonymous_codes',
@@ -42,7 +58,7 @@ gem 'decidim-navigation_maps',
 gem 'decidim-participatory_documents',
     github: 'openpoke/decidim-module-participatory-documents',
     branch: 'main',
-    ref: 'cd69101'
+    ref: '21501f8'
 gem 'decidim-reporting_proposals',
     github: 'openpoke/decidim-module-reporting-proposals',
     branch: 'upgrade-29.4',
