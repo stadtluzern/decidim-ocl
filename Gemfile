@@ -11,6 +11,12 @@ gem 'decidim',
     github: 'openpoke/decidim',
     branch: '0.29-backports',
     ref: '181cfc4'
+# Internal Modules
+# gem 'decidim-conferences', DECIDIM_VERSION
+# gem 'decidim-initiatives', DECIDIM_VERSION
+# gem 'decidim-proposals', DECIDIM_VERSION
+# gem 'decidim-templates', DECIDIM_VERSION
+
 gem 'decidim-conferences',
     github: 'openpoke/decidim',
     branch: '0.29-backports',
@@ -28,11 +34,10 @@ gem 'decidim-templates',
     branch: '0.29-backports',
     ref: '181cfc4'
 
-# Internal Modules
-# gem 'decidim-conferences', DECIDIM_VERSION
-# gem 'decidim-initiatives', DECIDIM_VERSION
-# gem 'decidim-proposals', DECIDIM_VERSION
-# gem 'decidim-templates', DECIDIM_VERSION
+# HACK: Using patched version of deface, to fix decidim-geo JS Errors
+gem 'deface',
+    github: 'froger/deface',
+    branch: 'fix/js-overrides'
 
 # External Modules
 gem 'decidim-anonymous_codes',
@@ -82,7 +87,6 @@ gem 'binding_of_caller'
 gem 'bootsnap'
 gem 'byebug'
 gem 'dalli'
-gem 'deface'
 gem 'delayed_cron_job'
 gem 'delayed_job_active_record'
 gem 'execjs'
