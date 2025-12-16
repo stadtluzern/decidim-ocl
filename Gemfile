@@ -66,8 +66,8 @@ gem 'decidim-participatory_documents',
     ref: '21501f8'
 gem 'decidim-reporting_proposals',
     github: 'openpoke/decidim-module-reporting-proposals',
-    branch: 'upgrade-29.4',
-    ref: '0ca71f9'
+    branch: 'main',
+    ref: 'cbbb29c'
 gem 'decidim-survey_multiple_answers',
     github: 'OpenSourcePolitics/decidim-module-survey_multiple_answers',
     branch: 'bump/0.29',

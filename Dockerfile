@@ -70,7 +70,8 @@ RUN bundle config set --local deployment 'true' \
  && bundle clean
 
 COPY ./package.json ./yarn.lock /app-src/
-RUN yarn
+COPY ./packages /app-src/packages
+RUN yarn install --frozen-lockfile --ignore-engines
 
 # set up app-src directory
 COPY . /app-src
