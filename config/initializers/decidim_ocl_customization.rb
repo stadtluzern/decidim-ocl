@@ -14,7 +14,8 @@ Rails.application.config.to_prepare do
     # [Decidim::System::RegisterOrganization, DecidimOCL::System::RegisterOrganization],
     [Decidim::System::UpdateOrganization,                   DecidimOCL::System::UpdateOrganization],
     # [Decidim::GuestMeetingRegistration::CreateRegistration, DecidimOCL::GuestMeetingRegistration::CreateRegistration],
-    [Decidim::Surveys::SurveyConfirmationMailer,            DecidimOCL::Surveys::SurveyConfirmationMailer]
+    [Decidim::Surveys::SurveyConfirmationMailer,            DecidimOCL::Surveys::SurveyConfirmationMailer],
+    [Decidim::Proposals::ProposalMetadataCell,              DecidimOCL::Proposals::ProposalMetadataCell]
   ].freeze
 
   OVERRIDE_PATHS = [
