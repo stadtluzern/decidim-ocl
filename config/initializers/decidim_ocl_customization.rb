@@ -67,15 +67,16 @@ Rails.application.config.to_prepare do
     end
   end
 
-  ActiveSupport::Notifications.subscribe 'answer_questionnaire.after' do |event|
-    has_component = questionnaire.questionnaire_for.respond_to? :component
-    return unless has_component
+
+  ActiveSupport::Notifications.subscribe('decidim.forms.answer_questionnaire:after') do |event_name, data|
+    Rails.logger.info "#{event_name} Received!"
+    questionnaire = data[:resource]
 
     component = questionnaire.questionnaire_for.component
     return unless component.manifest_name == 'surveys'
 
     email = component.try(:settings).try(:notified_email)
-    id = form.context.session_token
+    id = data[:extra][:session_token]
 
     DecidimOCL::Surveys::SurveyAnsweredMailer.answered(email, component, id).deliver_now if email.present?
   end
