@@ -67,7 +67,7 @@ RUN mkdir /db-init && chown 1000 /db-init
 USER decidim
 
 # Update system gems
-RUN gem install bundler:2.5.23
+RUN gem install bundler -v '~> 4.0'
 #RUN gem update --system
 
 # Copy Gemfile and install bundle dependencies
