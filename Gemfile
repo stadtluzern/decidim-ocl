@@ -87,7 +87,6 @@ gem 'binding_of_caller'
 gem 'bootsnap'
 gem 'byebug'
 gem 'dalli'
-gem 'delayed_cron_job'
 gem 'delayed_job_active_record'
 gem 'execjs'
 gem 'faker'
@@ -116,3 +115,6 @@ end
 group :production do
   gem 'bleib'
 end
+
+# Needs to be loaded after all other delayed_job gems
+gem 'delayed_cron_job'

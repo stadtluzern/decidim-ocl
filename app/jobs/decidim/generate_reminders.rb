@@ -1,9 +1,14 @@
 # frozen_string_literal: true
 
-class GenerateReminders < CronJob
+# Generate reminders
+ 
+class MetricsJob < CronJob
   self.cron_expression = '4 0 * * *'
 
   def perform
+    Rails.application.load_tasks
     Rake::Task['decidim:reminders:all'].invoke
+
+    true
   end
 end
