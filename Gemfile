@@ -51,7 +51,7 @@ gem 'decidim-antivirus',
 gem 'decidim-decidim_awesome',
     github: 'decidim-ice/decidim-module-decidim_awesome',
     branch: 'release/0.29-stable',
-    ref: 'f2c7152'
+    ref: 'a9f2077'
 gem 'decidim-guest_meeting_registration',
     github: 'OpenSourcePolitics/guest-meeting-registration',
     branch: 'bump/module_to_0.29',
