@@ -6,7 +6,7 @@
 #                            Build Stage                         #
 ##################################################################
 
-FROM ruby:3.2.10 AS build
+FROM ruby:3.2.10-bookworm AS build
 
 # Set build shell
 SHELL ["/bin/bash", "-c"]
@@ -87,7 +87,7 @@ RUN rm -rf vendor/cache/ .git/ node_modules/
 ##################################################################
 
 # This image will be replaced by Openshift
-FROM ruby:3.2.10-slim AS app
+FROM ruby:3.2.10-slim-bookworm AS app
 
 # Set runtime shell
 SHELL ["/bin/bash", "-c"]
@@ -131,7 +131,7 @@ RUN    export DEBIAN_FRONTEND=noninteractive \
     && rm libpaper1*.deb \
     # Install the Packages we need at runtime
     && apt-get -y install ${RUN_PACKAGES} \
-    neovim curl \
+    adduser neovim curl \
     # Clean up after ourselves
     && unset DEBIAN_FRONTEND
 
