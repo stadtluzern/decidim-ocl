@@ -99,7 +99,23 @@ ARG BUNDLE_WITHOUT="development:metrics:test"
 ARG BUNDLER_VERSION="2.5.6"
 ARG RUN_PACKAGES="git imagemagick libicu-dev libpq5 nodejs poppler-utils p7zip-full wkhtmltopdf"
 ARG CUSTOMIZATION_OUTPUT="false"
-ENV TZ="Europe/Zurich"
+
+# Persist Data in the image
+ARG GITHUB_SHA
+ARG GITHUB_REPOSITORY
+ARG GITHUB_REPOSITORY_URL
+ARG GITHUB_REF_NAME
+ARG BUILD_COMMIT
+ARG BUILD_REPO
+ARG BUILD_REPO_URL
+ARG BUILD_REF
+
+
+ENV TZ="Europe/Zurich" \
+  BUILD_REPO="${BUILD_REPO:-${GITHUB_REPOSITORY}}" \
+  BUILD_REPO_URL="${BUILD_REPO_URL:-${GITHUB_REPOSITORY_URL}}" \
+  BUILD_REF="${BUILD_REF:-${GITHUB_REF_NAME}}" \
+  BUILD_COMMIT="${BUILD_COMMIT:-${GITHUB_SHA}}"
 
 # Prepare apt-get
 RUN    export DEBIAN_FRONTEND=noninteractive \

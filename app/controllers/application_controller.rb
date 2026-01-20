@@ -6,33 +6,26 @@ class ApplicationController < ActionController::Base
   private
 
   def set_sentry_context
-    Raven.user_context(sentry_user_context)
-    Raven.extra_context(sentry_extra_context)
-    Raven.context.tags = Raven.context.tags.deep_merge(sentry_tags)
-  end
+    return unless ENV['GLITCHTIP_DSN']
 
-  def sentry_user_context
-    return {} unless (key = session['warden.user.user.key'].presence)
-    return {} unless (user = Decidim::User.serialize_from_session(*key))
+    commit = ENV['BUILD_COMMIT']
+    project = ENV['PROJECT'] || ENV['RAILS_DB_NAME']
+    customer = ENV['CUSTOMER'] || project&.split('_')[1]
+    
+    Sentry.set_tags(commit: commit) if commit
+    Sentry.set_tags(project: project) if project
+    Sentry.set_tags(customer: customer) if customer
 
-    {
-      id: user.id,
-      username: user.name,
-      email: user.email,
-      ip: request.remote_ip
-    }
-  end
+    key = session['warden.user.user.key'].presence
+    user = Decidim::User.serialize_from_session(*key)
 
-  def sentry_extra_context
-    {
-      params: params.to_unsafe_h,
-      url: request.url
-    }
-  end
+    Sentry.set_user(
+      id: user.try(:id),
+      username: user.try(:name),
+      email: user.try(:email)
+    )
 
-  def sentry_tags
-    {
-      locale: session['user_locale']
-    }
+    # Capture users locale
+    Sentry.set_tags(locale: session['user_locale'])
   end
 end
