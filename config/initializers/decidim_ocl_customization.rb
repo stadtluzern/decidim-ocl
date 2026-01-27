@@ -71,9 +71,11 @@ Rails.application.config.to_prepare do
   ActiveSupport::Notifications.subscribe('decidim.forms.answer_questionnaire:after') do |event_name, data|
     Rails.logger.info "#{event_name} Received!"
     questionnaire = data[:resource]
+    has_component = questionnaire.questionnaire_for.respond_to? :component
+    next unless has_component
 
     component = questionnaire.questionnaire_for.component
-    return unless component.manifest_name == 'surveys'
+    next unless component.manifest_name == 'surveys'
 
     email = component.try(:settings).try(:notified_email)
     id = data[:extra][:session_token]
