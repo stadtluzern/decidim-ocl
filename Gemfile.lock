@@ -480,6 +480,7 @@ GEM
     declarative-builder (0.2.0)
       trailblazer-option (~> 0.1.0)
     declarative-option (0.1.0)
+    deepl-rb (3.6.1)
     delayed_cron_job (0.9.0)
       fugit (>= 1.5)
     delayed_job (4.1.11)
@@ -1054,6 +1055,7 @@ DEPENDENCIES
   decidim-survey_multiple_answers!
   decidim-templates!
   decidim-term_customizer!
+  deepl-rb
   deface!
   delayed_cron_job
   delayed_job_active_record

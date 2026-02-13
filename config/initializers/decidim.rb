@@ -348,8 +348,10 @@ Decidim.configure do |config| # rubocop:disable Metrics/BlockLength
   # for more information about how it works and how to set it up.
   #
   # Enable machine translations
-  # config.enable_machine_translations = true
-  # config.machine_translation_delay = 0.seconds
+  config.enable_machine_translations = true
+
+  config.machine_translation_delay = 0.seconds
+
   #
   # If you want to enable machine translation you can create your own service
   # to interact with third party service to translate the user content.
@@ -374,7 +376,7 @@ Decidim.configure do |config| # rubocop:disable Metrics/BlockLength
   #   end
   # end
   #
-  # config.machine_translation_service = "MyTranslationService"
+  config.machine_translation_service = "DecidimOcl::DeeplTranslator"
 
   # Defines the name of the cookie used to check if the user allows Decidim to
   # set cookies.
