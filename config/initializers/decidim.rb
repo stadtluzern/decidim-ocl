@@ -376,7 +376,7 @@ Decidim.configure do |config| # rubocop:disable Metrics/BlockLength
   #   end
   # end
   #
-  config.machine_translation_service = "DecidimOcl::DeeplTranslator"
+  config.machine_translation_service = "DecidimOCL::DeeplTranslator"
 
   # Defines the name of the cookie used to check if the user allows Decidim to
   # set cookies.

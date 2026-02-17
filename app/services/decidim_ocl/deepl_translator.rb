@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module DecidimOcl
+module DecidimOCL
   class DeeplTranslator
     attr_reader :text, :source_locale, :target_locale, :resource, :field_name
 
