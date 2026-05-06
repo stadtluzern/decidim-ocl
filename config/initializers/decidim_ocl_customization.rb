@@ -16,7 +16,7 @@ Rails.application.config.to_prepare do
     # [Decidim::GuestMeetingRegistration::CreateRegistration, DecidimOCL::GuestMeetingRegistration::CreateRegistration],
     [Decidim::Surveys::SurveyConfirmationMailer,            DecidimOCL::Surveys::SurveyConfirmationMailer],
     [Decidim::Proposals::ProposalMetadataCell,              DecidimOCL::Proposals::ProposalMetadataCell],
-    [Decidim::Forms::Admin::UpdateQuestionnaire,            DecidimOCL::Forms::Admin::UpdateQuestionnaire],
+    [Decidim::Forms::Admin::UpdateQuestionnaire,            DecidimOCL::Forms::Admin::UpdateQuestionnaire]
   ].freeze
 
   OVERRIDE_PATHS = [
@@ -46,7 +46,7 @@ Rails.application.config.to_prepare do
   # request is processed. This is done through a notification to
   # get access to the `current_*` environment variables within
   # Decidim. Taken and adapted from the term_customizer module.
-  ActiveSupport::Notifications.subscribe 'start_processing.action_controller' do |_name, _started, _finished, _unique_id, data|
+  ActiveSupport::Notifications.subscribe 'start_processing.action_controller' do |_, _, _, _, data|
     DecidimOCL::Verifications::Sms::AspsmsGateway.organization = data[:headers].env['decidim.current_organization']
   end
 
@@ -61,6 +61,7 @@ Rails.application.config.to_prepare do
   module Decidim
     module Map
       module Provider
+        # nodoc
         module DynamicMap
           autoload :Swisstopo, 'decidim/map/provider/dynamic_map/swisstopo'
         end
