@@ -23,6 +23,21 @@ class CronJob < ApplicationJob
         .where(failed_at: nil) # ignore failed jobs if destroy_failed_jobs == false
         .first
     end
+  end
 
+  def run_rake_task(task_name)
+    Rails.logger.info "Starting Rake task: #{task_name}"
+
+    # Run via system instead of Rake::Task['...'].invoke to avoid Rake state issues
+    success = system({ "RAILS_ENV" => Rails.env }, "bundle exec rake #{task_name}",
+      chdir: Rails.root)
+
+    if success
+      Rails.logger.info "Successfully completed Rake task: #{task_name}"
+    else
+      raise "Rake task '#{task_name}' failed with status #{$?.exitstatus}"
+    end
+
+    true
   end
 end
