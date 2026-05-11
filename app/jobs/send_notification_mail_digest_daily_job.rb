@@ -6,6 +6,6 @@ class SendNotificationMailDigestDailyJob < CronJob
 
   def perform
     # run_rake_task('decidim:mailers:notifications_digest_daily')
-    run_rake_task('decidim_zuerich:mailers:notifications_digest_daily')
+    run_rake_task('decidim_ocl:mailers:notifications_digest_daily')
   end
 end
