@@ -119,6 +119,16 @@ Rails.application.configure do
 
   # Use log rage
   config.lograge.enabled = ENV.fetch('RAILS_LOGRAGE_ENABLED', 'true').in?(%w[true t on enabled 1])
+
+  # Lograge only detaches ActionController/ActionView subscribers. Mute the other
+  # noisy INFO-level loggers (cells, jobs, mailer) when it's active.
+  if config.lograge.enabled
+    config.after_initialize do
+      ActiveSupport::Notifications.unsubscribe "render_cell.action_view"
+    end
+    config.active_job.logger = nil
+    config.action_mailer.logger = nil
+  end
   config.lograge.ignore_actions = ['StatusController#health', 'StatusController#readiness']
   config.lograge.custom_payload do |controller|
     {
