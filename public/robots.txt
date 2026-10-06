@@ -1,1 +1,2 @@
-# See http://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+# Not served. The nginx-gatekeeper answers /robots.txt before it reaches Rails:
+# deployment repo, deployments/components/nginx-gatekeeper/config/nginx.conf
