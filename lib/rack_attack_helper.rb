@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require 'active_support/parameter_filter'
+
 module DecidimOCL
   # Simplifies common Rack::Attack rules
-  class RackAttackHelper # rubocop:disable Metrics/ClassLength
+  class RackAttackHelper
     class << self
       def enabled?
         ENV.fetch('ENABLE_RACK_ATTACK', Rails.env.production?.to_s)
@@ -23,19 +25,6 @@ module DecidimOCL
            .each do |ip_or_subnet|
              Rack::Attack.safelist_ip(ip_or_subnet.to_s)
            end
-      end
-
-      def register_throttle_filter_from_env(name, env, **default, &block)
-        options =
-          { limit: 100, period: 10 }
-          .merge(default)
-          .merge(env_to_h(env))
-
-        if block_given?
-          Rack::Attack.throttle(name, options, &block)
-        else
-          Rack::Attack.throttle(name, options, &:ip)
-        end
       end
 
       def register_allow2ban_filter_from_env(name, env, **default)
@@ -66,70 +55,40 @@ module DecidimOCL
 
       def subscribe_to_notifications
         ActiveSupport::Notifications.subscribe(/rack_attack/) do |name, _start, _finish, _request_id, payload|
-          request = payload[:request]
-          title = "RACK ATTACK MATCH [#{name}]"
-          match = "match=#{request.env['rack.attack.matched']}"
-          ip = "ip=#{request.ip}"
-          url = "url=#{request.url}"
-          warning = "#{title}: #{match} | #{ip} | #{url}"
-
-          Rails.logger.warn warning
-        end
-      end
-
-      def subscribe_to_debug_notifications # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-        # Used for rack-attack throttling debugging
-        ActiveSupport::Notifications.subscribe('rack.attack') do |_name, _start, _finish, _request_id, req|
-          req = req[:request]
-          # msg = [
-          #   req.env['rack.attack.match_type'],
-          #   req.ip,
-          #   req.request_method,
-          #   req.fullpath,
-          #   ('"' + req.user_agent.to_s + '"')
-          # ].join(' ')
-
-          request_headers = req.headers.env
-                               .except(*%w[warden HTTP_COOKIE])
-                               .reject { |key| key.to_s.include?('.') }
-
-          request_params = req.params.to_enum.to_h
-
-          hash = {
-            match_type: req.env['rack.attack.match_type'],
-            request: {
-              request_method: request.method,
-              ip: request.ip,
-              remote_ip: request.remote_ip,
-              url: request.url,
-              fullpath: request.fullpath,
-              user_agent: request.user_agent.to_s,
-              headers: request_headers,
-              params: request_params
-            }
-          }
-
-          msg = Hash[*hash.sort.flatten].to_json
-
-          logger = Logger.new('log/rack-attack.log')
-
-          if %i[throttle blocklist].include?(req.env['rack.attack.match_type'])
-            logger.error(msg)
-          else
-            logger.info(msg)
-          end
+          Rails.logger.warn "RACK ATTACK MATCH: #{match_fields(name, payload[:request])}"
         end
       end
 
       private
 
+      def match_fields(event_name, req)
+        fields = { event: event_name, match: req.env['rack.attack.matched'], type: req.env['rack.attack.match_type'],
+                   ip: req.ip, method: req.request_method, path: req.fullpath,
+                   user_agent: req.user_agent.to_s.inspect }
+        fields[:params] = filtered_params(req).inspect if debug?
+
+        fields.map { |key, value| "#{key}=#{value}" }.join(' ')
+      end
+
       def validate_ip(ip)
         IPAddr.new(ip)
       rescue IPAddr::InvalidAddressError => e
-        Rails.logger.warn "RACK ATTACK WHITELIST ERROR: #{ip}: Not a valid ip/subnet. Error: #{e.inspect}"
+        Rails.logger.warn "RACK ATTACK WHITELIST ERROR: #{ip}: Not a valid ip/subnet. Error: #{e.inspect}" if debug?
         nil
       end
 
+      # Matched requests are hostile input: a malformed body makes Rack raise on
+      # #params, and sign-in throttles would otherwise log plaintext passwords.
+      def filtered_params(req)
+        @param_filter ||= ActiveSupport::ParameterFilter.new(Rails.application.config.filter_parameters)
+        @param_filter.filter(req.params)
+      rescue Rack::Utils::ParameterTypeError, Rack::Utils::InvalidParameterError,
+             Rack::QueryParser::ParamsTooDeepError => e
+        { unparseable: e.class.name }
+      end
+
+      # Values are coerced: rack-attack compares counts against :limit/:maxretry
+      # as-is, so a String option raises ArgumentError on every request.
       def env_to_h(env_name, default = {})
         env = ENV.fetch(env_name, nil)
 
@@ -139,6 +98,7 @@ module DecidimOCL
            .map { _1.split(':').map(&:strip) }
            .to_h
            .symbolize_keys
+           .transform_values(&:to_i)
       end
     end
   end
