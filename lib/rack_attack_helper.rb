@@ -16,15 +16,15 @@ module DecidimOCL
            .in?(%w[true 1])
       end
 
+      # Pass the original string through: IPAddr#to_s drops the prefix, which would
+      # silently turn a safelisted 10.0.0.0/8 into the single host 10.0.0.0.
       def safelist_ips_from_env(env = 'RACK_ATTACK_SAFELIST_IPS')
         ENV.fetch(env, '')
            .split(',')
            .map(&:strip)
-           .map { validate_ip(_1) }
            .compact_blank
-           .each do |ip_or_subnet|
-             Rack::Attack.safelist_ip(ip_or_subnet.to_s)
-           end
+           .select { validate_ip(_1) }
+           .each { Rack::Attack.safelist_ip(_1) }
       end
 
       def register_allow2ban_filter_from_env(name, env, **default)
@@ -73,7 +73,7 @@ module DecidimOCL
       def validate_ip(ip)
         IPAddr.new(ip)
       rescue IPAddr::InvalidAddressError => e
-        Rails.logger.warn "RACK ATTACK WHITELIST ERROR: #{ip}: Not a valid ip/subnet. Error: #{e.inspect}" if debug?
+        Rails.logger.warn "RACK ATTACK SAFELIST ERROR: #{ip.inspect} is not a valid ip/subnet, ignored: #{e.message}"
         nil
       end
 
