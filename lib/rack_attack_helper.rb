@@ -55,6 +55,9 @@ module DecidimOCL
 
       def subscribe_to_notifications
         ActiveSupport::Notifications.subscribe(/rack_attack/) do |name, _start, _finish, _request_id, payload|
+          # Safelist matches are normal traffic (S3 redirects, office IPs); only log what was stopped.
+          next if payload[:request].env['rack.attack.match_type'] == :safelist
+
           Rails.logger.warn "RACK ATTACK MATCH: #{match_fields(name, payload[:request])}"
         end
       end
