@@ -1,4 +1,2 @@
-# the following adds a rule for all bots to not index any page that contains a profile or search
-User-agent: *
-Disallow: /profiles/
-Disallow: /search
+# Not served. The nginx-gatekeeper answers /robots.txt before it reaches Rails:
+# deployment repo, deployments/components/nginx-gatekeeper/config/nginx.conf
