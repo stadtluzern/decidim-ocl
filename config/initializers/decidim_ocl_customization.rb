@@ -5,6 +5,7 @@ require_relative '../../lib/puzzle_rails_pry_prompt'
 
 # rubocop:disable Metrics/BlockLength, Lint/ConstantDefinitionInBlock
 
+
 Rails.application.config.to_prepare do
   PuzzleRailsPryPrompt.set_prompt
 
@@ -16,7 +17,6 @@ Rails.application.config.to_prepare do
     # [Decidim::GuestMeetingRegistration::CreateRegistration, DecidimOCL::GuestMeetingRegistration::CreateRegistration],
     [Decidim::Surveys::SurveyConfirmationMailer,            DecidimOCL::Surveys::SurveyConfirmationMailer],
     [Decidim::Proposals::ProposalMetadataCell,              DecidimOCL::Proposals::ProposalMetadataCell],
-    [Decidim::Forms::Admin::UpdateQuestionnaire,            DecidimOCL::Forms::Admin::UpdateQuestionnaire],
     [Decidim::Assemblies::AssemblyGCell,                    DecidimOCL::Assemblies::AssemblyGCell]
   ].freeze
 
