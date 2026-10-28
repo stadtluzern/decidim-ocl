@@ -1,34 +1,25 @@
 name: 'Reusable: Build and push image'
 
-# This is a reusable build step, that is supposed to handle the generic task of building a docker
-# image and pushing it to a repo.
-# This action should be as generic as possible. Maybe extract it to a repo
-#
-# TODO: Could be made more customizable with: `jq`, `fromJSON`, `toJSON` and `join`
+# Builds the `app` target of the Dockerfile and pushes it as `:latest` and
+# `:git-<sha>`. Tags are derived from the commit, not from a tags DSL, so
+# nothing has to be passed in through the Actions UI.
 
 on:
   workflow_call:
     inputs:
       repository_url:
-        description: 'Url to push build image to'
+        description: 'Registry to log in to, e.g. https://harbor.puzzle.ch'
         type: string
         required: true
       images:
-        description: 'Images arguments for docker/metadata-action'
+        description: 'Image to push to, without tag, e.g. harbor.puzzle.ch/decidim/stlu-int-rails'
         type: string
         required: true
-      flavor:
-        description: 'Flavor argument for docker/metadata-action'
-        type: string
+      push:
+        description: 'Push the image to the registry'
+        type: boolean
         required: false
-      tags:
-        description: 'Tags argument for docker/metadata-action'
-        type: string
-        required: false
-        default: |
-          type=semver,pattern={{version}},priority=1000
-          type=schedule,priority=900
-          type=sha,format=long,prefix=git-,priority=800
+        default: true
     secrets:
       REGISTRY_USERNAME:
         description: 'Username for registry login'
@@ -36,42 +27,45 @@ on:
       REGISTRY_TOKEN:
         description: 'Password for registry login'
         required: true
-    outputs:
-      tags:
-        description: List of set tags
-        value: ${{ jobs.build.outputs.tags }}
-      labels:
-        description: Label output
-        value: ${{ jobs.build.outputs.labels }}
-      json:
-        description: JSON output
-        value: ${{ jobs.build.outputs.json }}
 
 jobs:
   build:
     environment: deploy
     runs-on: 'ubuntu-latest'
-    outputs:
-      tags: ${{ steps.meta.outputs.tags }}
-      labels: ${{ steps.meta.outputs.labels }}
-      json: ${{ steps.meta.outputs.json }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: docker/metadata-action@v5
-        id: meta
-        with:
-          images: ${{ inputs.images }}
-          tags: ${{ inputs.tags }}
-          flavor: ${{ inputs.flavor }}
-      - uses: docker/setup-qemu-action@v3
-      - uses: docker/setup-buildx-action@v3
-      - uses: docker/login-action@v3
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/login-action@v4
         with:
           registry: ${{ inputs.repository_url }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_TOKEN }}
-      - uses: docker/build-push-action@v5
+      - uses: docker/build-push-action@v7
+        id: build
         with:
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          file: Dockerfile
+          target: app
+          build-args: |
+            GITHUB_REF_NAME=${{ github.ref_name }}
+            GITHUB_REPOSITORY=${{ github.repository }}
+            GITHUB_REPOSITORY_URL=${{ github.repositoryUrl }}
+            GITHUB_SHA=${{ github.sha }}
+          tags: |
+            ${{ inputs.images }}:latest
+            ${{ inputs.images }}:git-${{ github.sha }}
+          push: ${{ inputs.push }}
+
+      - name: 'Report image tags'
+        if: inputs.push
+        run: |
+          echo "::notice title=Image pushed::${IMAGE}:latest, ${IMAGE}:git-${{ github.sha }} (digest ${{ steps.build.outputs.digest }})"
+          {
+            echo '### Image pushed'
+            echo
+            echo '| Tag | Digest |'
+            echo '| --- | --- |'
+            echo "| \`${IMAGE}:latest\` | \`${{ steps.build.outputs.digest }}\` |"
+            echo "| \`${IMAGE}:git-${{ github.sha }}\` | \`${{ steps.build.outputs.digest }}\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
+        env:
+          IMAGE: ${{ inputs.images }}

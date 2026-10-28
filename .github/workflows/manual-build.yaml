@@ -1,38 +1,49 @@
-name: 'Manual build without tests'
+name: 'Manual build'
 
 on:
   workflow_dispatch:
     inputs:
       image_repo:
-        description: "Image repo to push image to"
+        description: 'Registry to push the image to'
         type: string
         required: true
-        default: "https://harbor.puzzle.ch"
+        default: 'https://harbor.puzzle.ch'
       images:
-        description: 'Images arguments for docker/metadata-action'
+        description: 'Image to push to, without tag'
         type: string
         required: true
-        default: "harbor.puzzle.ch/decidim/stlu-int-rails"
-      flavor:
-        description: 'Flavor argument for docker/metadata-action'
-        type: string
-        required: false
-        default: "latest=true"
-      tags:
-        description: 'Tags argument for docker/metadata-action'
-        type: string
-        required: false
-        default: |
-          type=semver,pattern={{version}},priority=1000
-          type=schedule,priority=900
-          type=sha,format=long,prefix=git-,priority=800
+        default: 'harbor.puzzle.ch/decidim/stlu-int-rails'
+      lint:
+        description: 'Run lint?'
+        type: boolean
+        required: true
+        default: false
+      test:
+        description: 'Run tests?'
+        type: boolean
+        required: true
+        default: false
+      push:
+        description: 'Push the image to the registry?'
+        type: boolean
+        required: true
+        default: true
 
 jobs:
+  lint:
+    if: ${{ inputs.lint }}
+    uses: ./.github/workflows/reusable_lint.yaml
+
+  test:
+    if: ${{ inputs.test }}
+    uses: ./.github/workflows/reusable_tests.yaml
+
   build:
+    needs: [lint, test]
+    if: ${{ !failure() && !cancelled() }}
     uses: ./.github/workflows/reusable_build.yaml
     secrets: inherit
     with:
       repository_url: ${{ inputs.image_repo }}
       images: ${{ inputs.images }}
-      flavor: ${{ inputs.flavor }}
-      tags: ${{ inputs.tags }}
+      push: ${{ inputs.push }}
