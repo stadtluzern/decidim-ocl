@@ -1,91 +1,90 @@
-name: 'Reusable: Build and push image'
+---
+name: "Reusable: Build and push image"
 
-# Builds the `app` target of the Dockerfile and pushes it as `:latest` and
-# `:git-<sha>`. Tags are derived from the commit, not from a tags DSL, so
-# nothing has to be passed in through the Actions UI.
-#
-# Registry and image come from the REGISTRY / REGISTRY_URL variables of the
-# selected environment, and can be overridden per call.
-
-on:
+"on":
   workflow_call:
     inputs:
       environment:
-        description: 'Environment to build for, e.g. stlu-int'
+        description: "Environment to run in"
+        type: string
+        required: true
+      project_name:
+        description: "Project name, e.g. pitc-ptime-int"
         type: string
         required: true
       push:
-        description: 'Push the image to the registry'
+        description: "Build and debug things without pushing to the registry"
         type: boolean
-        required: false
-        default: true
+        default: false
       registry:
-        description: 'FQDN of the registry, defaults to the REGISTRY variable'
+        description: "FQDN of the registry"
         type: string
         required: false
-        default: ''
+        default: ""
       registry_url:
-        description: 'Image to push to without tag, defaults to the REGISTRY_URL variable'
+        description: "URL to push image to"
         type: string
         required: false
-        default: ''
+        default: ""
+
     secrets:
-      REGISTRY_USERNAME:
-        description: 'Username for registry login'
+      PUZZLE_REGISTRY_USERNAME:
+        description: "Needed for the registry login"
         required: true
-      REGISTRY_TOKEN:
-        description: 'Password for registry login'
+      PUZZLE_REGISTRY_TOKEN:
+        description: "Needed for the registry login"
         required: true
 
 jobs:
   build:
     environment: ${{ inputs.environment }}
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
 
     env:
       BUILD_REGISTRY: ${{ inputs.registry || vars.REGISTRY }}
       BUILD_REGISTRY_URL: ${{ inputs.registry_url || vars.REGISTRY_URL }}
 
     steps:
-      - name: 'Input validation'
+      - name: Input Validation
         run: |
           exit_code=0
 
           if [ -z "${BUILD_REGISTRY}" ]; then
             echo "::error title=Configuration Error::BUILD_REGISTRY is empty."
-            echo "Set the 'registry' input or the REGISTRY variable of the ${{ inputs.environment }} environment."
+            echo "Please ensure 'registry' input is set or 'REGISTRY' variable is configured in the ${{ inputs.environment }} environment."
             exit_code=1
           fi
 
           if [ -z "${BUILD_REGISTRY_URL}" ]; then
             echo "::error title=Configuration Error::BUILD_REGISTRY_URL is empty."
-            echo "Set the 'registry_url' input or the REGISTRY_URL variable of the ${{ inputs.environment }} environment."
+            echo "Please ensure 'registry_url' input is set or 'REGISTRY_URL' variable is configured in the ${{ inputs.environment }} environment."
             exit_code=1
           fi
 
           exit "${exit_code}"
 
-      - uses: actions/checkout@v7
       - uses: docker/setup-buildx-action@v4
       - uses: docker/login-action@v4
         with:
           registry: ${{ env.BUILD_REGISTRY }}
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_TOKEN }}
+          username: ${{ secrets.PUZZLE_REGISTRY_USERNAME }}
+          password: ${{ secrets.PUZZLE_REGISTRY_TOKEN }}
       - uses: docker/build-push-action@v7
         id: build
         with:
           file: Dockerfile
-          target: app
           build-args: |
             GITHUB_REF_NAME=${{ github.ref_name }}
             GITHUB_REPOSITORY=${{ github.repository }}
             GITHUB_REPOSITORY_URL=${{ github.repositoryUrl }}
             GITHUB_SHA=${{ github.sha }}
+          target: app
           tags: |
             ${{ env.BUILD_REGISTRY_URL }}:latest
             ${{ env.BUILD_REGISTRY_URL }}:git-${{ github.sha }}
           push: ${{ inputs.push }}
+          cache-from: type=registry,ref=${{ env.BUILD_REGISTRY_URL }}:buildcache
+          cache-to: type=registry,ref=${{ env.BUILD_REGISTRY_URL }}:buildcache,mode=max
 
       - name: 'Report image tags'
         if: inputs.push

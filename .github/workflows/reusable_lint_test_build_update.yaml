@@ -32,12 +32,14 @@ jobs:
     uses: ./.github/workflows/reusable_tests.yaml
   build:
     needs: [lint, test]
-    uses: ./.github/workflows/reusable_build.yaml
+    uses: ./.github/workflows/reusable-build.yaml
     secrets:
-      REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-      REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+      PUZZLE_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+      PUZZLE_REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
     with:
       environment: ${{ inputs.environment }}
+      project_name: ${{ inputs.environment }}
+      push: true
 
   update_tag:
     needs: [build]

@@ -11,7 +11,7 @@ on:
           - stlu-dev
           - stlu-int
           - stlu-prod
-        default: 'stlu-int'
+        default: 'stlu-dev'
       lint:
         description: 'Run lint?'
         type: boolean
@@ -40,8 +40,11 @@ jobs:
   build:
     needs: [lint, test]
     if: ${{ !failure() && !cancelled() }}
-    uses: ./.github/workflows/reusable_build.yaml
-    secrets: inherit
+    uses: ./.github/workflows/reusable-build.yaml
+    secrets:
+      PUZZLE_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+      PUZZLE_REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
     with:
       environment: ${{ inputs.environment }}
+      project_name: ${{ inputs.environment }}
       push: ${{ inputs.push }}
