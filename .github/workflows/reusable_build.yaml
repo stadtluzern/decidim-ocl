@@ -3,16 +3,15 @@ name: 'Reusable: Build and push image'
 # Builds the `app` target of the Dockerfile and pushes it as `:latest` and
 # `:git-<sha>`. Tags are derived from the commit, not from a tags DSL, so
 # nothing has to be passed in through the Actions UI.
+#
+# Registry and image come from the REGISTRY / REGISTRY_URL variables of the
+# selected environment, and can be overridden per call.
 
 on:
   workflow_call:
     inputs:
-      repository_url:
-        description: 'Registry to log in to, e.g. https://harbor.puzzle.ch'
-        type: string
-        required: true
-      images:
-        description: 'Image to push to, without tag, e.g. harbor.puzzle.ch/decidim/stlu-int-rails'
+      environment:
+        description: 'Environment to build for, e.g. stlu-int'
         type: string
         required: true
       push:
@@ -20,6 +19,16 @@ on:
         type: boolean
         required: false
         default: true
+      registry:
+        description: 'FQDN of the registry, defaults to the REGISTRY variable'
+        type: string
+        required: false
+        default: ''
+      registry_url:
+        description: 'Image to push to without tag, defaults to the REGISTRY_URL variable'
+        type: string
+        required: false
+        default: ''
     secrets:
       REGISTRY_USERNAME:
         description: 'Username for registry login'
@@ -30,14 +39,37 @@ on:
 
 jobs:
   build:
-    environment: deploy
+    environment: ${{ inputs.environment }}
     runs-on: 'ubuntu-latest'
+
+    env:
+      BUILD_REGISTRY: ${{ inputs.registry || vars.REGISTRY }}
+      BUILD_REGISTRY_URL: ${{ inputs.registry_url || vars.REGISTRY_URL }}
+
     steps:
+      - name: 'Input validation'
+        run: |
+          exit_code=0
+
+          if [ -z "${BUILD_REGISTRY}" ]; then
+            echo "::error title=Configuration Error::BUILD_REGISTRY is empty."
+            echo "Set the 'registry' input or the REGISTRY variable of the ${{ inputs.environment }} environment."
+            exit_code=1
+          fi
+
+          if [ -z "${BUILD_REGISTRY_URL}" ]; then
+            echo "::error title=Configuration Error::BUILD_REGISTRY_URL is empty."
+            echo "Set the 'registry_url' input or the REGISTRY_URL variable of the ${{ inputs.environment }} environment."
+            exit_code=1
+          fi
+
+          exit "${exit_code}"
+
       - uses: actions/checkout@v7
       - uses: docker/setup-buildx-action@v4
       - uses: docker/login-action@v4
         with:
-          registry: ${{ inputs.repository_url }}
+          registry: ${{ env.BUILD_REGISTRY }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_TOKEN }}
       - uses: docker/build-push-action@v7
@@ -51,21 +83,19 @@ jobs:
             GITHUB_REPOSITORY_URL=${{ github.repositoryUrl }}
             GITHUB_SHA=${{ github.sha }}
           tags: |
-            ${{ inputs.images }}:latest
-            ${{ inputs.images }}:git-${{ github.sha }}
+            ${{ env.BUILD_REGISTRY_URL }}:latest
+            ${{ env.BUILD_REGISTRY_URL }}:git-${{ github.sha }}
           push: ${{ inputs.push }}
 
       - name: 'Report image tags'
         if: inputs.push
         run: |
-          echo "::notice title=Image pushed::${IMAGE}:latest, ${IMAGE}:git-${{ github.sha }} (digest ${{ steps.build.outputs.digest }})"
+          echo "::notice title=Image pushed::${BUILD_REGISTRY_URL}:latest, ${BUILD_REGISTRY_URL}:git-${{ github.sha }} (digest ${{ steps.build.outputs.digest }})"
           {
             echo '### Image pushed'
             echo
             echo '| Tag | Digest |'
             echo '| --- | --- |'
-            echo "| \`${IMAGE}:latest\` | \`${{ steps.build.outputs.digest }}\` |"
-            echo "| \`${IMAGE}:git-${{ github.sha }}\` | \`${{ steps.build.outputs.digest }}\` |"
+            echo "| \`${BUILD_REGISTRY_URL}:latest\` | \`${{ steps.build.outputs.digest }}\` |"
+            echo "| \`${BUILD_REGISTRY_URL}:git-${{ github.sha }}\` | \`${{ steps.build.outputs.digest }}\` |"
           } >> "$GITHUB_STEP_SUMMARY"
-        env:
-          IMAGE: ${{ inputs.images }}

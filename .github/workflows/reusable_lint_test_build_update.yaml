@@ -3,12 +3,8 @@ name: 'Lint, test and build image. Push image tag to configmanagement'
 on:
   workflow_call:
     inputs:
-      image_repo:
-        description: "Image repo"
-        type: string
-        required: true
-      image_url:
-        description: "URL to push image to"
+      environment:
+        description: "Environment to build for, e.g. stlu-int"
         type: string
         required: true
       configmanagement:
@@ -41,8 +37,7 @@ jobs:
       REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
       REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
     with:
-      repository_url: ${{ inputs.image_repo }}
-      images: ${{ inputs.image_url }}
+      environment: ${{ inputs.environment }}
 
   update_tag:
     needs: [build]

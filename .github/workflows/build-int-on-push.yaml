@@ -3,16 +3,15 @@ name: 'Build Upgrade on push to upgrade branch'
 on:
   workflow_dispatch:
     inputs:
-      image_repo:
-        description: 'Image repo'
-        type: string
-        required: false
-        default: 'https://harbor.puzzle.ch'
-      image_url:
-        description: 'URL to push image to'
-        type: string
-        required: false
-        default: 'harbor.puzzle.ch/decidim/stlu-dev-rails'
+      environment:
+        description: 'Environment to build for'
+        type: choice
+        required: true
+        options:
+          - stlu-dev
+          - stlu-int
+          - stlu-prod
+        default: 'stlu-dev'
       configmanagement:
         description: 'Configmanagement to write image tag to'
         type: string
@@ -44,8 +43,7 @@ jobs:
   build-image:
     uses: ./.github/workflows/reusable_lint_test_build_update.yaml
     with:
-      image_repo: ${{ inputs.image_repo || 'https://harbor.puzzle.ch' }}
-      image_url: ${{ inputs.image_url || 'harbor.puzzle.ch/decidim/stlu-dev-rails' }}
+      environment: ${{ inputs.environment || 'stlu-dev' }}
       configmanagement: ${{ inputs.configmanagement || 'gitlab.puzzle.ch/pitc_ruby/deployments/decidim/' }}
       configmanagement_branch: ${{ inputs.configmanagement_branch || 'main' }}
       kustomization_path: ${{ inputs.kustomization_path || './deployments/pitc-decidim-stlu-dev/kustomization.yaml' }}

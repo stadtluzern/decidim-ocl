@@ -3,16 +3,15 @@ name: 'Manual build'
 on:
   workflow_dispatch:
     inputs:
-      image_repo:
-        description: 'Registry to push the image to'
-        type: string
+      environment:
+        description: 'Environment to build for'
+        type: choice
         required: true
-        default: 'https://harbor.puzzle.ch'
-      images:
-        description: 'Image to push to, without tag'
-        type: string
-        required: true
-        default: 'harbor.puzzle.ch/decidim/stlu-int-rails'
+        options:
+          - stlu-dev
+          - stlu-int
+          - stlu-prod
+        default: 'stlu-int'
       lint:
         description: 'Run lint?'
         type: boolean
@@ -44,6 +43,5 @@ jobs:
     uses: ./.github/workflows/reusable_build.yaml
     secrets: inherit
     with:
-      repository_url: ${{ inputs.image_repo }}
-      images: ${{ inputs.images }}
+      environment: ${{ inputs.environment }}
       push: ${{ inputs.push }}

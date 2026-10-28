@@ -12,8 +12,7 @@ jobs:
   build-image:
     uses: ./.github/workflows/reusable_lint_test_build_update.yaml
     with:
-      image_repo: "https://harbor.puzzle.ch"
-      image_url: "harbor.puzzle.ch/decidim/stlu-prod-rails"
+      environment: "stlu-prod"
       configmanagement: "gitlab.puzzle.ch/pitc_ruby/deployments/decidim/"
       configmanagement_branch: "main"
       kustomization_path: "./deployments/pitc-decidim-stlu-prod/kustomization.yaml"
