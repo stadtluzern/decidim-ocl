@@ -70,3 +70,7 @@ yarn-debug.log*
 .yarn-integrity
 
 /app/compiled_views
+
+# Upgrade runbook output: may contain PROD data
+/dumps
+/plans

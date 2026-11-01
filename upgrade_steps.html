@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>decidim.swiss – Upgrade to Decidim 0.31 (#228): step-by-step guide</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #f6f7f9; --surface: #fff; --fg: #1d2330; --muted: #5d6677; --border: #e1e5eb;
+    --accent: #2457d6; --accent-soft: #e8eefc; --code-bg: #f1f3f6;
+    --ok: #1f7a3a; --ok-bg: #e5f4ea; --bad: #b42318; --bad-bg: #fdecea; --mid: #a15c00; --mid-bg: #fff3e0;
+    --radius: 10px; --shadow: 0 1px 2px rgb(16 24 40 / .06), 0 1px 3px rgb(16 24 40 / .08);
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1218; --surface: #171b23; --fg: #e4e7ec; --muted: #98a2b3; --border: #2a303c;
+    --accent: #7aa2ff; --accent-soft: #1d2740; --code-bg: #1f2430;
+    --ok: #6fcf8f; --ok-bg: #16301f; --bad: #ff8a80; --bad-bg: #3a1a18; --mid: #ffb74d; --mid-bg: #3a2a12;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  header.hero { background: linear-gradient(135deg, #1e3a8a, #2457d6); color: #fff; padding: 2rem 1.5rem 1.6rem; }
+  header.hero .inner { max-width: 1400px; margin: 0 auto; position: relative; }
+  #theme-toggle { position: absolute; top: 0; right: 0; background: rgb(255 255 255 / .14); border: 1px solid rgb(255 255 255 / .3); color: #fff; border-radius: 999px; padding: .3rem .8rem; font: inherit; font-size: 13px; cursor: pointer; }
+  #theme-toggle:hover { background: rgb(255 255 255 / .25); }
+  header.hero h1 { padding-right: 7rem; }
+  header.hero h1 { margin: 0 0 .6rem; font-size: 1.9rem; line-height: 1.2; }
+  header.hero .meta { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 .8rem; }
+  header.hero .chip { background: rgb(255 255 255 / .14); border: 1px solid rgb(255 255 255 / .25); border-radius: 999px; padding: .2rem .75rem; font-size: 13px; }
+  header.hero a, header.hero code { color: #fff; }
+  header.hero code { background: rgb(255 255 255 / .15); }
+  header.hero small { color: rgb(255 255 255 / .8); }
+
+  .layout { max-width: 1400px; margin: 0 auto; padding: 1.5rem; display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 2rem; }
+  nav#toc { position: sticky; top: 1rem; align-self: start; max-height: calc(100vh - 2rem); overflow-y: auto; font-size: 13.5px; }
+  nav#toc .title { font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: 11.5px; color: var(--muted); margin: 0 0 .5rem .6rem; }
+  nav#toc a { display: block; padding: .25rem .6rem; border-radius: 6px; color: var(--fg); border-left: 2px solid transparent; }
+  nav#toc a.h3 { padding-left: 1.4rem; color: var(--muted); font-size: 12.5px; }
+  nav#toc a:hover { background: var(--accent-soft); text-decoration: none; }
+  nav#toc a.active { background: var(--accent-soft); border-left-color: var(--accent); color: var(--accent); }
+  @media (max-width: 960px) { .layout { grid-template-columns: 1fr; } nav#toc { position: static; max-height: none; } }
+
+  main > section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: .4rem 1.6rem 1.4rem; margin-bottom: 1.5rem; }
+  h2 { font-size: 1.35rem; margin: 1.1rem 0 .8rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.05rem; margin: 1.6rem 0 .6rem; color: var(--fg); }
+  h2 a.anchor, h3 a.anchor { opacity: 0; margin-left: .4rem; font-weight: 400; color: var(--muted); }
+  h2:hover a.anchor, h3:hover a.anchor { opacity: 1; }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .25rem 0; }
+
+  .table-wrap { overflow-x: auto; margin: .9rem 0; border: 1px solid var(--border); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { padding: .5rem .65rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+  th { background: var(--code-bg); font-weight: 600; position: sticky; top: 0; white-space: nowrap; }
+  tr:last-child td { border-bottom: 0; }
+  tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--code-bg) 45%, transparent); }
+  td:first-child { white-space: nowrap; }
+  td:first-child code { white-space: normal; }
+
+  code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 12.5px; background: var(--code-bg); padding: .1rem .35rem; border-radius: 4px; overflow-wrap: anywhere; }
+  pre { background: #10141c; color: #e6e9ef; padding: .8rem 1rem; border-radius: 8px; overflow-x: auto; font: 12.5px/1.55 ui-monospace, "SF Mono", Menlo, Consolas, monospace; margin: .6rem 0; }
+  td pre { margin: 0; font-size: 12px; }
+  td:has(> pre) { min-width: 30rem; max-width: 42rem; }
+  td:last-child { min-width: 16rem; }
+  pre code { background: none; padding: 0; color: inherit; }
+
+  .warn, .block { border-radius: 8px; padding: .75rem 1rem; margin: 1rem 0; border: 1px solid; }
+  .warn { background: var(--mid-bg); border-color: color-mix(in srgb, var(--mid) 35%, transparent); }
+  .block { background: var(--bad-bg); border-color: color-mix(in srgb, var(--bad) 35%, transparent); }
+  .warn::before { content: "⚠ "; color: var(--mid); font-weight: 700; }
+  .block::before { content: "⛔ "; }
+
+  td.ok, td.bad, td.mid { font-weight: 600; white-space: nowrap; }
+  td.ok { color: var(--ok); background: var(--ok-bg) !important; }
+  td.bad { color: var(--bad); background: var(--bad-bg) !important; }
+  td.mid { color: var(--mid); background: var(--mid-bg) !important; white-space: normal; }
+  small { color: var(--muted); }
+  .todo-title { font-weight: 700; margin: 1.4rem 0 .4rem; }
+  ul.todo { list-style: none; padding: .4rem .8rem; margin: 0; border: 1px solid var(--border); border-radius: 8px; background: color-mix(in srgb, var(--code-bg) 40%, transparent); }
+  ul.todo li { margin: 0; padding: .3rem 0; border-bottom: 1px dashed var(--border); }
+  ul.todo li:last-child { border-bottom: 0; }
+  ul.todo label { display: flex; gap: .6rem; align-items: baseline; cursor: pointer; }
+  ul.todo input { accent-color: var(--ok); transform: translateY(1px); }
+  ul.todo li.done label { color: var(--muted); text-decoration: line-through; }
+  .todo-progress { font-size: 12px; color: var(--muted); font-weight: 400; margin-left: .4rem; }
+  #todo-reset { margin: 1rem 0 0 .6rem; background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 6px; padding: .2rem .6rem; font: inherit; font-size: 12px; cursor: pointer; }
+  ul.todo textarea[data-note] { display: block; width: calc(100% - 1.6rem); margin: .35rem 0 .2rem 1.6rem; min-height: 2.4rem; padding: .35rem .5rem; font: 12.5px/1.45 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--fg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; resize: vertical; }
+  ul.todo textarea[data-note]:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
+  ul.todo li.done textarea[data-note] { opacity: .75; }
+
+  @media print {
+    body { background: #fff; }
+    nav#toc, h2 a.anchor, h3 a.anchor { display: none; }
+    .layout { display: block; padding: 0; }
+    main > section { box-shadow: none; break-inside: auto; }
+    header.hero { background: none; color: #000; padding: 0 0 1rem; }
+    header.hero a, header.hero code, header.hero small { color: #000; }
+  }
+</style>
+<script>
+  // Saved choice wins; otherwise follow the OS. Runs before paint to avoid a flash.
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+</script>
+</head>
+<body>
+<header class="hero"><div class="inner">
+  <button id="theme-toggle" type="button" aria-label="Toggle dark mode"></button>
+  <h1>decidim.swiss – Upgrade to Decidim 0.31: step-by-step guide</h1>
+  <div class="meta">
+    <span class="chip">Ticket <a href="https://github.com/decidim-swiss/decidim.swiss/issues/228">decidim.swiss#228</a></span>
+    <span class="chip">Repo <code>stadtluzern/decidim-ocl</code> · branch <code>upgrade</code></span>
+    <span class="chip">Reference <a href="https://github.com/puzzle/decidim-zuerich/tree/upgrade">puzzle/decidim-zuerich @ <code>upgrade</code></a></span>
+    <span class="chip">0.29.7 → 0.31.8</span>
+    <span class="chip">← <a href="planning.html">Planning</a></span>
+  </div>
+  <small>0.31 is <em>not</em> on Zürich <code>master</code> (still 0.29.7). Compiled 2026-10-31 from GitHub issues, both repositories and the Decidim release notes and docs. Statements marked [inference] are not verified.</small>
+</div></header>
+
+<div class="layout">
+<nav id="toc"><p class="title">Contents</p></nav>
+<main>
+<h2>1. How the deployment works today (relevant to the steps)</h2>
+<p>Covers both the code repo (<code>stlu/upgrade</code>) and the deployment repo (<code>decidim/deployment</code>, ArgoCD, overlays <code>pitc-decidim-stlu-{dev,int,prod}</code>). Written for the one-step variant. For two steps, run phase C once per step image (§5). The same guide is used on INT and then on PROD. References like <a href="planning.html#5-5-task-names-checked-against-the-source-code">planning §5.5</a> point to <a href="planning.html">planning.html</a>.</p>
+
+<ul>
+  <li><code>deployments/base/rails.yaml</code>: <code>strategy: Recreate</code>. The init containers are <code>prepare-assets</code> → <code>wait-for-database</code> → <code>migrate-database</code> (<code>bundle exec rails db:migrate</code>). The <code>rails</code> container starts serving <b>immediately after the migration</b>, which is why the site is closed to the public for the whole migration (step <code>0-down</code>).</li>
+  <li><code>deployments/base/delayed-job.yaml</code>: the init container <code>bleib:wait_for_migrations</code> waits for <b>schema</b> migrations only.</li>
+  <li><code>lib/tasks/jobs.rake</code> hooks <code>db:schedule_jobs</code> onto <code>db:migrate</code>. Every migration therefore schedules all <code>CronJob</code> subclasses that are <b>missing</b>. Existing rows are left alone: changed cron expressions don't get updated, and rows for deleted classes remain.</li>
+  <li><b>The init container doesn't run <code>data:migrate</code></b> (only <code>db:migrate</code>). 0.31.8 ships real data migrations (<code>decidim-forms/db/data/20260616144141_rename_answers_to_responses.rb</code>, <code>…update_user_groups_references.rb</code>, <code>…add_short_name_to_organizations.rb</code>, <code>…change_users_in_action_logs_*.rb</code>). Zürich's PROD has them anyway: <code>data_migrations</code> on stzh-prod contains all 10 that apply. The only one missing is <code>20260208135004</code> (initiatives), which is expected because Zürich doesn't use decidim-initiatives. So Zürich ran them outside the init container. <b>For decidim.swiss all 11 are due, including initiatives.</b> Either add <code>data:migrate</code> to the init container (step A3) or run it explicitly as a runbook step right after C1.</li>
+  <li><code>base/environments.yaml</code> already sets <code>STORAGE_PROVIDER=$(ACTIVE_STORAGE_SERVICE)</code> and the <code>DECIDIM_*</code> variables (left over from Zürich #595). The ENV side of the 0.31 config switch is largely done; changes to <code>base</code> also apply to stzh.</li>
+  <li>ArgoCD: INT and PROD are deployed <b>manually</b> via ArgoCD sync; only DEV deploys automatically. Images are pinned by <code>newTag: git-&lt;sha&gt;</code> and copied to the PROD registry with <code>ruby-ops/bin/copy-docker-image</code>.</li>
+  <li>Taking the site down: rails keeps running (tasks, smoke tests). Public access is blocked at the <b>OpenShift level</b> with an IP whitelist for the team, the established procedure. The team keeps working on the real tenant hostnames.</li>
+</ul>
+<p class="todo-title">Shell setup (used by all commands below)</p>
+<pre>ENV=int   # or prod / dev
+oc project pitc-decidim-stlu-$ENV
+pod() { oc get pods -l app=rails -o name | cut -d/ -f2 | head -n1; }      # re-evaluated on every call, survives redeploys
+r()   { oc exec -c rails "$(pod)" -- bundle exec rails "$@"; }            # r decidim:taxonomies:make_plan
+rr()  { r runner "$1"; }                                                   # rr 'puts Decidim::Organization.count'
+db()  { oc exec -i postgresql-0 -c postgresql -- bash -c "$1"; }          # db 'psql "$POSTGRES_DB" -c "select 1"'
+bucket() { oc get secret ocp4-s3-storage -o jsonpath='{.data.bucket}' | base64 -d; }
+s3()  { local j; j=$(oc get secret ocp4-s3-storage -o json) || return 1   # aws s3 via docker, credentials from the secret,
+        docker run --rm -u "$(id -u):$(id -g)" -e HOME=/tmp -e AWS_DEFAULT_REGION=none -v "$PWD/dumps:/dumps" \
+          -e AWS_ACCESS_KEY_ID="$(jq -r '.data["access-key-id"] | @base64d' &lt;&lt;&lt;"$j")" \
+          -e AWS_SECRET_ACCESS_KEY="$(jq -r '.data["secret-access-key"] | @base64d' &lt;&lt;&lt;"$j")" \
+          amazon/aws-cli --endpoint-url "$(jq -r '.data.endpoint | @base64d' &lt;&lt;&lt;"$j")" s3 "$@"; }   # ./dumps is /dumps inside</pre>
+<p class="todo-title">Checklist: access</p>
+<ul class="todo">
+  <li><code>oc login https://openshift.puzzle.ch</code>, then <code>for e in dev int prod; do oc get deploy rails -n pitc-decidim-stlu-$e -o name; done</code> prints three deployments</li>
+  <li>ArgoCD UI: apps <code>decidim-stlu-int</code> and <code>decidim-stlu-prod</code> visible, <i>Sync</i> button enabled (URL in the note)<textarea data-note></textarea></li>
+  <li><code>gh auth status</code> (issue comments, workflow runs) and <code>gh repo view stadtluzern/decidim-ocl</code> work</li>
+  <li><code>git push --dry-run</code> works in the code repo and in <code>~/code/pz/decidim/deployment</code></li>
+  <li><code>docker login harbor.puzzle.ch</code> succeeds (needed for <code>copy-docker-image</code> and <code>docker manifest inspect</code>)</li>
+  <li>ownCloud folder <a href="https://files.puzzle.ch/apps/files/?dir=/devruby/decidim">/devruby/decidim</a> opens and is writable</li>
+  <li>S3 access with the bucket's own credentials (run from the repo root): <code>s3 ls "s3://$(bucket)" | head</code> lists objects for INT and PROD</li>
+  <li>Team IPs for the OpenShift whitelist collected<textarea data-note></textarea></li>
+  <li>Shell setup above pasted and <code>rr 'puts Decidim::Organization.count'</code> prints the number of tenants</li>
+</ul>
+
+<h2>2. Phase A: preparation (weeks before)</h2>
+<table>
+  <tr><th>#</th><th>Repo / place</th><th>Step</th></tr>
+  <tr><td>A1</td><td>Tenants</td><td>Announce the <b>freeze</b> of scopes, areas, categories and process/assembly types from date X. Each tenant submits its target taxonomy plan. Also announce the maintenance window, SMS re-verification, user group mails, removal of the "Appearance" page, header snippets without JS, and signature workflows (initiatives).</td></tr>
+  <tr><td>A2</td><td>PROD (read-only)</td><td>Data checks per organization: user groups (<code>decidim_users.type = 'Decidim::UserGroup'</code>), initiative types with online signature, header snippets containing <code>&lt;script</code>, sortitions/collaborative drafts/meeting polls, maps provider HERE, size of the <code>delayed_jobs</code> queue (failed and pending).</td></tr>
+  <tr><td>A3</td><td>Deployment repo</td><td>Leave the <code>migrate-database</code> init container unchanged during the upgrade. <code>base</code> is shared with stzh, and stlu on 0.29 has no <code>data_migrate</code> gem, so <code>data:migrate</code> there would break stlu's deployments. <b>Only after stlu-prod is on 0.31</b> switch it to <code>bundle exec rails db:migrate &amp;&amp; bundle exec rails data:migrate</code> (follow-up). New ENV only if needed (<code>DECIDIM_API_JWT_SECRET</code>, <code>DECIDIM_VERIFICATION_*</code>, <code>DECIDIM_CACHE_EXPIRATION_TIME</code>).</td></tr>
+  <tr><td>A4</td><td>Deployment repo</td><td>Prepare step commits/tags per overlay:
+    <ul>
+      <li><code>upgrade-0.31/stlu-&lt;env&gt;/0-down</code>: OpenShift IP whitelist for the team only (usual procedure)</li>
+      <li><code>upgrade-0.31/stlu-&lt;env&gt;/1-deploy</code>: <code>images.rails.newTag: git-&lt;sha&gt;</code>, <code>delayed-job: 0</code>, <code>rails-metrics-exporter: 0</code></li>
+      <li><code>upgrade-0.31/stlu-&lt;env&gt;/2-up</code>: <code>delayed-job: 1</code>, <code>rails-metrics-exporter: 1</code>, public access restored</li>
+    </ul></td></tr>
+  <tr><td>A5</td><td>Code repo</td><td>Final commit on <code>upgrade</code> → tag <code>upgrade-0.31/step-1</code> (plus <code>step-2</code> for the two-step variant) → manual build <code>stlu-int</code> → <code>copy-docker-image</code> to the PROD registry, keeping the same <code>git-&lt;sha&gt;</code>.</td></tr>
+  <tr><td>A6</td><td>Code repo</td><td>Runbook <code>scripts/upgrade_runbook.rb</code> covers phases B and C in order: <code>&lt;env&gt; status | run | redo &lt;step&gt; | reset</code>. State in <code>tmp/runbook/&lt;env&gt;/state.yml</code> (status, start/end, duration, exit code, command), one log per step next to it. <code>run</code> skips done steps and stops at the first failure; manual steps (ArgoCD syncs, smoke test, go/no-go) ask for confirmation; non-idempotent steps (<code>import_all_plans</code>, <code>revoke:sms</code>, <code>user_groups:remove</code>) only re-run when the step id is typed. <code>RUNBOOK_DRY=1</code> prints the commands only; <code>SHA=…</code> makes the image check exact. <code>/dumps</code> and <code>/plans</code> are git-ignored (PROD data).</td></tr>
+  <tr><td>A7</td><td>DEV (PROD copy)</td><td>Load the PROD dump into DEV. Run the full phase C there. Write the timings to <code>state.yml</code>. Before loading: SMTP to a catcher, no ASPSMS, a separate S3 bucket.</td></tr>
+  <tr><td>A8</td><td>INT</td><td>Run phases B–D against the exact images, tags and guide. This is the dress rehearsal.</td></tr>
+  <tr><td>A9</td><td>Local disk</td><td><b>S3 backup by ourselves</b>: mirror the bucket to <code>dumps/s3-&lt;env&gt;</code> with <code>aws s3 sync</code> (docker, credentials from the <code>ocp4-s3-storage</code> secret). Initial sync in phase A, so the sync on deploy day only transfers changes. Restore is the same sync in the other direction. No coordination with other teams needed.</td></tr>
+  <tr><td>A10</td><td>Issues</td><td>Keep <a href="https://github.com/decidim-swiss/decidim.swiss/issues/228">decidim.swiss#228</a> current: estimate and decisions → DEV rehearsal done → INT ready for acceptance → PROD date → PROD done. Close the loop on #231 and #219.</td></tr>
+</table>
+<p class="todo-title">Checklist: phase A</p>
+<ul class="todo">
+  <li>#228: post the effort estimate (planning §9) and the open decisions (planning §10): <code>gh issue comment 228 -R decidim-swiss/decidim.swiss --body-file estimate.md</code><textarea data-note></textarea></li>
+  <li>Decisions recorded (anonymous_codes, 1 vs. 2 steps, user groups, initiatives, freeze date): link to the #228 comment<textarea data-note></textarea></li>
+  <li>Freeze date X and maintenance window agreed with the tenants<textarea data-note></textarea></li>
+  <li>Announcement sent: freeze, maintenance window, SMS re-verification, user group mails, "Appearance" page gone, header snippets without JS, initiative signature workflows</li>
+  <li>Target taxonomy plan received from every tenant (list missing ones)<textarea data-note></textarea></li>
+  <li>PROD data (shell setup with <code>ENV=prod</code>): tenants<br><code>rr 'Decidim::Organization.order(:id).each { |o| puts [o.id, o.host, o.secondary_hosts.join(","), o.tenant_type].join(" | ") }'</code><textarea data-note></textarea></li>
+  <li>PROD: user groups per organization<br><code>rr 'pp Decidim::UserGroup.group(:decidim_organization_id).count'</code><textarea data-note></textarea></li>
+  <li>PROD: initiative types that sign online (<code>online</code> or <code>any</code>), with their verification settings<br><code>rr 'Decidim::InitiativesType.where.not(signature_type: :offline).order(:decidim_organization_id).each { |t| puts [t.decidim_organization_id, t.id, t.title["de"], t.signature_type, t.document_number_authorization_handler.inspect, "sms=#{t.validate_sms_code_on_votes}", "extra_fields=#{t.collect_user_extra_fields}"].join(" | ") }'</code><textarea data-note></textarea></li>
+  <li>PROD: header snippets containing JavaScript<br><code>rr 'pp Decidim::Organization.where("header_snippets ILIKE ?", "%&lt;script%").pluck(:id, :host)'</code><textarea data-note></textarea></li>
+  <li>PROD: sortitions components<br><code>rr 'pp Decidim::Component.where(manifest_name: "sortitions").map { |c| [c.organization.host, c.id, c.published?] }'</code><textarea data-note></textarea></li>
+  <li>PROD: collaborative drafts per tenant<br><code>rr 'pp Decidim::Proposals::CollaborativeDraft.find_each.map { |d| d.organization.host }.tally'</code><textarea data-note></textarea></li>
+  <li>PROD: meeting polls per tenant<br><code>rr 'pp Decidim::Meetings::Poll.find_each.map { |p| p.meeting.organization.host }.tally'</code><textarea data-note></textarea></li>
+  <li>PROD: tenants with HERE maps<br><code>rr 'pp Decidim::Organization.pluck(:host, :map_config).select { |_, c| c.to_s.downcase.include?("here") }'</code><textarea data-note></textarea></li>
+  <li>PROD: delayed jobs (pending, failed, cron rows)<br><code>rr 'pp pending: Delayed::Job.where(failed_at: nil, cron: nil).count, failed: Delayed::Job.where.not(failed_at: nil).count, cron: Delayed::Job.where.not(cron: nil).pluck(:cron, :handler).map { |c, h| [h[/job_class: (\S+)/, 1], c] }'</code><textarea data-note></textarea></li>
+  <li>PROD: freeze baseline (scopes, areas, process types, assembly types per tenant; categories total)<br><code>rr 'Decidim::Organization.order(:id).each { |o| puts [o.host, Decidim::Scope.where(organization: o).count, Decidim::Area.where(organization: o).count, Decidim::ParticipatoryProcessType.where(organization: o).count, Decidim::AssembliesType.where(organization: o).count].join(" | ") }; puts "categories: #{Decidim::Category.count}"'</code><textarea data-note></textarea></li>
+  <li>S3 bucket names for INT and PROD: <code>bucket</code><textarea data-note></textarea></li>
+  <li>Bucket size per environment (enough local disk for the mirror?): <code>s3 ls --recursive --summarize "s3://$(bucket)" | tail -2</code> and <code>df -h .</code><textarea data-note></textarea></li>
+  <li>Initial S3 mirror per environment: <code>mkdir -p dumps &amp;&amp; time s3 sync --only-show-errors "s3://$(bucket)" "/dumps/s3-$ENV"</code> (duration in the note)<textarea data-note></textarea></li>
+  <li>Restore rehearsed on DEV (DEV bucket, never INT/PROD): mirror DEV, delete one test object, then <code>s3 sync --delete "/dumps/s3-dev" "s3://$(bucket)"</code> brings it back</li>
+  <li>Deployment repo: new ENV decided; currently set ones: <code>oc exec -c rails "$(pod)" -- printenv | grep -E '^DECIDIM_(API_JWT|VERIFICATION|CACHE)' || echo none</code><textarea data-note></textarea></li>
+  <li>Deployment repo: <code>0-down</code> prepared per overlay (whitelist, usual procedure) and tagged: <code>git tag upgrade-0.31/stlu-$ENV/0-down</code></li>
+  <li>Deployment repo: <code>1-deploy</code> prepared in <code>deployments/pitc-decidim-stlu-$ENV/kustomization.yaml</code> (<code>newTag: git-$SHA</code>, replicas <code>delayed-job: 0</code>, <code>rails-metrics-exporter: 0</code>), checked with<br><code>kustomize build --load-restrictor LoadRestrictionsNone deployments/pitc-decidim-stlu-$ENV | grep -E 'image: .*rails|replicas:'</code></li>
+  <li>Deployment repo: <code>2-up</code> prepared (replicas back to 1, whitelist removed), checked with the same <code>kustomize build</code></li>
+  <li>Code repo: tag the final commit: <code>git tag -a upgrade-0.31/step-1 -m "Decidim 0.31.8" &amp;&amp; git push origin upgrade-0.31/step-1</code>, then <code>SHA=$(git rev-parse 'upgrade-0.31/step-1^{commit}')</code><textarea data-note></textarea></li>
+  <li>Build: <code>gh workflow run manual-build.yaml -R stadtluzern/decidim-ocl --ref upgrade-0.31/step-1 -f environment=stlu-int -f lint=true -f test=true -f push=true</code>, then <code>gh run watch -R stadtluzern/decidim-ocl</code></li>
+  <li>INT image present: <code>docker manifest inspect harbor.puzzle.ch/decidim/stlu-int-rails:git-$SHA &gt;/dev/null &amp;&amp; echo present</code></li>
+  <li>Copy to PROD: <code>copy-docker-image harbor.puzzle.ch/decidim/stlu-int-rails:git-$SHA harbor.puzzle.ch/decidim/stlu-prod-rails:git-$SHA</code>; check with <code>docker manifest inspect harbor.puzzle.ch/decidim/stlu-prod-rails:git-$SHA &gt;/dev/null &amp;&amp; echo present</code></li>
+  <li>Runbook rehearsed dry: <code>RUNBOOK_DRY=1 scripts/upgrade_runbook.rb dev run</code>, then <code>scripts/upgrade_runbook.rb dev reset</code></li>
+  <li>Taxonomy transform script (applies the tenant plans to <code>plans/generated</code> → <code>plans/final</code>) written and tested against plans generated from a PROD dump</li>
+  <li>DEV: PROD dump loaded (rails and delayed-job on DEV scaled to 0 first):<br><code>gunzip -c dumps/stlu-prod-&lt;date&gt;.sql.gz | db 'psql -q "$POSTGRES_DB"'</code></li>
+  <li>DEV: hosts rewritten to DEV hostnames, tenant SMTP and ASPSMS credentials removed:<br><code>rr 'Decidim::Organization.update_all(smtp_settings: {}, aspsms_user_key: nil, aspsms_password: nil)'</code> plus the host mapping<textarea data-note></textarea></li>
+  <li>DEV: <code>oc exec -c rails "$(pod)" -- printenv | grep -E '^(SMTP_ADDRESS|OCP4_S3_BUCKET)='</code> shows the mail catcher and a non-PROD bucket</li>
+  <li>DEV: full phase C run through, timings per step recorded<textarea data-note></textarea></li>
+  <li>#228: DEV rehearsal done, findings and timings posted: <code>gh issue comment 228 -R decidim-swiss/decidim.swiss --body-file dev-rehearsal.md</code></li>
+  <li>INT: phases B–D run through with the exact tags, images and this guide (see the INT item at the end of phase C)</li>
+  <li>Go for PROD and PROD date given by the client; #228: date and maintenance window posted<textarea data-note></textarea></li>
+</ul>
+
+<h2>3. Phase B: before the deployment (deploy day)</h2>
+<table>
+  <tr><th>#</th><th>Step</th><th>Check</th></tr>
+  <tr><td>B1</td><td>Maintenance notice to the tenants. Deploy <code>0-down</code> and sync: from now on only the team has access. Verify the freeze (no new scopes/categories since the dump).</td><td>Public URL returns 503; team access works</td></tr>
+  <tr><td>B2</td><td><b>DB backup</b>: plain SQL dump of the DB, pulled locally. Per <code>migration-notes.txt</code> (customer request), put it on ownCloud. Doesn't depend on the velero schedule (11:10/19:10).</td><td>Restore into a local PostGIS 14 container; row counts match</td></tr>
+  <tr><td>B3</td><td><b>S3 mirror</b> to <code>dumps/s3-&lt;env&gt;</code> after <code>0-down</code>, before C1 (incremental on top of the phase A sync). <code>attachments_cleanup</code> and <code>remove_private_exports_attachments</code> delete objects that a DB restore won't bring back. Don't sync this directory again after C1, it is the rollback copy.</td><td>Object count of the mirror equals the bucket</td></tr>
+  <tr><td>B4</td><td>Delayed Job: let the queue drain, then <b>delete all cron rows</b> (<code>Delayed::Job.where.not(cron: nil).delete_all</code>). The <code>db:migrate</code> hook re-creates them from the new code, which removes <code>ComputeMetricsJob</code> and applies the new expressions.</td><td>Only failed jobs left (export them)</td></tr>
+</table>
+<p class="todo-title">Checklist: phase B (repeat for INT and PROD)</p>
+<ul class="todo">
+  <li>Shell setup with <code>ENV=int</code> / <code>ENV=prod</code></li>
+  <li>Maintenance notice sent to the tenants</li>
+  <li>Deployment repo: <code>0-down</code> on main, ArgoCD UI: <i>Sync</i> on <code>decidim-stlu-$ENV</code></li>
+  <li>From a non-whitelisted network every tenant is blocked, from a team IP it answers (hosts from the phase A note):<br><code>for h in &lt;hosts&gt;; do curl -s -o /dev/null -w "$h %{http_code}\n" https://$h/; done</code></li>
+  <li>Freeze verified: re-run the freeze baseline command from phase A, numbers equal the note<textarea data-note></textarea></li>
+  <li>DB dump: <code>mkdir -p dumps &amp;&amp; db 'pg_dump -cOx "$POSTGRES_DB"' | gzip &gt; dumps/stlu-$ENV-$(date +%F-%H%M).sql.gz</code><textarea data-note></textarea></li>
+  <li>Restore test: <code>docker run -d --rm --name restore-test -e POSTGRES_PASSWORD=test -p 55432:5432 postgis/postgis:14-3.3-alpine</code>, then <code>gunzip -c dumps/stlu-$ENV-*.sql.gz | PGPASSWORD=test psql -q -h localhost -p 55432 -U postgres postgres</code> (errors from the leading <code>DROP</code> statements are expected)</li>
+  <li>Row counts equal. Local: <code>PGPASSWORD=test psql -h localhost -p 55432 -U postgres -Atc 'select (select count(*) from decidim_users), (select count(*) from decidim_proposals_proposals), (select count(*) from decidim_comments_comments)'</code><br>Remote: <code>rr 'puts %w[decidim_users decidim_proposals_proposals decidim_comments_comments].map { |t| ActiveRecord::Base.connection.select_value("select count(*) from #{t}") }.join("|")'</code><br>Then <code>docker stop restore-test</code><textarea data-note></textarea></li>
+  <li>Dump uploaded to ownCloud <a href="https://files.puzzle.ch/apps/files/?dir=/devruby/decidim">/devruby/decidim</a></li>
+  <li>S3 mirror updated: <code>s3 sync --delete --only-show-errors "s3://$(bucket)" "/dumps/s3-$ENV"</code> (runbook step <code>b-s3-backup</code>)</li>
+  <li>Mirror complete: <code>s3 ls --recursive --summarize "s3://$(bucket)" | grep 'Total Objects'</code> equals <code>find "dumps/s3-$ENV" -type f | wc -l</code> (runbook step <code>b-s3-backup-check</code>)<textarea data-note></textarea></li>
+  <li>Queue drained: <code>rr 'p Delayed::Job.where(failed_at: nil, cron: nil).count'</code> returns 0 (repeat until it does)</li>
+  <li>Failed jobs exported: <code>rr 'puts Delayed::Job.where.not(failed_at: nil).to_json' &gt; dumps/failed-jobs-$ENV-$(date +%F).json</code></li>
+  <li>Cron rows deleted: <code>rr 'p Delayed::Job.where.not(cron: nil).delete_all'</code><textarea data-note></textarea></li>
+  <li>Runbook state: start with <code>scripts/upgrade_runbook.rb $ENV reset</code> at the beginning of phase B; <code>SHA=$SHA scripts/upgrade_runbook.rb $ENV run</code> then walks through the phase B and C items in order and records them</li>
+</ul>
+
+<h2>4. Phase C: deployment</h2>
+<table>
+  <tr><th>#</th><th>Repo / place</th><th>Step</th><th>Check / go-no-go</th></tr>
+  <tr><td>C1</td><td>Deployment repo</td><td>Push or merge <code>1-deploy</code>, then run a manual ArgoCD sync. Rails starts again, its init containers run <code>db:migrate</code> and <code>db:schedule_jobs</code>, and DJ stays at 0.</td><td>Init logs clean</td></tr>
+  <tr><td>C1b</td><td>rails pod</td><td><code>bin/rails data:migrate</code></td><td><code>data_migrations</code> contains all 11 versions, including <code>20260208135004</code> (initiatives)</td></tr>
+  <tr><td>C2</td><td>rails pod</td><td><code>bin/rails -AT | grep -E 'taxonomies|upgrade|revoke'</code></td><td>All tasks from the <a href="planning.html#5-5-task-names-checked-against-the-source-code">planning §5.5</a> sequence present</td></tr>
+  <tr><td>C3</td><td>rails pod</td><td><code>bin/rails decidim:taxonomies:make_plan</code> → <code>oc cp &lt;pod&gt;:tmp/taxonomies ./plans/generated</code></td><td>One <code>*_plan.json</code> per organization</td></tr>
+  <tr><td>C4</td><td>local</td><td>Apply the tenant plans (script, not hand edits) → diff against the generated plan</td><td>Diff contains only the agreed moves</td></tr>
+  <tr><td>C5</td><td>rails pod</td><td><code>oc cp ./plans/final/. &lt;pod&gt;:tmp/taxonomies/</code> → <code>import_all_plans</code> → <code>reset_counters</code> → <code>oc cp</code> the <code>*_result.json</code> files back out</td><td>Results without errors; taxonomies visible in the admin</td></tr>
+  <tr><td>C6</td><td>rails pod</td><td>Remaining tasks from the <a href="planning.html#5-5-task-names-checked-against-the-source-code">planning §5.5</a> sequence, <b>except</b> <code>revoke:sms</code> and <code>user_groups:remove</code></td><td><code>state.yml</code> all green</td></tr>
+  <tr><td>C7</td><td>browser</td><td>Smoke test per tenant: log in, processes, proposals with filters, survey, initiative signature, uploads/exports, admin taxonomies</td><td>Go/no-go. <b>Last point for rollback without side effects.</b></td></tr>
+  <tr><td>C8</td><td>rails pod</td><td><code>decidim:verifications:revoke:sms</code> (via <code>sms.rake</code>), <code>decidim:upgrade:user_groups:remove</code>. The mails stay queued because DJ is at 0.</td><td>Number of queued mails as expected</td></tr>
+  <tr><td>C9</td><td>Deployment repo</td><td><code>2-up</code> → sync. DJ starts working and the mails go out, and the site is public again. <b>Point of no return.</b></td><td>DJ logs; <code>delayed_jobs</code> drains; public URL per tenant works</td></tr>
+</table>
+<p class="todo-title">Checklist: phase C (repeat for INT and PROD)</p>
+<ul class="todo">
+  <li>Deployment repo: <code>1-deploy</code> on main, ArgoCD UI: <i>Sync</i> on <code>decidim-stlu-$ENV</code></li>
+  <li>New image running: <code>oc get deploy rails -o jsonpath='{.spec.template.spec.containers[?(@.name=="rails")].image}'</code> ends in <code>git-$SHA</code></li>
+  <li>Workers stopped: <code>oc get deploy delayed-job rails-metrics-exporter</code> shows <code>0/0</code></li>
+  <li>Migrations clean: <code>oc logs "$(pod)" -c migrate-database --tail=50</code></li>
+  <li>Run <code>r data:migrate</code></li>
+  <li>Data migrations complete (11 rows, including <code>20260208135004</code>):<br><code>rr 'puts ActiveRecord::Base.connection.select_values("select version from data_migrations order by version")'</code><textarea data-note></textarea></li>
+  <li>Run <code>r -AT | grep -E 'taxonomies|upgrade|revoke'</code><textarea data-note></textarea></li>
+  <li>Check for the task <code>decidim:verifications:revoke:sms</code>: <code>r -AT | grep -c 'decidim:verifications:revoke:sms'</code> returns 1</li>
+  <li>Check for every task of the sequence below: <code>r -AT | grep -cE 'taxonomies:(make_plan|import_all_plans|reset_counters)|upgrade:(attachments_cleanup|clean:clean_deleted_users|fix_nickname_casing|fix_action_log|clean:remove_private_exports_attachments|remove_deleted_users_left_data|fix_deleted_private_follows|decidim_update_valuators|decidim_action_log_valuation_assignment|decidim_paper_trail_valuation_assignment|clean:invalid_private_exports|user_groups:remove )|proposals:upgrade:set_categories|surveys:upgrade:fix_survey_permissions'</code> returns 17</li>
+  <li>Run <code>r decidim:taxonomies:make_plan</code></li>
+  <li>Copy the plans out: <code>oc cp -c rails "$(pod)":/app-src/tmp/taxonomies ./plans/generated</code>; one <code>*_plan.json</code> per tenant: <code>ls plans/generated</code></li>
+  <li>Run the transform script: <code>plans/generated</code> + tenant plans → <code>plans/final</code></li>
+  <li>Only the agreed moves changed: <code>for f in plans/final/*_plan.json; do diff &lt;(jq -S . "plans/generated/$(basename "$f")") &lt;(jq -S . "$f"); done</code></li>
+  <li>Copy the final plans in: <code>oc exec -c rails "$(pod)" -- sh -c 'rm -f /app-src/tmp/taxonomies/*_plan.json' &amp;&amp; for f in plans/final/*_plan.json; do oc cp -c rails "$f" "$(pod)":/app-src/tmp/taxonomies/; done</code></li>
+  <li>Run <code>r decidim:taxonomies:import_all_plans</code><textarea data-note></textarea></li>
+  <li>Run <code>r decidim:taxonomies:reset_counters</code></li>
+  <li>Copy the results out: <code>oc cp -c rails "$(pod)":/app-src/tmp/taxonomies ./plans/result</code>; no errors: <code>grep -il error plans/result/*_result.json || echo clean</code></li>
+  <li>Taxonomies per tenant: <code>rr 'Decidim::Organization.order(:id).each { |o| puts [o.host, Decidim::Taxonomy.where(organization: o, parent_id: nil).map { |t| t.name["de"] }.join(", ")].join(" | ") }'</code> and visible in each tenant's admin<textarea data-note></textarea></li>
+  <li>Run <code>r decidim:upgrade:attachments_cleanup</code></li>
+  <li>Run <code>r decidim_proposals:upgrade:set_categories</code></li>
+  <li>Run <code>r decidim:upgrade:clean:clean_deleted_users</code></li>
+  <li>Run <code>r decidim:upgrade:fix_nickname_casing</code></li>
+  <li>Run <code>r decidim:upgrade:fix_action_log</code></li>
+  <li>Run <code>r decidim:upgrade:clean:remove_private_exports_attachments</code></li>
+  <li>Run <code>r decidim:upgrade:remove_deleted_users_left_data</code></li>
+  <li>Run <code>r decidim:upgrade:fix_deleted_private_follows</code></li>
+  <li>Run <code>r decidim:upgrade:decidim_update_valuators</code></li>
+  <li>Run <code>r decidim:upgrade:decidim_action_log_valuation_assignment</code></li>
+  <li>Run <code>r decidim:upgrade:decidim_paper_trail_valuation_assignment</code></li>
+  <li>Run <code>r decidim:upgrade:clean:invalid_private_exports</code></li>
+  <li>Run <code>r decidim_surveys:upgrade:fix_survey_permissions</code></li>
+  <li>Smoke test per tenant: log in</li>
+  <li>Smoke test per tenant: processes and proposals with taxonomy filters</li>
+  <li>Smoke test per tenant: fill in a survey; confirmation mail queued: <code>rr 'p Delayed::Job.where(queue: "mailers").count'</code></li>
+  <li>Smoke test per tenant: initiative signature (where used)</li>
+  <li>Smoke test per tenant: upload an attachment, run an export</li>
+  <li><b>Go/no-go decision</b> (last point for rollback without side effects): who decided, when<textarea data-note></textarea></li>
+  <li>Run <code>r decidim:verifications:revoke:sms</code></li>
+  <li>Run <code>r decidim:upgrade:user_groups:remove</code></li>
+  <li>Queued jobs per queue match expectations (user group mails): <code>rr 'pp Delayed::Job.where(failed_at: nil).group(:queue).count'</code><textarea data-note></textarea></li>
+  <li>Deployment repo: <code>2-up</code> on main, ArgoCD UI: <i>Sync</i> on <code>decidim-stlu-$ENV</code></li>
+  <li>Workers running: <code>oc get deploy delayed-job rails-metrics-exporter</code> shows <code>1/1</code></li>
+  <li>Queue drains, nothing new failed: <code>rr 'pp pending: Delayed::Job.where(failed_at: nil, cron: nil).count, failed_last_hour: Delayed::Job.where("failed_at &gt; ?", 1.hour.ago).count'</code></li>
+  <li>Cron rows recreated, no <code>ComputeMetricsJob</code>: <code>rr 'pp Delayed::Job.where.not(cron: nil).pluck(:cron, :handler).map { |c, h| [h[/job_class: (\S+)/, 1], c] }'</code><textarea data-note></textarea></li>
+  <li>Every tenant answers from a non-whitelisted network: the <code>curl</code> loop from phase B returns 200/302</li>
+  <li>(INT only) #228: INT ready for acceptance test, with image <code>git-$SHA</code>, timings and the tenant-admin follow-ups: <code>gh issue comment 228 -R decidim-swiss/decidim.swiss --body-file int-ready.md</code></li>
+</ul>
+
+<h2>5. Phase D: afterwards, plus variants</h2>
+<ul>
+  <li>Tenant admins: taxonomy filters per space/component, Hero content block CTA, signature workflows, ephemeral verification if wanted. Lift the freeze.</li>
+  <li>Monitoring for the first few days: Sentry, DJ <code>failed_at</code>, cron jobs running (digest at 04:00, decidim.swiss#219).</li>
+  <li><b>Rollback up to C7</b>: revert <code>1-deploy</code> in the deployment repo (previous <code>git-&lt;sha&gt;</code>), restore the DB from B2, and the bucket from the B3 mirror: <code>s3 sync --delete "/dumps/s3-$ENV" "s3://$(bucket)"</code>. <b>From C9 on</b>, fix forward only.</li>
+  <li><b>Two-step variant</b>: C1–C7 with the 0.30.9 image and the 0.30 tasks (taxonomies here, without <code>metrics:rebuild</code>), then C1–C9 with the 0.31.8 image and the 0.31 tasks. Two image tags, three deployment tags.</li>
+</ul>
+<p class="todo-title">Checklist: phase D</p>
+<ul class="todo">
+  <li>#228: PROD done, with Decidim version, image <code>git-$SHA</code>, tasks run, open follow-ups: <code>gh issue comment 228 -R decidim-swiss/decidim.swiss --body-file prod-done.md</code></li>
+  <li>#231 and #219: comment that the upgrade replaces the local fixes (display conditions fixed in 0.31.8, digest fixed in 0.31.6): <code>gh issue comment 231 -R decidim-swiss/decidim.swiss --body "…"</code>, same for 219</li>
+  <li>Tenants informed: upgrade done, freeze lifted</li>
+  <li>Tenant admins: taxonomy filters per space/component set</li>
+  <li>Tenant admins: Hero content block CTA redone</li>
+  <li>Tenant admins: initiative signature workflows selected</li>
+  <li>Day 1: Sentry checked for new errors since the deployment</li>
+  <li>Day 1: failed jobs: <code>rr 'Delayed::Job.where("failed_at &gt; ?", 1.day.ago).each { |j| puts [j.id, j.handler[/job_class: (\S+)/, 1], j.last_error.to_s.lines.first].join(" | ") }'</code><textarea data-note></textarea></li>
+  <li>Day 2: daily digest ran at 04:00: <code>rr 'pp Delayed::Job.where.not(cron: nil).pluck(:handler, :run_at).map { |h, t| [h[/job_class: (\S+)/, 1], t] }'</code> shows the next run of <code>SendNotificationMailDigestDailyJob</code> tomorrow 04:00</li>
+  <li>Rollback window closed: delete the local DB dumps and the S3 mirrors (<code>rm -rf dumps/s3-* dumps/stlu-*.sql.gz</code>) after the dumps are on ownCloud<textarea data-note></textarea></li>
+  <li>Follow-up: <code>data:migrate</code> added to the <code>migrate-database</code> init container in <code>deployments/base/rails.yaml</code> (shared with stzh)</li>
+</ul>
+
+</main>
+</div>
+<script>
+  // Wrap each h2 and its content in a <section> card, wrap tables for horizontal scroll, and build the TOC.
+  const main = document.querySelector("main"), toc = document.getElementById("toc");
+  let section = null;
+  for (const node of [...main.childNodes]) {
+    if (node.nodeName === "H2") { section = document.createElement("section"); main.insertBefore(section, node); }
+    if (section) section.appendChild(node);
+  }
+  document.querySelectorAll("table").forEach(t => { const w = document.createElement("div"); w.className = "table-wrap"; t.replaceWith(w); w.appendChild(t); });
+  const slug = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const links = [];
+  main.querySelectorAll("h2, h3").forEach(h => {
+    h.id ||= slug(h.textContent);
+    const a = document.createElement("a");
+    a.href = "#" + h.id; a.textContent = h.textContent; a.className = h.tagName.toLowerCase();
+    toc.appendChild(a); links.push([h, a]);
+    h.insertAdjacentHTML("beforeend", `<a class="anchor" href="#${h.id}">#</a>`);
+  });
+  const spy = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    links.forEach(([, a]) => a.classList.remove("active"));
+    links.find(([h]) => h === e.target)?.[1].classList.add("active");
+  }), { rootMargin: "0px 0px -75% 0px" });
+  links.forEach(([h]) => spy.observe(h));
+  const btn = document.getElementById("theme-toggle"), root = document.documentElement;
+  const label = () => btn.textContent = root.dataset.theme === "dark" ? "☀ Light" : "☾ Dark";
+  btn.addEventListener("click", () => { root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark"; localStorage.setItem("theme", root.dataset.theme); label(); });
+  label();
+  // Checklists: turn every li in ul.todo into a checkbox, persist per page in localStorage, show progress per list.
+  const KEY = "todo:" + location.pathname;
+  const done = new Set(JSON.parse(localStorage.getItem(KEY) || "[]"));
+  const save = () => localStorage.setItem(KEY, JSON.stringify([...done]));
+  const NOTES_KEY = "notes:" + location.pathname, notes = JSON.parse(localStorage.getItem(NOTES_KEY) || "{}");
+  document.querySelectorAll("ul.todo").forEach((ul, l) => {
+    const title = ul.previousElementSibling, progress = document.createElement("span");
+    progress.className = "todo-progress"; title?.appendChild(progress);
+    const items = [...ul.children];
+    const update = () => progress.textContent = `${items.filter(li => li.classList.contains("done")).length}/${items.length}`;
+    items.forEach((li, i) => {
+      const note = li.querySelector("textarea[data-note]"); note?.remove();
+      const id = li.textContent.trim().replace(/\s+/g, " ").slice(0, 120), box = document.createElement("input"), lab = document.createElement("label");
+      box.type = "checkbox"; box.checked = done.has(id);
+      const text = document.createElement("span"); text.append(...li.childNodes);
+      lab.append(box, text); li.append(lab); li.classList.toggle("done", box.checked);
+      box.addEventListener("change", () => { box.checked ? done.add(id) : done.delete(id); li.classList.toggle("done", box.checked); save(); update(); });
+      if (note) {
+        // Notes live outside the label (typing must not toggle the box) and survive "Reset all checklists".
+        note.placeholder = "Notes…"; note.value = notes[id] || ""; li.append(note);
+        note.addEventListener("input", () => { notes[id] = note.value; localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); });
+      }
+    });
+    update();
+  });
+  const reset = document.createElement("button");
+  reset.id = "todo-reset"; reset.type = "button"; reset.textContent = "Reset all checklists";
+  reset.addEventListener("click", () => { if (confirm("Uncheck all items? Notes are kept.")) { localStorage.removeItem(KEY); location.reload(); } });
+  toc.appendChild(reset);
+</script>
+</body>
+</html>

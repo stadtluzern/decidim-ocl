@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>decidim.swiss – Upgrade to Decidim 0.31 (#228): planning</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #f6f7f9; --surface: #fff; --fg: #1d2330; --muted: #5d6677; --border: #e1e5eb;
+    --accent: #2457d6; --accent-soft: #e8eefc; --code-bg: #f1f3f6;
+    --ok: #1f7a3a; --ok-bg: #e5f4ea; --bad: #b42318; --bad-bg: #fdecea; --mid: #a15c00; --mid-bg: #fff3e0;
+    --radius: 10px; --shadow: 0 1px 2px rgb(16 24 40 / .06), 0 1px 3px rgb(16 24 40 / .08);
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1218; --surface: #171b23; --fg: #e4e7ec; --muted: #98a2b3; --border: #2a303c;
+    --accent: #7aa2ff; --accent-soft: #1d2740; --code-bg: #1f2430;
+    --ok: #6fcf8f; --ok-bg: #16301f; --bad: #ff8a80; --bad-bg: #3a1a18; --mid: #ffb74d; --mid-bg: #3a2a12;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  header.hero { background: linear-gradient(135deg, #1e3a8a, #2457d6); color: #fff; padding: 2rem 1.5rem 1.6rem; }
+  header.hero .inner { max-width: 1400px; margin: 0 auto; position: relative; }
+  #theme-toggle { position: absolute; top: 0; right: 0; background: rgb(255 255 255 / .14); border: 1px solid rgb(255 255 255 / .3); color: #fff; border-radius: 999px; padding: .3rem .8rem; font: inherit; font-size: 13px; cursor: pointer; }
+  #theme-toggle:hover { background: rgb(255 255 255 / .25); }
+  header.hero h1 { padding-right: 7rem; }
+  header.hero h1 { margin: 0 0 .6rem; font-size: 1.9rem; line-height: 1.2; }
+  header.hero .meta { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 .8rem; }
+  header.hero .chip { background: rgb(255 255 255 / .14); border: 1px solid rgb(255 255 255 / .25); border-radius: 999px; padding: .2rem .75rem; font-size: 13px; }
+  header.hero a, header.hero code { color: #fff; }
+  header.hero code { background: rgb(255 255 255 / .15); }
+  header.hero small { color: rgb(255 255 255 / .8); }
+
+  .layout { max-width: 1400px; margin: 0 auto; padding: 1.5rem; display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 2rem; }
+  nav#toc { position: sticky; top: 1rem; align-self: start; max-height: calc(100vh - 2rem); overflow-y: auto; font-size: 13.5px; }
+  nav#toc .title { font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: 11.5px; color: var(--muted); margin: 0 0 .5rem .6rem; }
+  nav#toc a { display: block; padding: .25rem .6rem; border-radius: 6px; color: var(--fg); border-left: 2px solid transparent; }
+  nav#toc a.h3 { padding-left: 1.4rem; color: var(--muted); font-size: 12.5px; }
+  nav#toc a:hover { background: var(--accent-soft); text-decoration: none; }
+  nav#toc a.active { background: var(--accent-soft); border-left-color: var(--accent); color: var(--accent); }
+  @media (max-width: 960px) { .layout { grid-template-columns: 1fr; } nav#toc { position: static; max-height: none; } }
+
+  main > section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: .4rem 1.6rem 1.4rem; margin-bottom: 1.5rem; }
+  h2 { font-size: 1.35rem; margin: 1.1rem 0 .8rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.05rem; margin: 1.6rem 0 .6rem; color: var(--fg); }
+  h2 a.anchor, h3 a.anchor { opacity: 0; margin-left: .4rem; font-weight: 400; color: var(--muted); }
+  h2:hover a.anchor, h3:hover a.anchor { opacity: 1; }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .25rem 0; }
+
+  .table-wrap { overflow-x: auto; margin: .9rem 0; border: 1px solid var(--border); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { padding: .5rem .65rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+  th { background: var(--code-bg); font-weight: 600; position: sticky; top: 0; white-space: nowrap; }
+  tr:last-child td { border-bottom: 0; }
+  tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--code-bg) 45%, transparent); }
+  td:first-child { white-space: nowrap; }
+  td:first-child code { white-space: normal; }
+
+  code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 12.5px; background: var(--code-bg); padding: .1rem .35rem; border-radius: 4px; overflow-wrap: anywhere; }
+  pre { background: #10141c; color: #e6e9ef; padding: .8rem 1rem; border-radius: 8px; overflow-x: auto; font: 12.5px/1.55 ui-monospace, "SF Mono", Menlo, Consolas, monospace; margin: .6rem 0; }
+  td pre { margin: 0; font-size: 12px; }
+  td:has(> pre) { min-width: 30rem; max-width: 42rem; }
+  td:last-child { min-width: 16rem; }
+  pre code { background: none; padding: 0; color: inherit; }
+
+  .warn, .block { border-radius: 8px; padding: .75rem 1rem; margin: 1rem 0; border: 1px solid; }
+  .warn { background: var(--mid-bg); border-color: color-mix(in srgb, var(--mid) 35%, transparent); }
+  .block { background: var(--bad-bg); border-color: color-mix(in srgb, var(--bad) 35%, transparent); }
+  .warn::before { content: "⚠ "; color: var(--mid); font-weight: 700; }
+  .block::before { content: "⛔ "; }
+
+  td.ok, td.bad, td.mid { font-weight: 600; white-space: nowrap; }
+  td.ok { color: var(--ok); background: var(--ok-bg) !important; }
+  td.bad { color: var(--bad); background: var(--bad-bg) !important; }
+  td.mid { color: var(--mid); background: var(--mid-bg) !important; white-space: normal; }
+  small { color: var(--muted); }
+
+  @media print {
+    body { background: #fff; }
+    nav#toc, h2 a.anchor, h3 a.anchor { display: none; }
+    .layout { display: block; padding: 0; }
+    main > section { box-shadow: none; break-inside: auto; }
+    header.hero { background: none; color: #000; padding: 0 0 1rem; }
+    header.hero a, header.hero code, header.hero small { color: #000; }
+  }
+</style>
+<script>
+  // Saved choice wins; otherwise follow the OS. Runs before paint to avoid a flash.
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+</script>
+</head>
+<body>
+<header class="hero"><div class="inner">
+  <button id="theme-toggle" type="button" aria-label="Toggle dark mode"></button>
+  <h1>decidim.swiss – Upgrade to Decidim 0.31: planning</h1>
+  <div class="meta">
+    <span class="chip">Ticket <a href="https://github.com/decidim-swiss/decidim.swiss/issues/228">decidim.swiss#228</a></span>
+    <span class="chip">Repo <code>stadtluzern/decidim-ocl</code> · branch <code>upgrade</code></span>
+    <span class="chip">Reference <a href="https://github.com/puzzle/decidim-zuerich/tree/upgrade">puzzle/decidim-zuerich @ <code>upgrade</code></a></span>
+    <span class="chip">0.29.7 → 0.31.8</span>
+    <span class="chip">→ <a href="upgrade_steps.html">Step-by-step guide</a></span>
+  </div>
+  <small>0.31 is <em>not</em> on Zürich <code>master</code> (still 0.29.7). Compiled 2026-10-31 from GitHub issues, both repositories and the Decidim release notes and docs. Statements marked [inference] are not verified.</small>
+</div></header>
+
+<div class="layout">
+<nav id="toc"><p class="title">Contents</p></nav>
+<main>
+<h2>1. Ticket scope (#228)</h2>
+<ul>
+  <li>Upgrade to Decidim 0.31.7 → <b>0.31.8 is now available</b> on <code>openpoke/decidim@0.31-backports</code> (HEAD <code>2f36d58</code>) and contains the survey display-conditions fix (see §6).</li>
+  <li>Drop the Pokecode 0.29 backports and switch to <code>0.31-backports</code>.</li>
+  <li>Install the new components <code>decidim-elections</code> and <code>decidim-collaborative_texts</code>.</li>
+  <li>Remove the mail digest fix (see <a href="https://github.com/puzzle/decidim-zuerich/issues/615">zuerich#615</a>).</li>
+  <li>Migrate the taxonomies the same way as Zürich.</li>
+  <li>The ticket says all modules are already on 0.31. That is true for most of them, but there are exceptions (see §4).</li>
+  <li>First deliverable: <b>an effort estimate based on the Zürich experience, not counting Decidim Geo</b> (see §9).</li>
+  <li>Status: according to nicolefreypuzzle (2026-10-27), Thomas is starting at the end of the week.</li>
+</ul>
+
+<h2>2. Version jump</h2>
+<table>
+  <tr><th></th><th>decidim.swiss today (<code>upgrade</code> branch)</th><th>Zürich after upgrade</th><th>Target for decidim.swiss</th></tr>
+  <tr><td>Decidim</td><td>0.29.7 (openpoke <code>0.29-backports</code> @ <code>13fd72f</code>)</td><td>0.31.6 (openpoke <code>0.31-backports</code> @ <code>d4439af</code>)</td><td>0.31.8 (openpoke <code>0.31-backports</code>)</td></tr>
+  <tr><td>Rails</td><td>7.0.8.7, <code>load_defaults 7.0</code></td><td>7.2.3.1, <code>load_defaults 7.2</code></td><td>7.2.x</td></tr>
+  <tr><td>Ruby</td><td>3.2.10 (<code>.tool-versions</code>, Dockerfile)</td><td>3.3.4</td><td>3.3.4</td></tr>
+  <tr><td>Node</td><td>18.20</td><td>22.14 (Dockerfile nodesource <code>node_22.x</code>, yarn 1.22.21, <code>nodejs</code> dropped from runtime image)</td><td>22.x</td></tr>
+  <tr><td>Shakapacker</td><td>7.1.0 (dependency)</td><td>^8.3.0 (devDependency)</td><td><code>~8.3.0</code> (release notes 0.31 §2.3: gem and npm versions must match)</td></tr>
+</table>
+<p>Required Ruby and Node versions, per the <a href="https://docs.decidim.org/en/develop/install/update.html#_compatibility_versions_matrix">compatibility matrix in the update guide</a>, checked against the release branches:</p>
+<table>
+  <tr><th>Decidim</th><th>Docs matrix: Ruby / Node</th><th>Release branch: <code>.ruby-version</code> / <code>.node-version</code> / gemspec / <code>engines</code></th><th>Status</th></tr>
+  <tr><td>v0.30</td><td>3.2.2 / 18.17.x</td><td>3.3.4 / 18.17.1 / <code>required_ruby_version "~&gt; 3.3.0"</code> / <code>node &gt;=18.17.1</code></td><td>Not maintained. <b>The docs matrix is wrong for Ruby</b>: 0.30 already requires Ruby 3.3 (release notes 0.30 §2.1)</td></tr>
+  <tr><td>v0.31</td><td>3.3.4 / 22.14.x</td><td>3.3.4 / 22.14.0 / <code>"~&gt; 3.3.0"</code> / <code>node &gt;=22.14.0</code></td><td>Bug fixes and security updates</td></tr>
+  <tr><td>v0.32</td><td>3.4.7 / 22.14.x</td><td>–</td><td>Bug fixes and security updates (next upgrade, cf. zuerich#581)</td></tr>
+</table>
+<p>The jump skips two minor versions (0.30 and 0.31), so the upgrade notes of <b>every</b> 0.30.x and 0.31.x release apply (§5). The update guide explicitly says to upgrade to 0.30, follow its notes and confirm everything works, then go to 0.31. Recommendation 2 adds: <i>"Never add 2 or more versions of Decidim to the same deployment to production"</i>. Zürich ignored both: it went 0.30.0 → 0.31.x in a single day (commits <code>c68dfa2</code> → <code>61754d6</code>) and deployed only 0.31. That worked, but the Zürich issues show no 0.30 intermediate state was ever tested. The stricter alternative is two PROD deployments (0.30.9, then 0.31.8), which means roughly twice the deployment and acceptance-testing effort.</p>
+
+<h2>3. Zürich reference</h2>
+
+<h3>3.1 Relevant Zürich issues</h3>
+<table>
+  <tr><th>Issue</th><th>Topic</th><th>Takeaway for decidim.swiss</th></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/580">#580</a></td><td>Upgrade V0.31 (main ticket)</td><td>Module check, then backports and new components. DEV on 2026-04-08, INT on 2026-08-04, PROD on 2026-08-06. Most of the delay came from Decidim Geo (#594), which decidim.swiss does not use.</td></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/513">#513</a></td><td>Upgrade V0.30</td><td>Not deployed on its own; skipped and folded into #580.</td></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/624">#624</a> / <a href="https://github.com/puzzle/decidim-zuerich/issues/594">#594</a></td><td>Migrate scopes and areas to taxonomies</td><td>The default plan puts <b>scopes and areas together</b> into <code>~Bereiche</code>. Zürich fixed this during deployment (plan edit or DB fix). See §7.</td></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/615">#615</a> / <a href="https://github.com/puzzle/decidim-zuerich/issues/622">#622</a></td><td>Remove digest fix; 0.31.6</td><td>Fixed upstream as of 0.31.6 (<a href="https://github.com/decidim/decidim/pull/16910">decidim#16910</a>). Commit <code>3967be1</code>: the cron jobs call the core tasks again and <code>lib/tasks/fixes.rake</code> is deleted.</td></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/607">#607</a></td><td>0.31.3–0.31.5: 500 on login</td><td><a href="https://github.com/decidim/decidim/issues/16824">decidim#16824</a> → <code>gem 'jwt', '&lt; 3.2.0'</code> (commit <code>2ab4a58</code>). Upstream fix is in <a href="https://github.com/decidim/decidim/pull/17011">decidim#17011</a>; whether the pin is still needed on 0.31.8 has not been checked [inference].</td></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/614">#614</a></td><td>500 on surveys</td><td>Caused by <code>anonymous_codes</code> (branch <code>upgrade-0.31</code> still uses <code>allow_answers?</code>). Zürich <b>removed the module</b>. See §4.</td></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/595">#595</a></td><td>Exports broken</td><td>Production config got mixed up during the upgrade: web and job pods were each using local storage. Fix in <code>9444998</code>: <code>STORAGE_PROVIDER</code> env plus Deface/lograge config restored.</td></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/606">#606</a></td><td>500 on proposal component settings</td><td>Breaking change <a href="https://github.com/decidim/decidim/pull/14067">decidim#14067</a>: <code>choices: -&gt; { … }</code> must become <code>choices: -&gt;(_context) { … }</code> (commit <code>44e2b9a</code>).</td></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/612">#612</a></td><td>500 on SMS verification</td><td>The ASPSMS gateway had to be adapted to the new SMS API (<code>97933a2</code>, <code>6889d37</code>, <code>3e1cf70</code>). decidim.swiss has its own <code>app/services/decidim_ocl/verifications/sms/aspsms_gateway.rb</code>, which will need the same change.</td></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/633">#633</a></td><td>OIDC callback 500</td><td>The omniauth registration override no longer worked and was removed (<code>c83b3dc</code>). decidim.swiss has no such override, but organizations have OIDC settings (<code>omniauth_settings.oidc</code> in the locales) and the omniauth config lives in <code>config/secrets.yml</code>, which has to move to ENV.</td></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/636">#636</a></td><td>Survey: scroll to the top of a section no longer works</td><td>The JS override still targets 0.27 markup. <b>decidim.swiss has the same code</b> (§6).</td></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/638">#638</a></td><td>Override checks in CI</td><td>On branch <code>feature/638-override-checks</code>. It found: the survey confirmation mail override no longer applies because answers were renamed to responses, <code>remove_hide_button</code> has no effect, and the sessions controller override is obsolete. <b>All three exist in decidim.swiss too</b>. Worth adopting the checks.</td></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/623">#623</a></td><td>Wrong password → 403</td><td>WAF/rack-attack. Zürich reworked rack-attack (<code>8c6a91c</code>).</td></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/610">#610</a></td><td>Ephemeral verification</td><td>Not in core. Zürich uses its own module <code>puzzle/decidim-module-ephemeral_verifications</code>. Optional.</td></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/620">#620</a></td><td>Direct message mail notification</td><td>Zürich-specific override (<code>86cd046</code>). Optional.</td></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/625">#625</a></td><td>Survey "!dropdown!" hack broken</td><td>Still open in Zürich. Check whether decidim.swiss relies on it.</td></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/593">#593</a></td><td>Active Storage URLs rewritten to presigned S3 URLs</td><td>Still open; expected to be fixed upstream.</td></tr>
+  <tr><td><a href="https://github.com/puzzle/decidim-zuerich/issues/592">#592</a></td><td>500 in <code>DatesAndMapCell</code></td><td>The <code>_static_map</code> override used <code>icon_name</code>; Luzern had removed the override earlier. Check decidim.swiss's map overrides.</td></tr>
+</table>
+
+<h3>3.2 Zürich upgrade commits (<code>master..upgrade</code>, 57 commits)</h3>
+<table>
+  <tr><th>Commit</th><th>Content</th></tr>
+  <tr><td><code>c68dfa2</code></td><td>Decidim 0.30.0 + Ruby 3.3.4, <b>all modules temporarily disabled</b></td></tr>
+  <tr><td><code>7ce08da</code></td><td>Decidim 0.31.0. <code>config/initializers/decidim.rb</code> reduced to the custom config only (the rest now comes from ENV / <code>Decidim::Env</code>). Added <code>bin/rails data:migrate</code> after <code>db:migrate</code> in entrypoint, CI and <code>bin/update</code>. Replaced <code>compute_metrics_job</code> with <code>delete_inactive_accounts</code>. Regenerated API docs.</td></tr>
+  <tr><td><code>954dc47</code>, <code>61754d6</code>, <code>18a4622</code></td><td>0.31.1 → 0.31.2 → Pokecode backports 0.31.3</td></tr>
+  <tr><td><code>dd3ae17</code> … <code>7af3f9e</code></td><td>Modules re-added one at a time (awesome, term_customizer, participatory_documents, anonymous_proposals, antivirus, survey_multiple_answers, guest_meeting_registration, anonymous_codes)</td></tr>
+  <tr><td><code>f309605</code></td><td>Added elections + collaborative_texts</td></tr>
+  <tr><td><code>e93c0f5</code></td><td><code>lib/tasks/sms.rake</code>: <code>decidim:verifications:revoke:sms</code> is missing because of a load-order bug (<a href="https://github.com/decidim/decidim/issues/16546">decidim#16546</a>)</td></tr>
+  <tr><td><code>8baf145</code></td><td>Map providers moved from <code>app/provider</code> to <code>lib/</code> (Zeitwerk/load path)</td></tr>
+  <tr><td><code>517fb59</code></td><td><code>gem 'wicked_pdf'</code> added explicitly (eager-load error)</td></tr>
+  <tr><td><code>4b0a3f2</code>, <code>9444998</code></td><td><code>config/storage.yml</code> (ocp4_s3) and <code>production.rb</code> fixes (§3.1 #595)</td></tr>
+  <tr><td><code>2ab4a58</code></td><td><code>jwt &lt; 3.2.0</code></td></tr>
+  <tr><td><code>44e2b9a</code></td><td><code>choices</code> lambda takes a context</td></tr>
+  <tr><td><code>3967be1</code></td><td>Digest fix removed</td></tr>
+  <tr><td><code>ad621ed</code>, <code>4290ba3</code></td><td>Old survey display-conditions fix and survey confirmation mailer override removed</td></tr>
+  <tr><td><code>801bac9</code>, <code>6f6d258</code></td><td>Node 22 in Dockerfile/CI/<code>.tool-versions</code>; Ruby 3.3.4 in <code>.tool-versions</code></td></tr>
+</table>
+<p>Other changes on the branch: <code>config/secrets.yml</code> deleted, <code>production.rb</code> rebuilt from the Rails 7.2 template (SMTP via <code>Decidim::Env</code>, <code>STORAGE_PROVIDER</code>, <code>QUEUE_ADAPTER</code>), and new <code>s3</code>/<code>gcs</code> services in <code>storage.yml</code>. Extra gems: <code>connection_pool &lt; 3.0.0</code> (Rails 7.2), <code>jwt &lt; 3.2.0</code>, <code>wicked_pdf</code>.</p>
+
+<h2>4. Modules: decidim.swiss today vs. 0.31</h2>
+<table>
+  <tr><th>Gem</th><th>decidim.swiss today</th><th>0.31 source</th><th>Status</th></tr>
+  <tr><td>decidim (+ conferences, initiatives, proposals, templates)</td><td>openpoke <code>0.29-backports</code> @ <code>13fd72f</code></td><td>openpoke <code>0.31-backports</code> (0.31.8). Zürich pins with <code>glob: 'decidim-xyz/*.gemspec'</code></td><td class="ok">ok</td></tr>
+  <tr><td>decidim-elections, decidim-collaborative_texts</td><td>–</td><td>openpoke <code>0.31-backports</code></td><td class="ok">new</td></tr>
+  <tr><td>decidim-initiatives</td><td>in use (cron jobs, view and form overrides)</td><td>core</td><td class="mid">Not used in Zürich, so untested. 0.31 changes the signature workflow (release notes §5.8 "Initiatives digital signature process change").</td></tr>
+  <tr><td>decidim-decidim_awesome</td><td><code>release/0.29-stable</code> @ <code>a9f2077</code></td><td>Zürich: <code>main</code> @ <code>362ca4c</code></td><td class="ok">ok</td></tr>
+  <tr><td>decidim-term_customizer</td><td>OpenSourcePolitics <code>master</code> @ <code>3da4973</code></td><td>Zürich: <b>openpoke</b> <code>main</code> @ <code>8cd8baf</code> (openpoke also has <code>release/0.31-stable</code>)</td><td class="ok">ok (switch repo)</td></tr>
+  <tr><td>decidim-participatory_documents</td><td><code>main</code> @ <code>21501f8</code></td><td><code>upgrade-0.31</code> @ <code>5d8bde9</code></td><td class="ok">ok</td></tr>
+  <tr><td>decidim-antivirus</td><td>puzzle <code>master</code> @ <code>bc3cb4d</code></td><td>puzzle <code>main</code> @ <code>76a22d1</code></td><td class="ok">ok</td></tr>
+  <tr><td>decidim-survey_multiple_answers</td><td><code>bump/0.29</code></td><td><code>bump/0.31</code> @ <code>95eba87</code></td><td class="ok">ok</td></tr>
+  <tr><td>decidim-guest_meeting_registration</td><td><code>bump/module_to_0.29</code></td><td><code>bump/0.31</code> @ <code>f0c5e2c</code></td><td class="ok">ok</td></tr>
+  <tr><td>decidim-navigation_maps</td><td>Platoniq <code>release/0.29-stable</code></td><td>Platoniq <code>release/0.31-stable</code> (v1.8.0, <code>&gt;= 0.31, &lt; 0.32</code>)</td><td class="mid">Exists, but not used in Zürich, so untested</td></tr>
+  <tr><td>decidim-reporting_proposals</td><td>openpoke <code>main</code> @ <code>cbbb29c</code></td><td>openpoke <code>main</code> is now v0.8.0 (<code>&gt;= 0.31, &lt; 0.32</code>, last commit 2026-10-28)</td><td class="mid">Exists, but not used in Zürich, so untested</td></tr>
+  <tr><td>decidim-anonymous_codes</td><td>openpoke <code>main</code> @ <code>8323978</code></td><td>Only branch <code>upgrade-0.31</code> exists. <a href="https://github.com/openpoke/decidim-module-anonymous_codes/issues/28">anonymous_codes#28</a> (500 on surveys) is <b>still open</b>.</td><td class="bad">Blocker / decision needed</td></tr>
+  <tr><td>deface (froger <code>fix/js-overrides</code>)</td><td>present, with a comment saying it is for decidim-geo</td><td>Zürich keeps it</td><td class="mid">decidim.swiss has no Geo; could probably go back to upstream deface [inference]</td></tr>
+  <tr><td>decidim-sortitions</td><td>part of the decidim meta gem</td><td>Deprecated in 0.31 (release notes §2.4)</td><td class="mid">check usage</td></tr>
+</table>
+<div class="block"><b>anonymous_codes:</b> decidim.swiss uses this module (it was enabled through <a href="https://github.com/decidim-swiss/decidim.swiss/issues/159">#159</a>). Zürich removed it because Pokecode said the 0.31 branch was not production-ready and the surveys 500 has not been fixed. Before starting, the client needs to decide: get a fix from Pokecode, patch it ourselves (<code>allow_answers?</code> → <code>allow_responses?</code>), or remove the module.</div>
+
+<h2>5. Decidim upgrade steps (official sources)</h2>
+<p>Sources:</p>
+<ul>
+  <li><a href="https://github.com/decidim/decidim/releases">GitHub releases</a>: every release has its own "Upgrade notes" section. I read all of them: v0.30.0–v0.30.9 and v0.31.0–v0.31.8.</li>
+  <li><a href="https://docs.decidim.org/en/develop/install/update.html">docs.decidim.org: Updating Decidim</a>: go one minor version at a time, back up the DB first, never ship two versions in one PROD deployment, and the version matrix in §2.</li>
+  <li>Blog posts <a href="https://decidim.org/blog/2025-04-29-new-version-0-30-0/">0.30.0</a> and <a href="https://decidim.org/blog/2025-11-20-new-version-0-31-0">0.31.0</a>: feature descriptions, listed below where they affect the upgrade.</li>
+</ul>
+
+<h3>5.1 Commands, in order, per release</h3>
+<p><code>bundle update decidim</code>, <code>bin/rails decidim:upgrade</code> and <code>bin/rails db:migrate</code> are part of every release. From 0.31.1 on, <code>bin/rails data:migrate</code> is too. The table lists only the <b>additional</b> steps.</p>
+<table>
+  <tr><th>Release</th><th>Additional steps</th><th>Notes</th></tr>
+  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.30.0">0.30.0</a></td><td><pre>rbenv install 3.3.4
+bin/rails decidim:taxonomies:make_plan
+# review tmp/taxonomies/*.json (optional)
+bin/rails decidim:taxonomies:import_all_plans
+bin/rails decidim:taxonomies:update_all_metrics
+bin/rails decidim:metrics:rebuild[meetings,2019-01-01]
+bin/rails decidim:upgrade:attachments_cleanup
+bin/rails decidim_proposals:upgrade:set_categories
+bin/rails decidim:upgrade:clean:clean_deleted_users
+bin/rails decidim:upgrade:fix_nickname_casing</pre></td><td>Ruby 3.3.4. Taxonomy plans end up in <code>tmp/taxonomies/*.json</code>, which is where the per-tenant editing from §7 happens. <code>decidim:upgrade</code> <b>rewrites old migration files</b> (§2.2, soft delete), so a large migration diff is expected. <code>fix_orphan_categorizations</code> is now <code>decidim:upgrade:clean:categories</code>.</td></tr>
+  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.30.1">0.30.1</a></td><td><pre>bin/rails decidim:upgrade:clean:invalid_private_exports</pre></td><td><code>Decidim::UserBaseEntity.nicknamize(nickname, organization_id)</code>: the organization is now a required positional argument. No usage in decidim.swiss.</td></tr>
+  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.30.2">0.30.2</a></td><td><pre>bin/rails decidim:upgrade:clean:invalid_private_exports</pre></td><td></td></tr>
+  <tr><td>0.30.3</td><td>–</td><td></td></tr>
+  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.30.4">0.30.4</a></td><td><pre>bin/rails decidim:upgrade:fix_action_log
+bin/rails decidim:upgrade:clean:remove_private_exports_attachments</pre></td><td>Security fix. Expires all old private exports.</td></tr>
+  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.30.5">0.30.5</a></td><td><pre>bin/rails decidim:upgrade:remove_deleted_users_left_data
+bin/rails decidim:upgrade:fix_deleted_private_follows</pre></td><td>Security fixes (CVE-2026-23891 and others)</td></tr>
+  <tr><td>0.30.6</td><td>–</td><td></td></tr>
+  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.30.7">0.30.7</a></td><td><pre>echo "/public/sw.js*" &gt;&gt; .gitignore
+bin/rails decidim:upgrade:fix_deleted_private_follows
+bin/rails decidim:upgrade:remove_deleted_users_left_data</pre></td><td>decidim.swiss's <code>.gitignore</code> already lists <code>/public/sw.js</code> and <code>/public/sw.js.map</code>.</td></tr>
+  <tr><td>0.30.8</td><td>–</td><td></td></tr>
+  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.30.9">0.30.9</a></td><td>–</td><td>Security fixes. <b>HTML header snippets are now sanitized, so JavaScript in them stops working</b>. See §6.</td></tr>
+  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.31.0">0.31.0</a></td><td><pre>rbenv install 3.3.4 &amp;&amp; nvm install 22.14.0
+git rm config/secrets.yml
+git rm config/initializers/decidim.rb        # keep custom config!
+wget …/app_templates/storage.yml -O config/storage.yml
+wget …/v0.31.0.rc1/production.rb -O config/environments/production.rb
+sed -i "s/load_defaults 6\.1/load_defaults 7.2/" config/application.rb
+bin/rails decidim:upgrade:decidim_update_valuators
+bin/rails decidim:upgrade:decidim_action_log_valuation_assignment
+bin/rails decidim:upgrade:decidim_paper_trail_valuation_assignment
+bin/rails decidim:upgrade:fix_nickname_casing
+bin/rails decidim:upgrade:clean:invalid_private_exports
+bin/rails decidim:verifications:revoke:sms
+bin/rails decidim_surveys:upgrade:fix_survey_permissions
+bin/rails decidim:upgrade:user_groups:remove
+bin/rails decidim:upgrade:fix_action_log
+bin/rails decidim:upgrade:clean:remove_private_exports_attachments  # skip if already run (0.30.4)
+bin/rails data:migrate</pre></td><td>Details in §5.2. The <code>sed</code> in the release notes targets 6.1; decidim.swiss is on <code>load_defaults 7.0</code>, so change it by hand.</td></tr>
+  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.31.1">0.31.1</a></td><td>–</td><td>Security fixes</td></tr>
+  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.31.2">0.31.2</a></td><td>–</td><td></td></tr>
+  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.31.3">0.31.3</a></td><td><pre>echo "/public/sw.js*" &gt;&gt; .gitignore
+bin/rails decidim:upgrade:remove_deleted_users_left_data
+bin/rails decidim:upgrade:fix_deleted_private_follows</pre></td><td>Same steps as 0.30.5 and 0.30.7 (backports)</td></tr>
+  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.31.4">0.31.4</a></td><td><pre>sed -i 's/Env.new("SMTP_STARTTLS_AUTO").to_boolean_string/Env.new("SMTP_STARTTLS_AUTO", true).present?/' \
+  config/environments/production.rb</pre></td><td>STARTTLS bug in the generated <code>production.rb</code>. Zürich's <code>production.rb</code> already has the fixed line.</td></tr>
+  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.31.5">0.31.5</a></td><td>–</td><td>9 CVEs, including the HTML header snippet sanitization (same as 0.30.9)</td></tr>
+  <tr><td>0.31.6</td><td>–</td><td>Includes the digest fix (decidim.swiss#219) and "Fix Toggle Stimulus controller usage" (#16868), which touches the survey step toggle in §6.</td></tr>
+  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.31.7">0.31.7</a></td><td>–</td><td>"Ensure JWT secret exists for <code>devise-jwt</code>" (#17346), which may make Zürich's <code>jwt &lt; 3.2.0</code> pin unnecessary [inference]. "Fix ENV var for setting inactive users deletion period" (#17276).</td></tr>
+  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.31.8">0.31.8</a></td><td>–</td><td>5 security advisories. <b>Verification code hardening</b> (#17639): failed attempts are now tracked server-side (default lockout after 5 attempts, configurable via <code>DECIDIM_VERIFICATION_MAX_FAILED_ATTEMPTS</code> and <code>DECIDIM_VERIFICATION_UNLOCK_IN</code>), SMS codes expire after 10 minutes (<code>DECIDIM_VERIFICATION_CODE_EXPIRY_MINUTES</code>), and Rack::Attack throttles to 10 requests/min/IP. <i>"review any custom authorization handlers"</i> applies to the ASPSMS gateway and decidim.swiss's own rack-attack config.</td></tr>
+</table>
+<p>For a direct 0.29.7 → 0.31.8 upgrade, merging and deduplicating the lists gives the 0.30.0 block, the 0.31.0 block, plus <code>remove_deleted_users_left_data</code> and <code>fix_deleted_private_follows</code>. <b>But two of the 0.30.0 tasks no longer exist in 0.31.8</b>, and a few others behave differently than the notes suggest. The checked list is in §5.5.</p>
+
+<h3>5.2 0.31.0 general notes that affect decidim.swiss</h3>
+<ul>
+  <li><b>Rails 7.2</b> (§2.1): <code>load_defaults 7.2</code>. Locally, <code>tmp/development_secret.txt</code> is no longer read. Either set <code>SECRET_KEY_BASE</code> or rename the file to <code>tmp/local_secret.txt</code>, otherwise you get <code>ActiveSupport::MessageEncryptor::InvalidMessage</code> (<a href="https://github.com/decidim/decidim/issues/15405">#15405</a>).</li>
+  <li><b><code>Rails.application.secrets</code> is removed</b> (§2.2). The plan is to delete <code>config/secrets.yml</code> and <code>config/initializers/decidim.rb</code> and take <code>storage.yml</code> and <code>production.rb</code> from the template. decidim.swiss's <code>secrets.yml</code> already reads from ENV (0.28 template), so most of the work is carrying over the <b>custom keys</b>: <code>translator</code> (<code>deepl.rb</code>), the custom maps logic (<code>decidim.rb:157-175</code>, <code>static_provider</code>/<code>dynamic_provider</code>), omniauth <code>oidc</code> (<code>MEIN_KONTO_*</code>), <code>etherpad</code> and the <code>initiatives</code> settings (<code>decidim.rb:485ff</code>). Zürich kept a trimmed-down <code>decidim.rb</code> containing only the custom config.</li>
+  <li><b>Shakapacker <code>~8.3.0</code></b> (§2.3). Use <code>~</code>, not <code>^</code>, otherwise you get "gem and node package versions do not match". Zürich uses <code>^8.3.0</code>, which only works because of the lockfile.</li>
+  <li><b>Deprecated, removed in 0.32</b> (§2.4): Collaborative Drafts, <b>Sortitions</b>, meeting polls. Check whether any tenant uses them.</li>
+  <li><b>User groups removed</b> (§3.6). <code>user_groups:remove</code> <b>sends emails</b> to group addresses and members (password reset, change notice). The subtasks can be run individually, so mail can be skipped if needed. One subtask is <b>missing from the release notes table</b>: <code>perform_patches_on_emails</code> sets a <b>random password</b> on patched group accounts and <b>emails it in plain text</b> to every confirmed member (<code>UserGroupMailer.notify_user_group_patched</code>). Known authorship bug: <a href="https://github.com/decidim/decidim/issues/15448">#15448</a>. <code>app/views/decidim/groups/_form.html.erb</code> becomes obsolete.</li>
+  <li><b>SMS authorizations are deleted</b> (§3.4: <code>revoke:sms</code> forces everyone to re-verify). Each tenant has to be told. The task is generated dynamically in <code>decidim-verifications/lib/tasks/revoke.rake</code> (<code>Decidim.authorization_engines.pluck(:name).each { task authorization … }</code>), so it only exists if the <code>sms</code> workflow is registered when rake loads, which it isn't (load-order bug, <a href="https://github.com/decidim/decidim/issues/16546">decidim#16546</a>). Use Zürich's <code>lib/tasks/sms.rake</code>.</li>
+  <li><b>Cloud storage <code>public: true</code></b> (§3.7). Asset URLs change, so S3 hosts must be added to the CSP (<code>default-src</code>, <code>img-src</code>, <code>media-src</code>, <code>connect-src</code>). <code>config/initializers/content_security_policy.rb</code> currently has no S3 host.</li>
+  <li><b>Cron jobs</b> (§4): add <code>decidim:participants:delete_inactive_participants</code> (default 365 days, sends mail 30 and 7 days before deletion; enabling it is a policy decision per tenant). <b>Metrics are removed</b>, so delete <code>app/jobs/compute_metrics_job.rb</code> (<code>decidim:metrics:all</code>). decidim.swiss uses delayed_job, not Sidekiq, so the <code>sidekiq.yml</code> instructions don't apply.</li>
+  <li><b>Initiatives signature workflows</b> (§5.8/§5.9). Every initiative type with online signature has to be recreated as <code>Decidim::Initiatives::Signatures.register_workflow(…)</code> in an initializer and then selected in the admin "Signature workflow" field. Affected locally: <code>app/overrides/forms/decidim/initiatives/**/initiative_form_override.rb</code> (<code>signature_type_options</code>) and <code>app/views/decidim/initiatives/initiatives/_form.html.erb</code>. The DB check per tenant (which initiative types use online signature, SMS, or document-number verification) is still open.</li>
+  <li><b>API</b> (§5.1–5.7): new ENV variables <code>DECIDIM_API_FORCE_API_AUTHENTICATION</code>, <code>DECIDIM_API_JWT_SECRET</code> and <code>DECIDIM_OAUTH_ACCESS_TOKEN_EXPIRES_IN</code>. The OAuth scope <code>public</code> is renamed to <code>profile</code>, which only matters for external OAuth integrations.</li>
+</ul>
+
+<h3>5.3 0.30.0 general notes that affect decidim.swiss</h3>
+<ul>
+  <li><b>Social login</b> (§3.4): <code>icon</code> becomes <code>icon_path</code> (<code>media/images/google.svg</code> and so on). In <code>secrets.yml</code>, google already uses <code>icon_path: decidim/brands/google.svg</code> (check the path), and facebook/twitter have no icon set. This goes away along with <code>secrets.yml</code> anyway.</li>
+  <li><b>HERE static maps</b> (§3.7): <code>decidim.rb:162</code> still has the old v1.6 URL <code>image.maps.ls.hereapi.com/mia/1.6/mapview</code>. It needs to become <code>https://image.maps.hereapi.com/mia/v3/base/mc/overlay</code> if any tenant uses HERE (configured per tenant through <code>2_add_map_config_override</code>).</li>
+  <li><b>Cell cache expiration</b> (§2.4): <code>DECIDIM_CACHE_EXPIRATION_TIME</code>, default 1440 minutes.</li>
+  <li><b>Ransack 4.2</b> (§2.5) and <b>routing</b> (§5.2) only matter for custom searchable models or custom routes. Check <code>config/routes.rb</code> and the participatory space context override.</li>
+  <li><b>GraphQL <code>decidim { version }</code></b> now returns <code>null</code> (§5.1), unless <code>DECIDIM_API_DISCLOSE_SYSTEM_VERSION=true</code>. This probably explains decidim.swiss#204, where the Decidim Awesome version check showed the wrong version [inference].</li>
+</ul>
+
+<h3>5.4 From the blog posts</h3>
+<ul>
+  <li>0.30: <b>ephemeral verification</b> ("one time participation", <a href="https://github.com/decidim/decidim/pull/13579">#13579</a>) can be enabled per component, but only works with a registered ephemeral workflow (zuerich#610, which led to the <code>puzzle/decidim-module-ephemeral_verifications</code> module). Also new: soft delete for spaces and components, admin-managed share tokens (<a href="https://github.com/decidim/decidim/pull/13221">#13221</a>, which replaces the earlier share codes, cf. zuerich#506), voting directly from the proposals list (the source of the zuerich#599 caching bug), and multiple surveys per component.</li>
+  <li>0.31: <b>the "Appearance" admin page is removed</b> (<a href="https://github.com/decidim/decidim/pull/14797">#14797</a>; CTA button moves into the Hero content block, <a href="https://github.com/decidim/decidim/pull/14741">#14741</a>). Tenant admins have to redo custom CTA and appearance settings. Also: automatic deletion of inactive accounts, the API authentication changes, the new initiative creation wizard (<a href="https://github.com/decidim/decidim/pull/13952">#13952</a>, which affects the local initiative view overrides), and a survey admin UI split into tabs (<a href="https://github.com/decidim/decidim/pull/14182">#14182</a>).</li>
+</ul>
+
+<h3>5.5 Task names checked against the source code</h3>
+<p>Task names change between versions, and the release notes and docs don't always keep up. To check, I pulled every <code>*.rake</code> file from tags <code>v0.30.9</code> and <code>v0.31.8</code> and from <code>openpoke/decidim@0.31-backports</code> (<code>2f36d58</code>) and extracted the fully qualified task names statically (namespace/task DSL stubbed, without booting the app). I then compared them with every task named in the release notes (v0.28.0–v0.31.8), in the docs (<code>develop/install</code>, <code>develop/develop/taxonomies</code>) and in decidim.swiss's own code. <b>The openpoke backports have exactly the same task set as 0.31.8.</b></p>
+<table>
+  <tr><th>Task in notes/docs</th><th>0.30.9</th><th>0.31.8</th><th>Finding → what to run on 0.31.8</th></tr>
+  <tr><td><code>decidim:metrics:rebuild[meetings,…]</code> (0.30.0 notes)</td><td class="ok">yes</td><td class="bad">no</td><td>Metrics are removed in 0.31 (along with <code>metrics:all</code>, <code>:one</code>, <code>:list</code>). <b>Skip it.</b></td></tr>
+  <tr><td><code>decidim:taxonomies:update_all_metrics</code> (0.30.0 notes, Zürich #624 comment)</td><td class="ok">yes</td><td class="bad">no</td><td>In 0.30 it only rewrote <code>Decidim::Metric.decidim_category_id</code> to the new taxonomy, and that table is gone in 0.31. <b>Skip it.</b> Run <code>decidim:taxonomies:reset_counters</code> instead; it exists in both versions and is the one the current <a href="https://docs.decidim.org/en/develop/develop/taxonomies.html">taxonomies docs</a> list.</td></tr>
+  <tr><td><code>decidim:verifications:revoke:sms</code> (0.31.0 notes)</td><td>–</td><td class="mid">dynamic</td><td>Only exists if <code>sms</code> is registered at rake load time; see §5.2. Use Zürich's <code>lib/tasks/sms.rake</code>.</td></tr>
+  <tr><td><code>decidim:attachments_cleanup</code> (docs <code>develop/install</code>, hourly cron)</td><td class="bad">no</td><td class="bad">no</td><td><b>Docs are wrong for 0.31.</b> Only <code>develop</code> moved it to the top-level namespace. On 0.30/0.31 it is <code>decidim:upgrade:attachments_cleanup</code>. The 0.31-stable docs don't list this cron at all. Expect the rename at 0.32.</td></tr>
+  <tr><td><code>decidim:upgrade:fix_orphan_categorizations</code> (0.29.0/0.30.0 notes)</td><td class="bad">no</td><td class="bad">no</td><td>Renamed to <code>decidim:upgrade:clean:categories</code> (0.30.0 §2.3), which is included in <code>decidim:upgrade:clean:invalid_records</code></td></tr>
+  <tr><td><code>decidim:proposals:upgrade:remove_valuator_orphan_records</code> (0.28.0 notes)</td><td class="bad">no</td><td class="bad">no</td><td><b>The notes were already wrong in 0.28</b>: the real namespace is <code>decidim_proposals:</code>, not <code>decidim:proposals:</code>. Renamed again in 0.31 without notice: <code>decidim_proposals:upgrade:remove_evaluator_orphan_records</code>.</td></tr>
+  <tr><td><code>decidim:upgrade:fix_duplicate_endorsements</code> (0.28.0 notes)</td><td class="ok">yes</td><td class="bad">no</td><td>Renamed in 0.31 without notice (endorsements → likes): <code>decidim:upgrade:fix_duplicate_likes</code></td></tr>
+  <tr><td><code>decidim:upgrade:webpacker</code>, <code>decidim:webpacker:install</code></td><td class="ok">yes</td><td class="bad">no</td><td>Now <code>decidim:upgrade:shakapacker</code> / <code>decidim:shakapacker:install</code>. <code>decidim:upgrade</code> calls <code>shakapacker_npm</code> and <code>shakapacker</code> automatically.</td></tr>
+  <tr><td><code>data:migrate</code> (0.31.x notes)</td><td>–</td><td class="ok">gem</td><td>Comes from the <code>data_migrate ~&gt; 11.3</code> dependency of decidim-core 0.31, not from a <code>.rake</code> file in Decidim</td></tr>
+  <tr><td>all other tasks in §5.1</td><td colspan="2" class="ok">present as documented</td><td><code>attachments_cleanup</code>, <code>clean:clean_deleted_users</code>, <code>clean:invalid_private_exports</code>, <code>clean:remove_private_exports_attachments</code>, <code>fix_action_log</code>, <code>fix_deleted_private_follows</code>, <code>fix_nickname_casing</code>, <code>remove_deleted_users_left_data</code>, the 3 valuator tasks, the 6 <code>user_groups:*</code> tasks, <code>decidim_proposals:upgrade:set_categories</code>, <code>decidim_surveys:upgrade:fix_survey_permissions</code>, <code>taxonomies:make_plan</code>/<code>import_all_plans</code>, <code>participants:delete_inactive_participants</code></td></tr>
+</table>
+<p>Every task called by decidim.swiss's cron jobs (<code>app/jobs/*</code>) exists in 0.31.8: <code>delete_download_your_data_files</code>, <code>open_data:export</code>, <code>reminders:all</code>, <code>mailers:notifications_digest_daily/weekly</code>, <code>decidim_meetings:clean_registration_forms</code>, <code>decidim_participatory_processes:change_active_step</code>, and <code>decidim_initiatives:check_published/check_validating/notify_progress</code>. The exceptions are <code>decidim:metrics:all</code> (<code>compute_metrics_job.rb</code>, removed) and the custom <code>decidim_ocl:mailers:*</code> tasks, which go away together with the digest fix.</p>
+<p><b>Verified one-time sequence for 0.29.7 → 0.31.8</b> (after <code>bundle update</code> and <code>decidim:upgrade</code>):</p>
+<pre>bin/rails db:migrate
+bin/rails data:migrate
+# 0.30.0
+bin/rails decidim:taxonomies:make_plan            # → edit tmp/taxonomies/*_plan.json per tenant (§7)
+bin/rails decidim:taxonomies:import_all_plans
+bin/rails decidim:taxonomies:reset_counters       # replaces update_all_metrics (gone in 0.31)
+bin/rails decidim:upgrade:attachments_cleanup
+bin/rails decidim_proposals:upgrade:set_categories
+bin/rails decidim:upgrade:clean:clean_deleted_users
+bin/rails decidim:upgrade:fix_nickname_casing
+# 0.30.4 / 0.30.5 / 0.30.7 / 0.31.3
+bin/rails decidim:upgrade:fix_action_log
+bin/rails decidim:upgrade:clean:remove_private_exports_attachments
+bin/rails decidim:upgrade:remove_deleted_users_left_data
+bin/rails decidim:upgrade:fix_deleted_private_follows
+# 0.31.0
+bin/rails decidim:upgrade:decidim_update_valuators
+bin/rails decidim:upgrade:decidim_action_log_valuation_assignment
+bin/rails decidim:upgrade:decidim_paper_trail_valuation_assignment
+bin/rails decidim:upgrade:clean:invalid_private_exports
+bin/rails decidim:verifications:revoke:sms         # only with Zürich's lib/tasks/sms.rake
+bin/rails decidim_surveys:upgrade:fix_survey_permissions
+bin/rails decidim:upgrade:user_groups:remove       # sends mails, see §5.2
+# skipped: decidim:metrics:rebuild, decidim:taxonomies:update_all_metrics (no longer exist)</pre>
+<div class="warn">Before each deployment, check the final list on the upgraded image with <code>bin/rails -AT | grep -E 'taxonomies|upgrade|revoke'</code>. That is the only check that also catches dynamically generated tasks such as <code>revoke:sms</code>, and tasks contributed by modules.</div>
+
+<h2>6. Local code hotspots in decidim.swiss</h2>
+<p>There are 26 files in <code>app/overrides</code> and about 43 replaced views/cells (excluding <code>static/api</code>). Most are not yet checked against 0.31. These have been confirmed so far:</p>
+<table>
+  <tr><th>File</th><th>Problem in 0.31</th><th>Action</th></tr>
+  <tr><td><code>app/overrides/decidim/forms/question_override.rb</code> (commit <code>41fb52f</code>, decidim.swiss#231)</td><td>The <code>inverse_of</code> fix is in core (0.31-stable <code>question.rb</code> already has <code>inverse_of: :condition_question</code>; release 0.31.8). The override's own guard makes it a no-op.</td><td>Remove</td></tr>
+  <tr><td><code>lib/tasks/fixes.rake</code> + <code>app/jobs/send_notification_mail_digest_{daily,weekly}_job.rb</code> (commit <code>f0a41ba</code>, decidim.swiss#219)</td><td>Fixed upstream as of 0.31.6</td><td>Remove the tasks and point the jobs back at <code>decidim:mailers:notifications_digest_*</code> (same as Zürich <code>3967be1</code>). Keep the #219 cron time of 04:00.</td></tr>
+  <tr><td><code>config/initializers/decidim_ocl_customization.rb:73</code></td><td>Subscribes to <code>decidim.forms.answer_questionnaire:after</code>. In 0.31 the command is <code>ResponseQuestionnaire</code>, so the event is <code>decidim.forms.response_questionnaire:after</code>. <b>The survey notification mail (<code>SurveyAnsweredMailer</code>) would silently stop being sent.</b></td><td>Rename the event and check the payload</td></tr>
+  <tr><td><code>app/packs/src/decidim/decidim_application.js:83-88</code></td><td>Uses the 0.27 selectors <code>.questionnaire-step</code>, <code>a[data-toggle]</code>, <code>.hide</code> (identical to zuerich#636)</td><td>Port Zürich's fix from branch <code>636-fix-survey-step-scroll</code></td></tr>
+  <tr><td><code>app/overrides/decidim/surveys/admin/component/_actions/remove_hide_button.deface</code> and <code>app/views/…/remove_hide_button.deface</code></td><td>The target template no longer exists (zuerich#638)</td><td>Remove</td></tr>
+  <tr><td><code>app/overrides/controllers/decidim/devise/sessions_controller_override.rb</code></td><td>The overridden method no longer exists (zuerich#638)</td><td>Check and remove</td></tr>
+  <tr><td><code>app/views/decidim/admin/scope_types/index.html.erb</code></td><td>Scopes are replaced by taxonomies; the template is 0.27-style</td><td>Probably remove [inference]</td></tr>
+  <tr><td><code>app/views/decidim/groups/_form.html.erb</code></td><td>User groups removed</td><td>Remove</td></tr>
+  <tr><td><code>app/views/decidim/initiatives/**</code>, <code>app/overrides/forms/decidim/initiatives/**</code></td><td>Signature workflow changes; overrides contain 0.27 Foundation markup (<code>data-close</code>, <code>row column</code>)</td><td>Rebase onto 0.31 templates</td></tr>
+  <tr><td><code>app/views/decidim/navbar_links/…</code>, <code>app/views/decidim/url_aliases/…</code></td><td>Views for modules that are commented out in the Gemfile ("not updated yet")</td><td>Probably dead code, remove [inference]</td></tr>
+  <tr><td><code>app/overrides/helpers/decidim/layout_helper_override_bak.rb</code>, <code>…/assemblies/index.html.erb.bak</code></td><td>Backup files</td><td>Remove</td></tr>
+  <tr><td><code>Decidim.find_component_manifest(…).settings(…).attribute … choices: -&gt; { … }</code></td><td>decidim#14067: the lambda now takes a context argument (zuerich#606)</td><td>No occurrence in decidim.swiss today; keep in mind for new settings</td></tr>
+  <tr><td><code>config/application.rb</code></td><td><code>load_defaults 7.0</code></td><td><code>7.2</code></td></tr>
+  <tr><td><code>config/environments/production.rb</code>, <code>config/storage.yml</code></td><td>Rails 7.2 template; storage env vars (zuerich#595)</td><td>Port from Zürich and make sure web and job pods share the same storage</td></tr>
+  <tr><td>Organization setting "HTML header snippets" (<code>enable_html_header_snippets</code> via <code>DECIDIM_ENABLE_HTML_HEADER_SNIPPETS</code>)</td><td>As of 0.30.9 / 0.31.5 the snippets are sanitized, so <b>JavaScript in them stops working</b> (tracking such as Matomo, chat widgets, etc.)</td><td>Check the snippets of every tenant in the DB and move any JS into <code>_head_extra.html.erb</code> or a proper integration</td></tr>
+  <tr><td><code>app/jobs/compute_metrics_job.rb</code></td><td>Metrics removed (0.31 §4.2); <code>decidim:metrics:all</code> no longer exists</td><td>Remove it and add a <code>delete_inactive_participants</code> job (Zürich <code>app/jobs/delete_inactive_accounts.rb</code>)</td></tr>
+  <tr><td><code>config/initializers/decidim.rb:162</code></td><td>HERE static map v1.6 URL (0.30 §3.7)</td><td>Use v3 URL if HERE is used</td></tr>
+  <tr><td><code>app/services/decidim_ocl/verifications/sms/aspsms_gateway.rb</code>, <code>config/initializers/rack_attack.rb</code></td><td>0.31 SMS API (zuerich#612); 0.31.8 verification hardening including Rack::Attack throttling</td><td>Port the Zürich commits and check for conflicts with the local rack-attack rules</td></tr>
+</table>
+<div class="warn">Recommendation: before upgrading, adopt Zürich's override checks (<code>test/lib/decidim_overrides_test.rb</code>, <code>test/lib/deface_overrides_test.rb</code>, branch <code>feature/638-override-checks</code>) so that every override that no longer applies gets reported automatically.</div>
+
+<h2>7. Taxonomy migration (as in Zürich)</h2>
+<ul>
+  <li>The 0.30 tasks <code>make_plan</code> → <code>import_all_plans</code> generate and import one plan per organization (<a href="https://docs.decidim.org/en/develop/develop/taxonomies.html#_importing_taxonomies_from_old_models_categories_scopes_etc">docs</a>). The <code>update_all_metrics</code> from the 0.30.0 notes no longer exists on 0.31.8; use <code>reset_counters</code> instead (§5.5).</li>
+  <li>In Zürich the default produced: <code>~Bereiche</code> (all scopes <b>and</b> areas mixed together), <code>~Kategorien</code> (process categories) and <code>Organisation</code> (process types).</li>
+  <li>Zürich's target structure: split <code>~Bereiche</code> into <code>Kreise</code> and <code>Themen</code>. There are two ways to do this:
+    <ol>
+      <li>Download and edit the plan between <code>make_plan</code> and <code>import_all_plans</code>, then re-import. This is clean but means longer downtime, and it should be rehearsed against a PROD dump.</li>
+      <li>Import first, then move entries into the target taxonomy with a DB fix (what Zürich did in #624 during deployment).</li>
+    </ol>
+  </li>
+  <li>decidim.swiss is <b>multi-tenant</b> (Luzern, Winterthur, Köniz, deinklima, …), so there is one plan per organization. Each client needs to provide their target structure before the PROD deployment, and Lars said "nur schauen dass die Kategorien nach dem Upgrade richtig eingestellt sind" (decidim.swiss#231).</li>
+  <li>Recommendation from Zürich (#624): build a workflow for using a local PROD DB dump so the migration can be rehearsed.</li>
+</ul>
+
+<h2>8. Related open decidim.swiss issues</h2>
+<ul>
+  <li><a href="https://github.com/decidim-swiss/decidim.swiss/issues/231">#231</a> Survey display conditions: local fix is live and fixed upstream in 0.31.8, so remove the override as part of the upgrade.</li>
+  <li><a href="https://github.com/decidim-swiss/decidim.swiss/issues/219">#219</a> Daily digest bugfix: resolved by 0.31.6+, so remove the override as part of the upgrade.</li>
+  <li>Decidim Awesome auto-save bug in forms: <a href="https://github.com/decidim-ice/decidim-module-decidim_awesome/issues/661">awesome#661</a> (auto-save currently disabled on INT/PROD).</li>
+</ul>
+
+<h2>9. Basis for the effort estimate</h2>
+<p>Timeline in Zürich: development 2026-04-01 → 2026-04-08 (core + modules on DEV), then about 4 months of testing and bugfixing. That period was dominated by Decidim Geo (#594, #582, #627) and by external dependencies (Pokecode, octree). Without Geo, roughly 10 follow-up issues remained (#595, #606, #607, #612, #614, #623, #633, #636, #638, digest).</p>
+<table>
+  <tr><th>Work package</th><th>Estimate [inference]</th><th>Notes</th></tr>
+  <tr><td>Core 0.29.7 → 0.30 → 0.31.8: Ruby 3.3, Node 22, Rails 7.2, Shakapacker 8, secrets → ENV, initializers, production.rb/storage.yml, CI/Dockerfile</td><td>3–4 PD</td><td>The Zürich branch can be largely reused</td></tr>
+  <tr><td>Modules (11 + elections/collaborative_texts)</td><td>2–3 PD</td><td>navigation_maps, reporting_proposals and initiatives have not been tested in Zürich; anonymous_codes is open</td></tr>
+  <tr><td>Override review (26 overrides, ~43 views/cells, JS), including adopting the override CI checks</td><td>2–4 PD</td><td>Confirmed cases in §6</td></tr>
+  <tr><td>Remove fixes (digest, display conditions), SMS gateway, cron jobs (metrics → inactive accounts, sms.rake)</td><td>0.5–1 PD</td><td></td></tr>
+  <tr><td>Taxonomy migration across all tenants, including rehearsal on a PROD dump</td><td>1–2 PD + client effort</td><td>Each tenant supplies its target structure</td></tr>
+  <tr><td>Deployment DEV/INT/PROD with one-time rake tasks (user groups, valuators, …)</td><td>1–2 PD</td><td></td></tr>
+  <tr><td>Bugfix buffer after acceptance testing</td><td>3–5 PD</td><td>Based on Zürich's follow-up issues</td></tr>
+  <tr><td><i>Optional:</i> intermediate PROD deployment of 0.30.9, as recommended by the update guide</td><td>+2–4 PD</td><td>Second deployment and acceptance-test cycle. Zürich skipped this.</td></tr>
+  <tr><th>Total</th><th>≈ 13–21 PD (15–25 PD with the 0.30 intermediate step)</th><th>Excluding Decidim Geo and any anonymous_codes fix by Pokecode</th></tr>
+</table>
+
+<h2>10. Open questions / decisions</h2>
+<ol>
+  <li>anonymous_codes: get a Pokecode fix, patch it ourselves, or remove it?</li>
+  <li>Target 0.31.8 rather than 0.31.7 (0.31.8 includes the display-conditions fix)?</li>
+  <li>Taxonomy target structure for each tenant: who provides it, and by when?</li>
+  <li>Are user groups used on any tenant? (Data migration with <code>user_groups:*</code> tasks.)</li>
+  <li>Initiatives: which tenants use them, and who does acceptance testing of the new signature workflow?</li>
+  <li>Adopt from Zürich: ephemeral_verifications module (#610), DM notification override (#620)?</li>
+  <li>Is the froger/deface fork still needed without Geo?</li>
+  <li>One PROD deployment 0.29 → 0.31 (like Zürich) or two (0.30.9, then 0.31.8, as the update guide recommends)?</li>
+  <li>Tenant communication: SMS verifications get deleted (everyone re-verifies), user groups get emails (if any exist), optional automatic deletion of inactive accounts, the "Appearance" page goes away, header snippet JS stops working.</li>
+  <li>Initiatives: which initiative types use online signature, and which signature workflows do they need?</li>
+  <li>Are Sortitions, Collaborative Drafts or meeting polls in use? (Removed in 0.32.)</li>
+</ol>
+</main>
+</div>
+<script>
+  // Wrap each h2 and its content in a <section> card, wrap tables for horizontal scroll, and build the TOC.
+  const main = document.querySelector("main"), toc = document.getElementById("toc");
+  let section = null;
+  for (const node of [...main.childNodes]) {
+    if (node.nodeName === "H2") { section = document.createElement("section"); main.insertBefore(section, node); }
+    if (section) section.appendChild(node);
+  }
+  document.querySelectorAll("table").forEach(t => { const w = document.createElement("div"); w.className = "table-wrap"; t.replaceWith(w); w.appendChild(t); });
+  const slug = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const links = [];
+  main.querySelectorAll("h2, h3").forEach(h => {
+    h.id ||= slug(h.textContent);
+    const a = document.createElement("a");
+    a.href = "#" + h.id; a.textContent = h.textContent; a.className = h.tagName.toLowerCase();
+    toc.appendChild(a); links.push([h, a]);
+    h.insertAdjacentHTML("beforeend", `<a class="anchor" href="#${h.id}">#</a>`);
+  });
+  const spy = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    links.forEach(([, a]) => a.classList.remove("active"));
+    links.find(([h]) => h === e.target)?.[1].classList.add("active");
+  }), { rootMargin: "0px 0px -75% 0px" });
+  links.forEach(([h]) => spy.observe(h));
+  const btn = document.getElementById("theme-toggle"), root = document.documentElement;
+  const label = () => btn.textContent = root.dataset.theme === "dark" ? "☀ Light" : "☾ Dark";
+  btn.addEventListener("click", () => { root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark"; localStorage.setItem("theme", root.dataset.theme); label(); });
+  label();
+</script>
+</body>
+</html>
