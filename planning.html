@@ -51,6 +51,9 @@
   h2:hover a.anchor, h3:hover a.anchor { opacity: 1; }
   ul, ol { padding-left: 1.3rem; }
   li { margin: .25rem 0; }
+  details { border: 1px solid var(--border); border-radius: 8px; padding: .5rem .9rem; margin: 1rem 0; }
+  details > summary { cursor: pointer; font-weight: 600; color: var(--muted); }
+  details[open] > summary { margin-bottom: .4rem; }
 
   .table-wrap { overflow-x: auto; margin: .9rem 0; border: 1px solid var(--border); border-radius: 8px; }
   table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
@@ -392,6 +395,27 @@ bin/rails decidim:upgrade:user_groups:remove       # sends mails, see §5.2
 
 <h2>9. Basis for the effort estimate</h2>
 <p>Timeline in Zürich: development 2026-04-01 → 2026-04-08 (core + modules on DEV), then about 4 months of testing and bugfixing. That period was dominated by Decidim Geo (#594, #582, #627) and by external dependencies (Pokecode, octree). Without Geo, roughly 10 follow-up issues remained (#595, #606, #607, #612, #614, #623, #633, #636, #638, digest).</p>
+<h3>9.1 Optimized estimate with budget split (current)</h3>
+<p>Budget left for the upgrade: about 10 PD. Overrides stay in the upgrade budget; config and pipeline work is booked to <b>maintenance</b>. Assumes the default answers to the decisions in §10: anonymous_codes removed, default taxonomy import (plan edits only on request), one deployment step, unused modules dropped.</p>
+<table>
+  <tr><th>Work package</th><th>Budget</th><th>Estimate [inference]</th><th>How</th></tr>
+  <tr><td>Core: Gemfile/backports, <code>decidim:upgrade</code>, migrations, Zürich code ports</td><td>Upgrade</td><td>1–1.5 PD</td><td>Port Zürich's files instead of working through the release notes</td></tr>
+  <tr><td>Modules</td><td>Upgrade</td><td>1–1.5 PD</td><td>anonymous_codes removed (as in Zürich); navigation_maps / reporting_proposals dropped if unused</td></tr>
+  <tr><td>Overrides</td><td>Upgrade</td><td>1–1.5 PD</td><td>Delete the dead ones (§6), port the rest, take Zürich's #636 fix</td></tr>
+  <tr><td>Remove fixes, SMS gateway, cron jobs</td><td>Upgrade</td><td>0.5 PD</td><td>Cherry-picks of Zürich <code>3967be1</code>, <code>97933a2</code>, <code>e93c0f5</code></td></tr>
+  <tr><td>Taxonomies</td><td>Upgrade</td><td>0.5–1 PD</td><td>Default import; transform script only if a tenant asks</td></tr>
+  <tr><td>Deployment execution DEV/INT/PROD</td><td>Upgrade</td><td>0.5–1 PD</td><td>Runbook and checklists already exist</td></tr>
+  <tr><td>Bugfix buffer</td><td>Upgrade</td><td>2–3 PD</td><td>Zürich's follow-up bugs (#595, #606, #612, #614, #633, #636, #638) are fixed upfront</td></tr>
+  <tr><th>Total upgrade</th><td></td><th>≈ 6.5–10 PD</th><td>Upper end uses the whole budget</td></tr>
+  <tr><td>Switch from secrets to ENV: drop <code>secrets.yml</code>, trim <code>decidim.rb</code>, port custom keys (DeepL, maps, OIDC, etherpad, initiatives), <code>production.rb</code> and <code>storage.yml</code> from the template</td><td>Maintenance</td><td>0.5–1 PD</td><td>Pod ENV already exists (<code>base/environments.yaml</code>); can be tested on 0.29 ahead of the upgrade [inference]</td></tr>
+  <tr><td>Pipeline: Dockerfile (Ruby 3.3.4, Node 22, yarn), <code>.tool-versions</code>, GitHub workflows</td><td>Maintenance</td><td>0.5 PD</td><td>Zürich <code>801bac9</code>, <code>6f6d258</code>; ships together with the upgrade</td></tr>
+  <tr><td>Deployment repo: new ENV variables, <code>0-down</code>/<code>1-deploy</code>/<code>2-up</code> commits and tags, <code>data:migrate</code> init container follow-up</td><td>Maintenance</td><td>0.5 PD</td><td>Config only</td></tr>
+  <tr><th>Total maintenance</th><td></td><th>≈ 1.5–2 PD</th><td></td></tr>
+</table>
+<p>Still worth doing first: the phase A data checks (½ PD), since they settle initiatives (online signatures) and user groups. Budget breakers: keeping anonymous_codes, online initiative signatures with custom verification, custom taxonomy restructuring, a two-step deployment.</p>
+
+<details>
+<summary>9.2 Original estimate (before optimization)</summary>
 <table>
   <tr><th>Work package</th><th>Estimate [inference]</th><th>Notes</th></tr>
   <tr><td>Core 0.29.7 → 0.30 → 0.31.8: Ruby 3.3, Node 22, Rails 7.2, Shakapacker 8, secrets → ENV, initializers, production.rb/storage.yml, CI/Dockerfile</td><td>3–4 PD</td><td>The Zürich branch can be largely reused</td></tr>
@@ -404,6 +428,7 @@ bin/rails decidim:upgrade:user_groups:remove       # sends mails, see §5.2
   <tr><td><i>Optional:</i> intermediate PROD deployment of 0.30.9, as recommended by the update guide</td><td>+2–4 PD</td><td>Second deployment and acceptance-test cycle. Zürich skipped this.</td></tr>
   <tr><th>Total</th><th>≈ 13–21 PD (15–25 PD with the 0.30 intermediate step)</th><th>Excluding Decidim Geo and any anonymous_codes fix by Pokecode</th></tr>
 </table>
+</details>
 
 <h2>10. Open questions / decisions</h2>
 <ol>
