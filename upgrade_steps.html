@@ -112,7 +112,7 @@
   <h1>decidim.swiss – Upgrade to Decidim 0.31: step-by-step guide</h1>
   <div class="meta">
     <span class="chip">Ticket <a href="https://github.com/decidim-swiss/decidim.swiss/issues/228">decidim.swiss#228</a></span>
-    <span class="chip">Repo <code>stadtluzern/decidim-ocl</code> · branch <code>upgrade</code></span>
+    <span class="chip">Repo <code>stadtluzern/decidim-ocl</code> · branch <code>task/228-upgrade_decidim_to_v0.31.8</code></span>
     <span class="chip">Reference <a href="https://github.com/puzzle/decidim-zuerich/tree/upgrade">puzzle/decidim-zuerich @ <code>upgrade</code></a></span>
     <span class="chip">0.29.7 → 0.31.8</span>
     <span class="chip">← <a href="planning.html">Planning</a></span>
@@ -125,7 +125,7 @@
 <nav id="toc"><p class="title">Contents</p></nav>
 <main>
 <h2>1. How the deployment works today (relevant to the steps)</h2>
-<p>Covers both the code repo (<code>stlu/upgrade</code>) and the deployment repo (<code>decidim/deployment</code>, ArgoCD, overlays <code>pitc-decidim-stlu-{dev,int,prod}</code>). One PROD deployment, directly 0.29.7 → 0.31.8. The same guide is used on INT and then on PROD. References like <a href="planning.html#5-5-task-names-checked-against-the-source-code">planning §5.5</a> point to <a href="planning.html">planning.html</a>.</p>
+<p>Covers both the code repo (<code>stadtluzern/decidim-ocl</code>, branch <code>task/228-upgrade_decidim_to_v0.31.8</code>) and the deployment repo (<code>decidim/deployment</code>, ArgoCD, overlays <code>pitc-decidim-stlu-{dev,int,prod}</code>). One PROD deployment, directly 0.29.7 → 0.31.8. The same guide is used on INT and then on PROD. References like <a href="planning.html#5-5-task-names-checked-against-the-source-code">planning §5.5</a> point to <a href="planning.html">planning.html</a>.</p>
 
 <ul>
   <li><code>deployments/base/rails.yaml</code>: <code>strategy: Recreate</code>. The init containers are <code>prepare-assets</code> → <code>wait-for-database</code> → <code>migrate-database</code> (<code>bundle exec rails db:migrate</code>). The <code>rails</code> container starts serving <b>immediately after the migration</b>, which is why the site is closed to the public for the whole migration (step <code>0-down</code>).</li>
@@ -174,7 +174,7 @@ s3()  { local j; j=$(oc get secret ocp4-s3-storage -o json) || return 1   # aws 
       <li><code>upgrade-0.31/stlu-&lt;env&gt;/1-deploy</code>: <code>images.rails.newTag: git-&lt;sha&gt;</code>, <code>delayed-job: 0</code>, <code>rails-metrics-exporter: 0</code></li>
       <li><code>upgrade-0.31/stlu-&lt;env&gt;/2-up</code>: <code>delayed-job: 1</code>, <code>rails-metrics-exporter: 1</code>, public access restored</li>
     </ul></td></tr>
-  <tr><td>A5</td><td>Code repo</td><td>Final commit on <code>upgrade</code> → tag <code>upgrade-0.31/step-1</code> → manual build <code>stlu-int</code> → <code>copy-docker-image</code> to the PROD registry, keeping the same <code>git-&lt;sha&gt;</code>.</td></tr>
+  <tr><td>A5</td><td>Code repo</td><td>Final commit on <code>task/228-upgrade_decidim_to_v0.31.8</code> → tag <code>upgrade-0.31/step-1</code> → manual build <code>stlu-int</code> → <code>copy-docker-image</code> to the PROD registry, keeping the same <code>git-&lt;sha&gt;</code>.</td></tr>
   <tr><td>A6</td><td>Code repo</td><td>Runbook <code>scripts/upgrade_runbook.rb</code> covers phases B and C in order: <code>&lt;env&gt; status | run | redo &lt;step&gt; | reset</code>. State in <code>tmp/runbook/&lt;env&gt;/state.yml</code> (status, start/end, duration, exit code, command), one log per step next to it. <code>run</code> skips done steps and stops at the first failure; manual steps (ArgoCD syncs, smoke test, go/no-go) ask for confirmation; non-idempotent steps (<code>import_all_plans</code>, <code>revoke:sms</code>, <code>user_groups:remove</code>) only re-run when the step id is typed. <code>RUNBOOK_DRY=1</code> prints the commands only; <code>SHA=…</code> makes the image check exact. <code>/dumps</code> and <code>/plans</code> are git-ignored (PROD data).</td></tr>
   <tr><td>A7</td><td>DEV (PROD copy)</td><td>Load the PROD dump into DEV. Run the full phase C there. Write the timings to <code>state.yml</code>. Before loading: SMTP to a catcher, no ASPSMS, a separate S3 bucket.</td></tr>
   <tr><td>A8</td><td>INT</td><td>Run phases B–D against the exact images, tags and guide. This is the dress rehearsal.</td></tr>
@@ -212,6 +212,7 @@ s3()  { local j; j=$(oc get secret ocp4-s3-storage -o json) || return 1   # aws 
   <li>Copy to PROD: <code>copy-docker-image harbor.puzzle.ch/decidim/stlu-int-rails:git-$SHA harbor.puzzle.ch/decidim/stlu-prod-rails:git-$SHA</code>; check with <code>docker manifest inspect harbor.puzzle.ch/decidim/stlu-prod-rails:git-$SHA &gt;/dev/null &amp;&amp; echo present</code></li>
   <li>Runbook rehearsed dry: <code>RUNBOOK_DRY=1 scripts/upgrade_runbook.rb dev run</code>, then <code>scripts/upgrade_runbook.rb dev reset</code></li>
   <li>Taxonomy transform script (applies the tenant plans to <code>plans/generated</code> → <code>plans/final</code>) written and tested against plans generated from a PROD dump</li>
+  <li>DEV: build and run from this branch: <code>gh workflow run manual-build.yaml -R stadtluzern/decidim-ocl --ref task/228-upgrade_decidim_to_v0.31.8 -f environment=stlu-dev -f push=true</code>, then <code>gh run watch -R stadtluzern/decidim-ocl</code>. Check that DEV runs the new image: <code>oc get pod "$(pod)" -o jsonpath='{.spec.containers[?(@.name=="rails")].image}'</code> shows <code>git-$(git rev-parse HEAD)</code><textarea data-note></textarea></li>
   <li>DEV: PROD dump loaded (rails and delayed-job on DEV scaled to 0 first):<br><code>gunzip -c dumps/stlu-prod-&lt;date&gt;.sql.gz | db 'psql -q "$POSTGRES_DB"'</code></li>
   <li>DEV: hosts rewritten to DEV hostnames, tenant SMTP and ASPSMS credentials removed:<br><code>rr 'Decidim::Organization.update_all(smtp_settings: {}, aspsms_user_key: nil, aspsms_password: nil)'</code> plus the host mapping<textarea data-note></textarea></li>
   <li>DEV: <code>oc exec -c rails "$(pod)" -- printenv | grep -E '^(SMTP_ADDRESS|OCP4_S3_BUCKET)='</code> shows the mail catcher and a non-PROD bucket</li>
