@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>decidim.swiss – Upgrade auf Decidim 0.31.8 (#228): offene Fragen</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #f6f7f9; --surface: #fff; --fg: #1d2330; --muted: #5d6677; --border: #e1e5eb;
+    --accent: #2457d6; --accent-soft: #e8eefc; --code-bg: #f1f3f6;
+    --ok: #1f7a3a; --ok-bg: #e5f4ea; --bad: #b42318; --bad-bg: #fdecea; --mid: #a15c00; --mid-bg: #fff3e0;
+    --radius: 10px; --shadow: 0 1px 2px rgb(16 24 40 / .06), 0 1px 3px rgb(16 24 40 / .08);
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1218; --surface: #171b23; --fg: #e4e7ec; --muted: #98a2b3; --border: #2a303c;
+    --accent: #7aa2ff; --accent-soft: #1d2740; --code-bg: #1f2430;
+    --ok: #6fcf8f; --ok-bg: #16301f; --bad: #ff8a80; --bad-bg: #3a1a18; --mid: #ffb74d; --mid-bg: #3a2a12;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  header.hero { background: linear-gradient(135deg, #1e3a8a, #2457d6); color: #fff; padding: 2rem 1.5rem 1.6rem; }
+  header.hero .inner { max-width: 1400px; margin: 0 auto; position: relative; }
+  #theme-toggle { position: absolute; top: 0; right: 0; background: rgb(255 255 255 / .14); border: 1px solid rgb(255 255 255 / .3); color: #fff; border-radius: 999px; padding: .3rem .8rem; font: inherit; font-size: 13px; cursor: pointer; }
+  #theme-toggle:hover { background: rgb(255 255 255 / .25); }
+  header.hero h1 { padding-right: 7rem; }
+  header.hero h1 { margin: 0 0 .6rem; font-size: 1.9rem; line-height: 1.2; }
+  header.hero .meta { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 .8rem; }
+  header.hero .chip { background: rgb(255 255 255 / .14); border: 1px solid rgb(255 255 255 / .25); border-radius: 999px; padding: .2rem .75rem; font-size: 13px; }
+  header.hero a, header.hero code { color: #fff; }
+  header.hero code { background: rgb(255 255 255 / .15); }
+  header.hero small { color: rgb(255 255 255 / .8); }
+
+  .layout { max-width: 1400px; margin: 0 auto; padding: 1.5rem; display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 2rem; }
+  nav#toc { position: sticky; top: 1rem; align-self: start; max-height: calc(100vh - 2rem); overflow-y: auto; font-size: 13.5px; }
+  nav#toc .title { font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: 11.5px; color: var(--muted); margin: 0 0 .5rem .6rem; }
+  nav#toc a { display: block; padding: .25rem .6rem; border-radius: 6px; color: var(--fg); border-left: 2px solid transparent; }
+  nav#toc a.h3 { padding-left: 1.4rem; color: var(--muted); font-size: 12.5px; }
+  nav#toc a:hover { background: var(--accent-soft); text-decoration: none; }
+  nav#toc a.active { background: var(--accent-soft); border-left-color: var(--accent); color: var(--accent); }
+  @media (max-width: 960px) { .layout { grid-template-columns: 1fr; } nav#toc { position: static; max-height: none; } }
+
+  main > section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: .4rem 1.6rem 1.4rem; margin-bottom: 1.5rem; }
+  h2 { font-size: 1.35rem; margin: 1.1rem 0 .8rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.05rem; margin: 1.6rem 0 .6rem; color: var(--fg); }
+  h2 a.anchor, h3 a.anchor { opacity: 0; margin-left: .4rem; font-weight: 400; color: var(--muted); }
+  h2:hover a.anchor, h3:hover a.anchor { opacity: 1; }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .25rem 0; }
+  details { border: 1px solid var(--border); border-radius: 8px; padding: .5rem .9rem; margin: 1rem 0; }
+  details > summary { cursor: pointer; font-weight: 600; color: var(--muted); }
+  details[open] > summary { margin-bottom: .4rem; }
+
+  .table-wrap { overflow-x: auto; margin: .9rem 0; border: 1px solid var(--border); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { padding: .5rem .65rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+  th { background: var(--code-bg); font-weight: 600; position: sticky; top: 0; white-space: nowrap; }
+  tr:last-child td { border-bottom: 0; }
+  tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--code-bg) 45%, transparent); }
+  td:first-child { white-space: nowrap; }
+  td:first-child code { white-space: normal; }
+
+  code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 12.5px; background: var(--code-bg); padding: .1rem .35rem; border-radius: 4px; overflow-wrap: anywhere; }
+  pre { background: #10141c; color: #e6e9ef; padding: .8rem 1rem; border-radius: 8px; overflow-x: auto; font: 12.5px/1.55 ui-monospace, "SF Mono", Menlo, Consolas, monospace; margin: .6rem 0; }
+  td pre { margin: 0; font-size: 12px; }
+  td:has(> pre) { min-width: 30rem; max-width: 42rem; }
+  td:last-child { min-width: 16rem; }
+  pre code { background: none; padding: 0; color: inherit; }
+
+  .warn, .block { border-radius: 8px; padding: .75rem 1rem; margin: 1rem 0; border: 1px solid; }
+  .warn { background: var(--mid-bg); border-color: color-mix(in srgb, var(--mid) 35%, transparent); }
+  .block { background: var(--bad-bg); border-color: color-mix(in srgb, var(--bad) 35%, transparent); }
+  .warn::before { content: "⚠ "; color: var(--mid); font-weight: 700; }
+  .block::before { content: "⛔ "; }
+
+  td.ok, td.bad, td.mid { font-weight: 600; white-space: nowrap; }
+  td.ok { color: var(--ok); background: var(--ok-bg) !important; }
+  td.bad { color: var(--bad); background: var(--bad-bg) !important; }
+  td.mid { color: var(--mid); background: var(--mid-bg) !important; white-space: normal; }
+  small { color: var(--muted); }
+
+  td.answer { min-width: 26rem; }
+  td.answer .hint { display: block; font-size: 12.5px; line-height: 1.4; }
+  td.answer label { display: flex; gap: .4rem; align-items: baseline; margin: .15rem 0; cursor: pointer; }
+  td.answer label.recommended { background: var(--ok-bg); border-radius: 6px; padding: .1rem .35rem; margin-left: -.35rem; margin-right: -.35rem; }
+  td.answer .tag { margin-left: auto; font-size: 11px; font-weight: 700; color: var(--ok); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+  textarea.notes, #md-out { font: inherit; color: var(--fg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: .3rem .5rem; }
+  .notes-toggle { display: flex; gap: .4rem; align-items: center; margin-top: .5rem; font-size: 12.5px; color: var(--muted); cursor: pointer; width: fit-content; }
+  textarea.notes { display: block; width: 100%; min-height: 4.5rem; margin-top: .3rem; resize: vertical; font-size: 13px; }
+  textarea.notes[hidden] { display: none; }
+  .for-whom { display: flex; flex-wrap: wrap; gap: .4rem .8rem; align-items: center; margin: .4rem 0 .6rem; font-weight: 600; }
+  .for-whom > span { min-width: 15rem; }
+  .for-whom input { flex: 1; min-width: 16rem; max-width: 32rem; font: inherit; font-weight: 400; color: var(--fg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: .35rem .6rem; }
+  #md-out { width: 100%; min-height: 14rem; font: 12.5px/1.55 ui-monospace, "SF Mono", Menlo, Consolas, monospace; margin-top: .8rem; }
+  .btn { font: inherit; font-weight: 600; color: #fff; background: var(--accent); border: 0; border-radius: 8px; padding: .5rem 1.1rem; cursor: pointer; margin-right: .5rem; }
+  .btn.secondary { color: var(--accent); background: var(--accent-soft); }
+
+  @media print {
+    body { background: #fff; }
+    nav#toc, h2 a.anchor, h3 a.anchor { display: none; }
+    .layout { display: block; padding: 0; }
+    main > section { box-shadow: none; break-inside: auto; }
+    header.hero { background: none; color: #000; padding: 0 0 1rem; }
+    header.hero a, header.hero code, header.hero small { color: #000; }
+  }
+</style>
+<script>
+  // Saved choice wins; otherwise follow the OS. Runs before paint to avoid a flash.
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+</script>
+</head>
+<body>
+<header class="hero"><div class="inner">
+  <button id="theme-toggle" type="button" aria-label="Toggle dark mode"></button>
+  <h1>decidim.swiss – Upgrade auf Decidim 0.31.8: offene Fragen</h1>
+  <div class="meta">
+    <span class="chip">Ticket <a href="https://github.com/decidim-swiss/decidim.swiss/issues/228">decidim.swiss#228</a></span>
+    <span class="chip">0.29.7 → 0.31.8</span>
+    <span class="chip">→ <a href="planning.html">Planung</a></span>
+    <span class="chip">→ <a href="upgrade_steps.html">Schritt-für-Schritt-Anleitung</a></span>
+  </div>
+  <small>Wir arbeiten parallel weiter. Wo bis zum genannten Zeitpunkt keine Antwort kommt, gilt die <b>empfohlene</b> Antwort. Die Schätzung (≈ 7–11 PT Upgrade + 1,5–2 PT Wartung) basiert auf den empfohlenen Antworten.</small>
+</div></header>
+
+<div class="layout">
+<nav id="toc"><p class="title">Inhalt</p></nav>
+<main>
+<h2>Wer antwortet, für wen?</h2>
+<label class="for-whom"><span>Name</span><input type="text" id="answered-by" placeholder="Vor- und Nachname"></label>
+<label class="for-whom"><span>Mandant / Organisation / Rolle</span><input type="text" id="for-whom" placeholder="z. B. Stadt Luzern, Projektleitung, dialogluzern.ch"></label>
+<h2>A. Entscheide, die Umfang und Aufwand bestimmen (bitte zuerst)</h2>
+<table>
+  <tr><th>#</th><th>Frage</th><th>Wer</th></tr>
+  <tr><td>A1</td><td><b>decidim-anonymous_codes</b>: Der 0.31-Branch ist laut Pokecode nicht produktionsreif; der 500er bei Umfragen ist noch offen (<a href="https://github.com/openpoke/decidim-module-anonymous_codes/issues/28">anonymous_codes#28</a>). Fix bei Pokecode bestellen, selbst patchen oder Modul entfernen? Welche Mandanten nutzen es?</td><td>Projektleitung / Mandanten</td></tr>
+  <tr><td>A2</td><td><b>Taxonomien</b>: Kategorien, Bereiche und Themen werden zu Taxonomien. Liefert jeder Mandant eine Zielstruktur? Wer liefert sie, und bis wann?</td><td>Mandanten</td></tr>
+  <tr><td>A3</td><td><b>Initiativen</b>: Welche Mandanten und Initiativtypen sammeln Unterschriften online, und mit welcher Verifizierung (SMS, Dokumentnummer)? 0.31 erfordert neu konfigurierte Signatur-Workflows. Wer testet das ab?</td><td>Mandanten mit Initiativen</td></tr>
+  <tr><td>A4</td><td><b>Navigation Maps</b> und <b>Reporting Proposals</b>: Werden sie noch gebraucht? In Zürich nicht im Einsatz, also ungetestet.</td><td>Mandanten</td></tr>
+  <tr><td>A5</td><td>Aus Zürich übernehmen: <b>Ephemeral Verifications</b> (einmalige Teilnahme ohne Konto, <a href="https://github.com/puzzle/decidim-zuerich/issues/610">zuerich#610</a>) und den Override für <b>DM-Benachrichtigungen</b> (<a href="https://github.com/puzzle/decidim-zuerich/issues/620">zuerich#620</a>)?</td><td>Projektleitung</td></tr>
+</table>
+<h2>B. Termine und Zuständigkeiten</h2>
+<table>
+  <tr><th>#</th><th>Frage</th><th>Wer</th></tr>
+  <tr><td>B1</td><td><b>Freeze-Datum</b>: Ab wann gibt es keine Änderungen mehr an Kategorien, Bereichen und Themen bis zum Upgrade?</td><td>Projektleitung + Mandanten</td></tr>
+  <tr><td>B2</td><td><b>Wartungsfenster</b> für das PROD-Deployment (Seite für einige Stunden nicht erreichbar)</td><td>Projektleitung + Mandanten</td></tr>
+  <tr><td>B3</td><td>Wer testet auf INT ab, pro Mandant eine Ansprechperson? Für die neuen Berechtigungsprüfungen in 0.31.8 brauchen wir Testkonten pro Rolle: Teilnehmende, verifiziert (SMS), Space-Admin, Bewertende, Scoped Admin (Awesome), Org-Admin.</td><td>Mandanten</td></tr>
+</table>
+<h2>C. Richtlinien pro Mandant</h2>
+<table>
+  <tr><th>#</th><th>Frage</th></tr>
+  <tr><td>C1</td><td><b>Inaktive Konten automatisch löschen</b> (neu in 0.31; Mails 30 und 7 Tage vor der Löschung): aktivieren? Nach wie vielen Tagen?</td></tr>
+  <tr><td>C2</td><td><b>Benutzergruppen</b> werden abgeschafft. Falls es welche gibt, verschickt Decidim Mails an die Gruppen und an die Mitglieder, darunter ein zufälliges Passwort im Klartext. Mails senden oder unterdrücken?</td></tr>
+  <tr><td>C3</td><td><b>Sperre bei Verifizierungscodes</b> (neu in 0.31.8): nach 5 Fehlversuchen 30 Minuten gesperrt; SMS-Codes laufen nach 10 Minuten ab. Passen diese Werte?</td></tr>
+  <tr><td>C4</td><td><b>Header-Snippets</b>: JavaScript darin (z. B. Matomo, Chat-Widgets) läuft ab dem Upgrade nicht mehr. Welche Mandanten brauchen Tracking, und welches?</td></tr>
+  <tr><td>C5</td><td><b>Sortitions, kollaborative Entwürfe, Meeting-Umfragen</b> sind veraltet und fallen mit 0.32 weg. Werden sie aktiv genutzt?</td></tr>
+  <tr><td>C6</td><td><b>Externe API- oder OAuth-Nutzung</b>: Greift jemand von aussen auf die GraphQL-API zu oder meldet sich per OAuth an? Ab 0.31.8 liefert die API keine Inhalte aus privaten oder unveröffentlichten Räumen mehr. Der OAuth-Scope <code>public</code> heisst neu <code>profile</code>.</td></tr>
+  <tr><td>C7</td><td><b>Umfragen mit dem „!dropdown!“-Trick</b>: Nutzt jemand diesen Trick? In Zürich ist er nach dem Upgrade defekt (<a href="https://github.com/puzzle/decidim-zuerich/issues/625">zuerich#625</a>).</td></tr>
+</table>
+<h2>D. Zur Kenntnis</h2>
+<ul>
+  <li>Das Upgrade erfolgt in <b>einem PROD-Deployment</b> (direkt 0.29 → 0.31.8, wie Zürich).</li>
+  <li><b>SMS-Verifizierungen</b> werden beim Upgrade gelöscht; alle Teilnehmenden müssen sich neu verifizieren. Die Projektleitung informiert die Mandanten.</li>
+  <li>Die <b>Projektleitungen der Mandanten</b> informieren alle weiteren Beteiligten (Admins, Teilnehmende).</li>
+  <li>Die Admin-Seite <b>„Erscheinungsbild“</b> fällt weg. Der CTA-Button muss im Hero-Inhaltsblock neu gesetzt werden.</li>
+  <li><b>Taxonomie-Filter</b> pro Raum bzw. Komponente neu setzen.</li>
+  <li>Die neuen Komponenten <b>Abstimmungen (Elections)</b> und <b>Kollaborative Texte</b> sind danach installiert und können pro Mandant aktiviert werden.</li>
+</ul>
+<label class="notes-toggle"><input type="checkbox" id="d-notes-toggle"> Notizen</label><textarea class="notes" id="d-notes" hidden></textarea>
+<p>Nicht auf dieser Liste, weil wir es selbst klären: die Nutzung von Benutzergruppen, Sortitions und Header-Snippets auf PROD (Datenprüfung Phase A), die Kartenkonfiguration (der HERE-Key ist global per ENV gesetzt, der Provider pro Mandant in der DB; beides prüfen wir selbst), den <code>jwt</code>-Pin, den deface-Fork und die S3-/CSP-Konfiguration.</p>
+<h2>Antworten sammeln</h2>
+<p>Ausgewählte und ausgefüllte Antworten werden als Markdown zusammengestellt. Unbeantwortete Fragen werden weggelassen; für sie gilt die empfohlene Antwort.</p>
+<button id="collect" class="btn" type="button">Antworten sammeln</button>
+<button id="copy" class="btn secondary" type="button" hidden>Kopieren</button>
+<a id="download" class="btn secondary" hidden download="antworten_228.md">Als .md herunterladen</a>
+<textarea id="md-out" readonly hidden></textarea>
+</main>
+</div>
+<script>
+  // Answer options per question. "multi" = several can be chosen. Every question also gets a "Notizen" checkbox with a text box.
+  // A leading "*" marks our recommendation (highlighted, tagged "empfohlen"). Text after " | " is the explanation shown below the option.
+  const OPTIONS = {
+    A1: ["*Modul entfernen | Wie Zürich. Kein Zusatzaufwand; die anonymen Codes fallen weg.", "Fix bei Pokecode bestellen | Externe Abhängigkeit, Termin unklar; kann das Upgrade verzögern.", "Selbst patchen | +1–2 PT; der Patch muss danach bei jedem Update nachgezogen werden."],
+    A2: ["*1:1-Standardimport | Die bestehenden Kategorien, Bereiche und Themen werden übernommen; danach setzen die Mandanten-Admins die Filter.", "Mandanten liefern eine eigene Zielstruktur | Transformationsskript und Aufwand beim Mandanten. Bitte in den Notizen angeben, wer bis wann liefert."],
+    A3: { multi: true, options: ["*Keine Online-Unterschriften | Kein Zusatzaufwand.", "Online-Unterschrift mit SMS | Signatur-Workflow einrichten und testen; in Zürich nicht getestet.", "Online-Unterschrift mit Dokumentnummer | Signatur-Workflow einrichten und testen; in Zürich nicht getestet."] },
+    A4: ["*Entfernen, falls ungenutzt | Wir prüfen die Nutzung in der Datenbank. Kein Zusatzaufwand.", "Navigation Maps behalten | Mitnehmen + Testaufwand.", "Reporting Proposals behalten | Mitnehmen + Testaufwand.", "Beide behalten | Mitnehmen + Testaufwand für beide."],
+    A5: { multi: true, options: ["*Nichts übernehmen | Nicht Teil des Tickets.", "Ephemeral Verifications übernehmen | Zusätzlicher Aufwand: einmalige Teilnahme ohne Konto.", "DM-Benachrichtigungen übernehmen | Zusätzlicher Aufwand."] },
+    B1: ["Vorschlag von Puzzle abwarten | Wir schlagen ein Datum vor, sobald die DEV-Probe durch ist.", "Wir legen das Datum in den Notizen fest"],
+    B2: ["Vorschlag von Puzzle abwarten | Wir schlagen ein Datum vor, sobald die DEV-Probe durch ist.", "Wir legen das Datum in den Notizen fest"],
+    B3: ["Jeder Mandant nennt eine Ansprechperson | Namen bitte in den Notizen.", "Projektleitung testet zentral | Testkonten pro Rolle stellen wir bereit."],
+    C1: ["*Nicht aktivieren | Verhalten wie bisher.", "Aktivieren, 365 Tage | Decidim-Standard. Eine andere Frist bitte in den Notizen."],
+    C2: ["*Mails unterdrücken | Nur die Datenmigration; es geht kein Passwort per Mail raus.", "Mails senden | Verhalten von Decidim, inklusive des Klartext-Passworts."],
+    C3: ["*Decidim-Standardwerte beibehalten | 5 Fehlversuche, 30 Minuten Sperre, SMS-Code 10 Minuten gültig.", "Andere Werte | Bitte in den Notizen angeben."],
+    C4: ["*Puzzle prüft die DB und meldet | Wir melden die betroffenen Mandanten.", "Kein Tracking nötig", "Matomo weiterhin nötig | Wird über eine feste Integration statt über das Snippet eingebunden."],
+    C5: ["*Weiterlaufen lassen bis 0.32 | Kein Aufwand jetzt.", "Wird nicht genutzt", "Wird genutzt, Ersatz nötig | Bis zum Upgrade auf 0.32 klären."],
+    C6: { multi: true, options: ["*Keine externen Nutzer", "Externe API-Nutzer | Diese informieren wir über die neuen API-Einschränkungen.", "Externe OAuth-Anmeldung | Der Scope muss auf profile umgestellt werden."] },
+    C7: ["*Wird nicht genutzt", "Wird genutzt | Fix analog zu zuerich#625 nötig."],
+  };
+  const questions = [];
+  document.querySelectorAll("main table").forEach(table => {
+    const rows = [...table.rows].filter(r => OPTIONS[r.cells[0]?.textContent.trim()]);
+    if (!rows.length) return;
+    table.rows[0].insertAdjacentHTML("beforeend", "<th>Antwort</th>");
+    const section = table.previousElementSibling.textContent;
+    rows.forEach(row => {
+      const id = row.cells[0].textContent.trim(), spec = OPTIONS[id];
+      const { multi = false, options } = Array.isArray(spec) ? { options: spec } : spec;
+      const type = multi ? "checkbox" : "radio", name = "q-" + id;
+      const title = (row.cells[1].querySelector("b")?.textContent || row.cells[1].textContent.split(/[:?(]/)[0]).trim();
+      const cell = row.insertCell();
+      cell.className = "answer";
+      for (const raw of options) {
+        const recommended = raw.startsWith("*"), [text, hint] = raw.replace(/^\*/, "").split(" | ");
+        const label = document.createElement("label"), input = document.createElement("input"), span = document.createElement("span");
+        Object.assign(input, { type, name, value: recommended ? text + " (empfohlen)" : text });
+        span.textContent = text;
+        if (hint) span.insertAdjacentHTML("beforeend", `<small class="hint">${hint}</small>`);
+        label.append(input, span);
+        if (recommended) { label.className = "recommended"; label.insertAdjacentHTML("beforeend", '<span class="tag">empfohlen</span>'); }
+        cell.appendChild(label);
+      }
+      // "Notizen" checkbox below the question; the resizable text box shows only while it is checked.
+      row.cells[1].insertAdjacentHTML("beforeend", '<label class="notes-toggle"><input type="checkbox"> Notizen</label><textarea class="notes" hidden></textarea>');
+      const toggle = row.cells[1].querySelector(".notes-toggle input"), notes = row.cells[1].querySelector("textarea.notes");
+      toggle.addEventListener("change", () => { notes.hidden = !toggle.checked; if (toggle.checked) notes.focus(); });
+      // Options that point to the notes ("… in den Notizen …") open them when chosen.
+      cell.querySelectorAll("label").forEach(l => {
+        if (l.textContent.includes("Notizen")) l.querySelector("input").addEventListener("change", e => {
+          if (e.target.checked && !toggle.checked) { toggle.checked = true; toggle.dispatchEvent(new Event("change")); }
+        });
+      });
+      // Clicking the selected radio (or its label) again clears it, so a question can be left unanswered.
+      // mousedown on the label also fires for clicks on the radio itself; reset afterwards so keyboard selection is unaffected.
+      if (!multi) cell.querySelectorAll("input[type=radio]").forEach(r => {
+        r.closest("label").addEventListener("mousedown", () => r.dataset.was = r.checked);
+        r.addEventListener("click", () => { if (r.dataset.was === "true") r.checked = false; r.dataset.was = ""; });
+      });
+      questions.push({ id, title, section, cell, toggle, notes });
+    });
+  });
+
+  const dToggleEl = document.getElementById("d-notes-toggle"), dNotesEl = document.getElementById("d-notes");
+  dToggleEl.addEventListener("change", () => { dNotesEl.hidden = !dToggleEl.checked; if (dToggleEl.checked) dNotesEl.focus(); });
+  const out = document.getElementById("md-out"), dl = document.getElementById("download"), copy = document.getElementById("copy");
+  document.getElementById("collect").addEventListener("click", () => {
+    const forWhom = document.getElementById("for-whom").value.trim(), answeredBy = document.getElementById("answered-by").value.trim();
+    const meta = [answeredBy && `**Name:** ${answeredBy}  `, forWhom && `**Antworten für:** ${forWhom}`].filter(Boolean);
+    const lines = ["# Antworten zu den offenen Fragen (decidim.swiss#228)", "", ...(meta.length ? [...meta, ""] : [])];
+    dl.download = "antworten_228" + (forWhom ? "_" + forWhom.toLowerCase().replace(/[^a-z0-9äöü]+/g, "-").replace(/^-|-$/g, "") : "") + ".md";
+    let lastSection = null;
+    for (const q of questions) {
+      const answers = [...q.cell.querySelectorAll("input:checked")].map(i => i.value);
+      const note = q.toggle.checked ? q.notes.value.trim() : "";
+      if (!answers.length && !note) continue;
+      if (q.section !== lastSection) { lines.push(`## ${q.section}`, ""); lastSection = q.section; }
+      lines.push(`- **${q.id} – ${q.title}**: ${answers.join("; ") || "–"}`);
+      if (note) lines.push("  - Notiz: " + note.replace(/\n/g, "\n    "));
+    }
+    const dToggle = document.getElementById("d-notes-toggle"), dNote = dToggle.checked ? document.getElementById("d-notes").value.trim() : "";
+    if (dNote) { lines.push("## " + dToggle.closest("section").querySelector("h2").firstChild.textContent, "", dNote); lastSection = "D"; }
+    if (lastSection === null) lines.push("_Keine Antworten ausgewählt._");
+    out.value = lines.join("\n").replace(/\n## /g, "\n\n## ").replace(/\n\n\n/g, "\n\n") + "\n";
+    URL.revokeObjectURL(dl.href);
+    dl.href = URL.createObjectURL(new Blob([out.value], { type: "text/markdown" }));
+    out.hidden = dl.hidden = copy.hidden = false;
+  });
+  copy.addEventListener("click", () => navigator.clipboard.writeText(out.value).then(() => copy.textContent = "Kopiert ✓"));
+</script>
+<script>
+  // Wrap each h2 and its content in a <section> card, wrap tables for horizontal scroll, and build the TOC.
+  const main = document.querySelector("main"), toc = document.getElementById("toc");
+  let section = null;
+  for (const node of [...main.childNodes]) {
+    if (node.nodeName === "H2") { section = document.createElement("section"); main.insertBefore(section, node); }
+    if (section) section.appendChild(node);
+  }
+  document.querySelectorAll("table").forEach(t => { const w = document.createElement("div"); w.className = "table-wrap"; t.replaceWith(w); w.appendChild(t); });
+  const slug = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const links = [];
+  main.querySelectorAll("h2, h3").forEach(h => {
+    h.id ||= slug(h.textContent);
+    const a = document.createElement("a");
+    a.href = "#" + h.id; a.textContent = h.textContent; a.className = h.tagName.toLowerCase();
+    toc.appendChild(a); links.push([h, a]);
+    h.insertAdjacentHTML("beforeend", `<a class="anchor" href="#${h.id}">#</a>`);
+  });
+  const spy = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    links.forEach(([, a]) => a.classList.remove("active"));
+    links.find(([h]) => h === e.target)?.[1].classList.add("active");
+  }), { rootMargin: "0px 0px -75% 0px" });
+  links.forEach(([h]) => spy.observe(h));
+  const btn = document.getElementById("theme-toggle"), root = document.documentElement;
+  const label = () => btn.textContent = root.dataset.theme === "dark" ? "☀ Hell" : "☾ Dunkel";
+  btn.addEventListener("click", () => { root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark"; localStorage.setItem("theme", root.dataset.theme); label(); });
+  label();
+</script>
+</body>
+</html>

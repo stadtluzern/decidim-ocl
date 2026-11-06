@@ -107,6 +107,7 @@
     <span class="chip">Reference <a href="https://github.com/puzzle/decidim-zuerich/tree/upgrade">puzzle/decidim-zuerich @ <code>upgrade</code></a></span>
     <span class="chip">0.29.7 → 0.31.8</span>
     <span class="chip">→ <a href="upgrade_steps.html">Step-by-step guide</a></span>
+    <span class="chip">→ <a href="open_questions.html">Open questions</a></span>
   </div>
   <small>0.31 is <em>not</em> on Zürich <code>master</code> (still 0.29.7). Compiled 2026-10-31 from GitHub issues, both repositories and the Decidim release notes and docs. Statements marked [inference] are not verified.</small>
 </div></header>
@@ -116,7 +117,7 @@
 <main>
 <h2>1. Ticket scope (#228)</h2>
 <ul>
-  <li>Upgrade to Decidim 0.31.7 → <b>0.31.8 is now available</b> on <code>openpoke/decidim@0.31-backports</code> (HEAD <code>2f36d58</code>) and contains the survey display-conditions fix (see §6).</li>
+  <li>Upgrade to Decidim <b>0.31.8</b> (ticket said 0.31.7; decided to target 0.31.8). <code>openpoke/decidim@0.31-backports</code> (HEAD <code>2f36d58</code>) is <code>v0.31.8</code> + 66 commits, 0 behind, version <code>0.31.8</code>. Only 0.31.8 contains the survey display-conditions fix (<code>inverse_of: :condition_question</code> absent in v0.31.7, see §6), and it carries 5 security advisories plus the verification hardening.</li>
   <li>Drop the Pokecode 0.29 backports and switch to <code>0.31-backports</code>.</li>
   <li>Install the new components <code>decidim-elections</code> and <code>decidim-collaborative_texts</code>.</li>
   <li>Remove the mail digest fix (see <a href="https://github.com/puzzle/decidim-zuerich/issues/615">zuerich#615</a>).</li>
@@ -142,7 +143,7 @@
   <tr><td>v0.31</td><td>3.3.4 / 22.14.x</td><td>3.3.4 / 22.14.0 / <code>"~&gt; 3.3.0"</code> / <code>node &gt;=22.14.0</code></td><td>Bug fixes and security updates</td></tr>
   <tr><td>v0.32</td><td>3.4.7 / 22.14.x</td><td>–</td><td>Bug fixes and security updates (next upgrade, cf. zuerich#581)</td></tr>
 </table>
-<p>The jump skips two minor versions (0.30 and 0.31), so the upgrade notes of <b>every</b> 0.30.x and 0.31.x release apply (§5). The update guide explicitly says to upgrade to 0.30, follow its notes and confirm everything works, then go to 0.31. Recommendation 2 adds: <i>"Never add 2 or more versions of Decidim to the same deployment to production"</i>. Zürich ignored both: it went 0.30.0 → 0.31.x in a single day (commits <code>c68dfa2</code> → <code>61754d6</code>) and deployed only 0.31. That worked, but the Zürich issues show no 0.30 intermediate state was ever tested. The stricter alternative is two PROD deployments (0.30.9, then 0.31.8), which means roughly twice the deployment and acceptance-testing effort.</p>
+<p>The jump skips two minor versions (0.30 and 0.31), so the upgrade notes of <b>every</b> 0.30.x and 0.31.x release apply (§5). The update guide explicitly says to upgrade to 0.30, follow its notes and confirm everything works, then go to 0.31. Recommendation 2 adds: <i>"Never add 2 or more versions of Decidim to the same deployment to production"</i>. Zürich ignored both: it went 0.30.0 → 0.31.x in a single day (commits <code>c68dfa2</code> → <code>61754d6</code>) and deployed only 0.31. That worked, but the Zürich issues show no 0.30 intermediate state was ever tested. <b>Decided: one PROD deployment</b>, directly 0.29.7 → 0.31.8, as in Zürich. The 0.30 notes are covered by the DEV rehearsal on a PROD dump and by the INT acceptance test.</p>
 
 <h2>3. Zürich reference</h2>
 
@@ -271,7 +272,7 @@ bin/rails decidim:upgrade:fix_deleted_private_follows</pre></td><td>Same steps a
   <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.31.5">0.31.5</a></td><td>–</td><td>9 CVEs, including the HTML header snippet sanitization (same as 0.30.9)</td></tr>
   <tr><td>0.31.6</td><td>–</td><td>Includes the digest fix (decidim.swiss#219) and "Fix Toggle Stimulus controller usage" (#16868), which touches the survey step toggle in §6.</td></tr>
   <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.31.7">0.31.7</a></td><td>–</td><td>"Ensure JWT secret exists for <code>devise-jwt</code>" (#17346), which may make Zürich's <code>jwt &lt; 3.2.0</code> pin unnecessary [inference]. "Fix ENV var for setting inactive users deletion period" (#17276).</td></tr>
-  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.31.8">0.31.8</a></td><td>–</td><td>5 security advisories. <b>Verification code hardening</b> (#17639): failed attempts are now tracked server-side (default lockout after 5 attempts, configurable via <code>DECIDIM_VERIFICATION_MAX_FAILED_ATTEMPTS</code> and <code>DECIDIM_VERIFICATION_UNLOCK_IN</code>), SMS codes expire after 10 minutes (<code>DECIDIM_VERIFICATION_CODE_EXPIRY_MINUTES</code>), and Rack::Attack throttles to 10 requests/min/IP. <i>"review any custom authorization handlers"</i> applies to the ASPSMS gateway and decidim.swiss's own rack-attack config.</td></tr>
+  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.31.8">0.31.8</a></td><td>–</td><td>5 security advisories. <b>Verification code hardening</b> (#17639): failed attempts are now tracked server-side (default lockout after 5 attempts, configurable via <code>DECIDIM_VERIFICATION_MAX_FAILED_ATTEMPTS</code> and <code>DECIDIM_VERIFICATION_UNLOCK_IN</code>), SMS codes expire after 10 minutes (<code>DECIDIM_VERIFICATION_CODE_EXPIRY_MINUTES</code>), and Rack::Attack throttles to 10 requests/min/IP. <b>Also, and only in the changelog: broad authorization hardening</b> (about 110 new <code>enforce_permission_to</code> checks, API permissions, organization-scoped finders). 811 files changed compared with 0.31.7. Details are in §5.6. Zürich runs 0.31.6, so none of this has been tested there.</td></tr>
 </table>
 <p>For a direct 0.29.7 → 0.31.8 upgrade, merging and deduplicating the lists gives the 0.30.0 block, the 0.31.0 block, plus <code>remove_deleted_users_left_data</code> and <code>fix_deleted_private_follows</code>. <b>But two of the 0.30.0 tasks no longer exist in 0.31.8</b>, and a few others behave differently than the notes suggest. The checked list is in §5.5.</p>
 
@@ -292,7 +293,7 @@ bin/rails decidim:upgrade:fix_deleted_private_follows</pre></td><td>Same steps a
 <h3>5.3 0.30.0 general notes that affect decidim.swiss</h3>
 <ul>
   <li><b>Social login</b> (§3.4): <code>icon</code> becomes <code>icon_path</code> (<code>media/images/google.svg</code> and so on). In <code>secrets.yml</code>, google already uses <code>icon_path: decidim/brands/google.svg</code> (check the path), and facebook/twitter have no icon set. This goes away along with <code>secrets.yml</code> anyway.</li>
-  <li><b>HERE static maps</b> (§3.7): <code>decidim.rb:162</code> still has the old v1.6 URL <code>image.maps.ls.hereapi.com/mia/1.6/mapview</code>. It needs to become <code>https://image.maps.hereapi.com/mia/v3/base/mc/overlay</code> if any tenant uses HERE (configured per tenant through <code>2_add_map_config_override</code>).</li>
+  <li><b>HERE static maps</b> (§3.7): <code>decidim.rb:162</code> still has the old v1.6 URL <code>image.maps.ls.hereapi.com/mia/1.6/mapview</code>. It needs to become <code>https://image.maps.hereapi.com/mia/v3/base/mc/overlay</code> if HERE is used. The key and the static provider are global (ENV, <code>maps</code> secrets); only the dynamic provider is set per tenant (<code>map_config</code>, via <code>2_add_map_config_override</code>). We check both ourselves in phase A and test the key against the v3 API; this is not a question for the client.</li>
   <li><b>Cell cache expiration</b> (§2.4): <code>DECIDIM_CACHE_EXPIRATION_TIME</code>, default 1440 minutes.</li>
   <li><b>Ransack 4.2</b> (§2.5) and <b>routing</b> (§5.2) only matter for custom searchable models or custom routes. Check <code>config/routes.rb</code> and the participatory space context override.</li>
   <li><b>GraphQL <code>decidim { version }</code></b> now returns <code>null</code> (§5.1), unless <code>DECIDIM_API_DISCLOSE_SYSTEM_VERSION=true</code>. This probably explains decidim.swiss#204, where the Decidim Awesome version check showed the wrong version [inference].</li>
@@ -347,6 +348,20 @@ bin/rails decidim:upgrade:user_groups:remove       # sends mails, see §5.2
 # skipped: decidim:metrics:rebuild, decidim:taxonomies:update_all_metrics (no longer exist)</pre>
 <div class="warn">Before each deployment, check the final list on the upgraded image with <code>bin/rails -AT | grep -E 'taxonomies|upgrade|revoke'</code>. That is the only check that also catches dynamically generated tasks such as <code>revoke:sms</code>, and tasks contributed by modules.</div>
 
+<h3>5.6 0.31.8 authorization changes (checked against <code>git diff v0.31.7 v0.31.8</code>)</h3>
+<p>The upgrade notes cover only §2.1 "Verification code security hardening". The changelog and the code diff show much more:</p>
+<table>
+  <tr><th>Change</th><th>What changed in the code</th><th>Impact on decidim.swiss</th></tr>
+  <tr><td>Missing <code>enforce_permission_to</code> checks added, parts 1–4 (<a href="https://github.com/decidim/decidim/pull/17874">#17874</a>, <a href="https://github.com/decidim/decidim/pull/17895">#17895</a>, <a href="https://github.com/decidim/decidim/pull/17918">#17918</a>, <a href="https://github.com/decidim/decidim/pull/17920">#17920</a>) + organization-scoped finders (<a href="https://github.com/decidim/decidim/pull/17817">#17817</a>)</td><td>About 110 new permission checks in about 80 controllers. Public pages are now authorized explicitly: homepage, static pages, profiles, search, proposals/meetings/surveys/pages/blogs/budgets/debates/elections index+show, questionnaires (<code>HasQuestionnaire#show</code>), calendars, initiative creation and signing, authorizations. In admin: proposals index/show, components, newsletters, static pages, moderations, impersonations, initiative permissions. 17 <code>permissions.rb</code> classes were extended to match (+187 lines).</td><td>Any permission class in the chain that does not allow the new <code>:read</code> actions now causes a redirect/403 where the page used to load. Most exposed: <b>private and transparent spaces, reporting_proposals components, anonymous surveys (survey_multiple_answers), guest meeting registration, decidim_awesome scoped admins</b>, and initiatives. The local overrides do not redefine any newly checked action (meetings overrides replace <code>meetings</code>, not <code>index</code>; assemblies admin uses the public <code>allowed_to?</code>). reporting_proposals <code>main</code> already has the new check in its admin <code>show</code> override.</td></tr>
+  <tr><td><code>NeedsPermission</code> visibility</td><td><code>enforce_permission_to</code> is now <code>protected</code>; <code>store_share_token</code> is called directly</td><td>No external callers in decidim.swiss or the 0.31 module branches</td></tr>
+  <tr><td>Verification lock moved to the DB (<a href="https://github.com/decidim/decidim/pull/17685">#17685</a>, <a href="https://github.com/decidim/decidim/pull/17639">#17639</a>)</td><td>New migration <code>20260909000000_add_failed_attempts_and_locked_at_to_decidim_authorizations</code>. <code>ConfirmUserAuthorization.new(authorization, form)</code> no longer takes <code>session</code> and broadcasts <code>:locked</code>/<code>:expired</code>. The actions in <code>Verifications::ApplicationController</code> are now <code>protected</code>. New permission checks in <code>AuthorizationsController</code> (6), csv_census, id_documents.</td><td>decidim.swiss uses the core <code>sms</code> workflow with <code>AspsmsGateway</code>, so the gateway interface is unchanged. No module calls <code>ConfirmUserAuthorization</code> or subclasses <code>Verifications::ApplicationController</code>; decidim_awesome registers its own workflow. The new <code>locked</code>/<code>expired</code> messages exist in <code>en</code>/<code>fr</code> but <b>not in <code>de</code>/<code>it</code></b>, so add them via term_customizer or the app locales.</td></tr>
+  <tr><td>Rack::Attack (core initializer)</td><td>New throttles: 10 PUT/min/IP on <code>/…/sms/authorizations</code> and <code>/…/postal_letter/authorizations</code></td><td>The local <code>rack_attack.rb</code> only adds safelists and allow2ban rules, so there is no conflict. The throttle uses <code>request.ip</code>, just like the existing "requests by ip" throttle; if that one works behind the ingress, this one does too [inference]</td></tr>
+  <tr><td>GraphQL API (<a href="https://github.com/decidim/decidim/pull/17916">#17916</a>, <a href="https://github.com/decidim/decidim/pull/17677">#17677</a>)</td><td><code>GraphqlPermissions</code> now checks the parent space/component itself and stops reusing the space of the previous object in the shared context; it no longer separates admin and user context; commentable types are validated.</td><td>Resources in private or unpublished spaces that leaked before are no longer returned. Let external API consumers (open data, tenant integrations) know.</td></tr>
+  <tr><td>Image uploads (<a href="https://github.com/decidim/decidim/pull/17878">#17878</a>)</td><td>Magic-byte validation for image uploads</td><td>Files with the wrong extension are now rejected; run an upload smoke test together with the antivirus module</td></tr>
+  <tr><td>Other</td><td><code>ActiveJob</code> <code>enqueue_after_transaction_commit</code> (<a href="https://github.com/decidim/decidim/pull/17875">#17875</a>), "Steps" renamed to "Phases" (<a href="https://github.com/decidim/decidim/pull/17533">#17533</a>), members page pagination, new index on conference user roles</td><td>"Phases": check tenant-specific term_customizer translations for "Schritt/étape"</td></tr>
+</table>
+<div class="warn">Consequence: acceptance testing on INT has to go through a <b>permission matrix</b>: visitor, logged-in participant, verified participant (SMS), space admin, collaborator/evaluator, awesome scoped admin, org admin × a public, private, transparent and unpublished space × proposals, reporting_proposals, meetings (+ guest registration), surveys (anonymous and multiple answers), initiatives (create/sign), participatory_documents, profiles/search. SMS: wrong code ×5 → locked; code older than 10 min → expired.</div>
+
 <h2>6. Local code hotspots in decidim.swiss</h2>
 <p>There are 26 files in <code>app/overrides</code> and about 43 replaced views/cells (excluding <code>static/api</code>). Most are not yet checked against 0.31. These have been confirmed so far:</p>
 <table>
@@ -368,7 +383,7 @@ bin/rails decidim:upgrade:user_groups:remove       # sends mails, see §5.2
   <tr><td>Organization setting "HTML header snippets" (<code>enable_html_header_snippets</code> via <code>DECIDIM_ENABLE_HTML_HEADER_SNIPPETS</code>)</td><td>As of 0.30.9 / 0.31.5 the snippets are sanitized, so <b>JavaScript in them stops working</b> (tracking such as Matomo, chat widgets, etc.)</td><td>Check the snippets of every tenant in the DB and move any JS into <code>_head_extra.html.erb</code> or a proper integration</td></tr>
   <tr><td><code>app/jobs/compute_metrics_job.rb</code></td><td>Metrics removed (0.31 §4.2); <code>decidim:metrics:all</code> no longer exists</td><td>Remove it and add a <code>delete_inactive_participants</code> job (Zürich <code>app/jobs/delete_inactive_accounts.rb</code>)</td></tr>
   <tr><td><code>config/initializers/decidim.rb:162</code></td><td>HERE static map v1.6 URL (0.30 §3.7)</td><td>Use v3 URL if HERE is used</td></tr>
-  <tr><td><code>app/services/decidim_ocl/verifications/sms/aspsms_gateway.rb</code>, <code>config/initializers/rack_attack.rb</code></td><td>0.31 SMS API (zuerich#612); 0.31.8 verification hardening including Rack::Attack throttling</td><td>Port the Zürich commits and check for conflicts with the local rack-attack rules</td></tr>
+  <tr><td><code>app/services/decidim_ocl/verifications/sms/aspsms_gateway.rb</code>, <code>config/initializers/rack_attack.rb</code></td><td>0.31 SMS API (zuerich#612); 0.31.8 verification lock moved to the DB and Rack::Attack SMS throttle (§5.6)</td><td>Port the Zürich commits for the gateway. Rack-attack: no conflict (§5.6). Add the <code>de</code>/<code>it</code> translations for <code>decidim.verifications.sms.authorizations.update.{locked,expired}</code></td></tr>
 </table>
 <div class="warn">Recommendation: before upgrading, adopt Zürich's override checks (<code>test/lib/decidim_overrides_test.rb</code>, <code>test/lib/deface_overrides_test.rb</code>, branch <code>feature/638-override-checks</code>) so that every override that no longer applies gets reported automatically.</div>
 
@@ -396,7 +411,7 @@ bin/rails decidim:upgrade:user_groups:remove       # sends mails, see §5.2
 <h2>9. Basis for the effort estimate</h2>
 <p>Timeline in Zürich: development 2026-04-01 → 2026-04-08 (core + modules on DEV), then about 4 months of testing and bugfixing. That period was dominated by Decidim Geo (#594, #582, #627) and by external dependencies (Pokecode, octree). Without Geo, roughly 10 follow-up issues remained (#595, #606, #607, #612, #614, #623, #633, #636, #638, digest).</p>
 <h3>9.1 Optimized estimate with budget split (current)</h3>
-<p>Budget left for the upgrade: about 10 PD. Overrides stay in the upgrade budget; config and pipeline work is booked to <b>maintenance</b>. Assumes the default answers to the decisions in §10: anonymous_codes removed, default taxonomy import (plan edits only on request), one deployment step, unused modules dropped.</p>
+<p>Budget left for the upgrade: about 10 PD. Overrides stay in the upgrade budget; config and pipeline work is booked to <b>maintenance</b>. Assumes the recommended answers in the <a href="open_questions.html">open questions</a> (anonymous_codes removed, default taxonomy import with plan edits only on request, unused modules dropped) and the decided single PROD deployment.</p>
 <table>
   <tr><th>Work package</th><th>Budget</th><th>Estimate [inference]</th><th>How</th></tr>
   <tr><td>Core: Gemfile/backports, <code>decidim:upgrade</code>, migrations, Zürich code ports</td><td>Upgrade</td><td>1–1.5 PD</td><td>Port Zürich's files instead of working through the release notes</td></tr>
@@ -405,14 +420,15 @@ bin/rails decidim:upgrade:user_groups:remove       # sends mails, see §5.2
   <tr><td>Remove fixes, SMS gateway, cron jobs</td><td>Upgrade</td><td>0.5 PD</td><td>Cherry-picks of Zürich <code>3967be1</code>, <code>97933a2</code>, <code>e93c0f5</code></td></tr>
   <tr><td>Taxonomies</td><td>Upgrade</td><td>0.5–1 PD</td><td>Default import; transform script only if a tenant asks</td></tr>
   <tr><td>Deployment execution DEV/INT/PROD</td><td>Upgrade</td><td>0.5–1 PD</td><td>Runbook and checklists already exist</td></tr>
-  <tr><td>Bugfix buffer</td><td>Upgrade</td><td>2–3 PD</td><td>Zürich's follow-up bugs (#595, #606, #612, #614, #633, #636, #638) are fixed upfront</td></tr>
-  <tr><th>Total upgrade</th><td></td><th>≈ 6.5–10 PD</th><td>Upper end uses the whole budget</td></tr>
+  <tr><td>0.31.8 permission matrix on INT (§5.6)</td><td>Upgrade</td><td>0.5–1 PD</td><td>New in 0.31.8 and not covered by Zürich (0.31.6). Fixes usually live in module permission classes</td></tr>
+  <tr><td>Bugfix buffer</td><td>Upgrade</td><td>2–3 PD</td><td>Zürich's follow-up bugs (#595, #606, #612, #614, #633, #636, #638) are fixed upfront. These fixes were made on 0.31.6, so they don't cover permission regressions from 0.31.8</td></tr>
+  <tr><th>Total upgrade</th><td></td><th>≈ 7–11 PD</th><td>The upper end exceeds the ~10 PD budget because of 0.31.8</td></tr>
   <tr><td>Switch from secrets to ENV: drop <code>secrets.yml</code>, trim <code>decidim.rb</code>, port custom keys (DeepL, maps, OIDC, etherpad, initiatives), <code>production.rb</code> and <code>storage.yml</code> from the template</td><td>Maintenance</td><td>0.5–1 PD</td><td>Pod ENV already exists (<code>base/environments.yaml</code>); can be tested on 0.29 ahead of the upgrade [inference]</td></tr>
   <tr><td>Pipeline: Dockerfile (Ruby 3.3.4, Node 22, yarn), <code>.tool-versions</code>, GitHub workflows</td><td>Maintenance</td><td>0.5 PD</td><td>Zürich <code>801bac9</code>, <code>6f6d258</code>; ships together with the upgrade</td></tr>
   <tr><td>Deployment repo: new ENV variables, <code>0-down</code>/<code>1-deploy</code>/<code>2-up</code> commits and tags, <code>data:migrate</code> init container follow-up</td><td>Maintenance</td><td>0.5 PD</td><td>Config only</td></tr>
   <tr><th>Total maintenance</th><td></td><th>≈ 1.5–2 PD</th><td></td></tr>
 </table>
-<p>Still worth doing first: the phase A data checks (½ PD), since they settle initiatives (online signatures) and user groups. Budget breakers: keeping anonymous_codes, online initiative signatures with custom verification, custom taxonomy restructuring, a two-step deployment.</p>
+<p>Still worth doing first: the phase A data checks (½ PD), since they settle initiatives (online signatures) and user groups. Budget breakers: keeping anonymous_codes, online initiative signatures with custom verification, custom taxonomy restructuring.</p>
 
 <details>
 <summary>9.2 Original estimate (before optimization)</summary>
@@ -425,25 +441,19 @@ bin/rails decidim:upgrade:user_groups:remove       # sends mails, see §5.2
   <tr><td>Taxonomy migration across all tenants, including rehearsal on a PROD dump</td><td>1–2 PD + client effort</td><td>Each tenant supplies its target structure</td></tr>
   <tr><td>Deployment DEV/INT/PROD with one-time rake tasks (user groups, valuators, …)</td><td>1–2 PD</td><td></td></tr>
   <tr><td>Bugfix buffer after acceptance testing</td><td>3–5 PD</td><td>Based on Zürich's follow-up issues</td></tr>
-  <tr><td><i>Optional:</i> intermediate PROD deployment of 0.30.9, as recommended by the update guide</td><td>+2–4 PD</td><td>Second deployment and acceptance-test cycle. Zürich skipped this.</td></tr>
-  <tr><th>Total</th><th>≈ 13–21 PD (15–25 PD with the 0.30 intermediate step)</th><th>Excluding Decidim Geo and any anonymous_codes fix by Pokecode</th></tr>
+  <tr><th>Total</th><th>≈ 13–21 PD</th><th>Excluding Decidim Geo and any anonymous_codes fix by Pokecode</th></tr>
 </table>
 </details>
 
 <h2>10. Open questions / decisions</h2>
-<ol>
-  <li>anonymous_codes: get a Pokecode fix, patch it ourselves, or remove it?</li>
-  <li>Target 0.31.8 rather than 0.31.7 (0.31.8 includes the display-conditions fix)?</li>
-  <li>Taxonomy target structure for each tenant: who provides it, and by when?</li>
-  <li>Are user groups used on any tenant? (Data migration with <code>user_groups:*</code> tasks.)</li>
-  <li>Initiatives: which tenants use them, and who does acceptance testing of the new signature workflow?</li>
-  <li>Adopt from Zürich: ephemeral_verifications module (#610), DM notification override (#620)?</li>
-  <li>Is the froger/deface fork still needed without Geo?</li>
-  <li>One PROD deployment 0.29 → 0.31 (like Zürich) or two (0.30.9, then 0.31.8, as the update guide recommends)?</li>
-  <li>Tenant communication: SMS verifications get deleted (everyone re-verifies), user groups get emails (if any exist), optional automatic deletion of inactive accounts, the "Appearance" page goes away, header snippet JS stops working.</li>
-  <li>Initiatives: which initiative types use online signature, and which signature workflows do they need?</li>
-  <li>Are Sortitions, Collaborative Drafts or meeting polls in use? (Removed in 0.32.)</li>
-</ol>
+<p>The questions for the client and the tenants, each with a recommended answer and its effect on the effort, are collected in <a href="open_questions.html">open questions</a> (German, for #228). The estimate in §9.1 assumes the recommended answers.</p>
+<p><b>Already decided:</b></p>
+<ul>
+  <li><b>One PROD deployment</b>, directly 0.29.7 → 0.31.8 (§2). No 0.30.9 intermediate step.</li>
+  <li><b>Communication</b>: our project lead informs the tenants' project leads, who pass everything on to their admins and participants. This includes the SMS re-verification (all SMS authorizations are deleted), the freeze, the maintenance window, user group mails, the removed "Appearance" page and header snippets without JS.</li>
+  <li><b>Upgrade documents in the app (temporary)</b>: <code>UpgradeDocsController</code> + route <code>get 'upgrade/:doc'</code> serve <code>planning.html</code>, <code>upgrade_steps.html</code> and <code>open_questions.html</code> from the repo root at <code>/upgrade/&lt;doc&gt;.html</code> on every tenant, only to org admins after the normal Decidim login (others: login redirect or 404). <b>Remove the controller, the route and the three files before the upgrade is closed</b> (phase D checklist).</li>
+</ul>
+<p>We settle these ourselves (they are not on that list): whether the froger/deface fork is still needed without Geo, the <code>jwt</code> pin, the map configuration (HERE key and static provider in ENV, dynamic provider per tenant; see §5.3), and the phase A data checks (user groups, sortitions, collaborative drafts, meeting polls, header snippets, initiative types).</p>
 </main>
 </div>
 <script>
