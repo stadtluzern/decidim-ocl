@@ -1,4 +1,4 @@
-name: 'Build Upgrade on push to upgrade branch'
+name: 'Build Upgrade on push to task/228-upgrade_decidim_to_v0.31.8'
 
 on:
   workflow_dispatch:
@@ -34,7 +34,7 @@ on:
         default: 'stlu-dev'
   push:
     branches:
-      - 'upgrade'
+      - 'task/228-upgrade_decidim_to_v0.31.8'
     paths-ignore:
       - 'doc/**'
       - '**.md'
