@@ -12,6 +12,8 @@ class UpgradeDocsController < Decidim::ApplicationController
   def show
     doc = DOCS.find { _1 == params[:doc] } || raise(ActionController::RoutingError, 'Not Found')
 
+    # no-store: otherwise the browser shows its cached copy after logout.
+    response.headers['Cache-Control'] = 'no-store'
     send_file Rails.root.join("#{doc}.html"), type: 'text/html', disposition: 'inline'
   end
 
