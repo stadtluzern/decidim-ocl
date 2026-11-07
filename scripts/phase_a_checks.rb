@@ -1,80 +1,117 @@
 # frozen_string_literal: true
 
-# Phase A data checks for the 0.31 upgrade (#228). READ-ONLY: every write raises.
-# Run (from the repo root, with the oc project of the target environment selected):
-#   oc exec -i -c rails "$(oc get pod -l app=rails -o name | head -1)" -- \
-#     sh -c 'cat > /tmp/phase_a_checks.rb && bin/rails runner /tmp/phase_a_checks.rb' \
-#     < scripts/phase_a_checks.rb | tee phase_a_checks.txt
-# Prints no secrets: for ENV it only reports which map variables are set.
+# Phase A data checks for the 0.31 upgrade (#228).
+#
+# Run (repo root; namespace and pod explicit; script comes in via stdin, nothing is written in the pod):
+#   set -o pipefail
+#   NS=pitc-decidim-stlu-prod
+#   oc get pods -n "$NS"                      # pick the rails pod by name
+#   POD=<rails-pod-name>
+#   oc exec -i -n "$NS" -c rails "$POD" -- bin/rails runner - < scripts/phase_a_checks.rb > phase_a_checks.txt
+#   echo "exit: $?"                           # 1 = at least one check failed, see "FAILED" lines
+#
+# Guarantees and limits:
+# - All queries run in ONE PostgreSQL transaction declared READ ONLY (enforced by the database:
+#   INSERT/UPDATE/DELETE/DDL and nextval() are rejected) with statement_timeout 30s, then rolled back.
+#   Rails' while_preventing_writes is kept as a second, weaker layer.
+# - Not covered: what `rails runner` does while booting (initializers run before this file, same as any
+#   `rails runner`/console on the pod). The checks themselves touch no files, cache or network.
+# - Load: aggregates run in SQL (COUNT/GROUP BY); only small lookup sets (tenants, a few components,
+#   ~10 cron rows) are loaded into Ruby.
+# - Output: hosts, ids, counts, map provider names and ENV variable NAMES. No ENV values, no map_config
+#   contents, no exception messages (only the exception class).
+
+FAILED = []
 
 def check(title)
   puts "\n== #{title}"
-  yield
+  ActiveRecord::Base.transaction(requires_new: true) { yield } # savepoint: a failing check doesn't abort the rest
 rescue StandardError => e
-  puts "  ERROR #{e.class}: #{e.message.lines.first&.strip}"
+  FAILED << title
+  puts "  FAILED (#{e.class})"
 end
 
+conn = ActiveRecord::Base.connection
 ActiveRecord::Base.while_preventing_writes do
-  hosts = Decidim::Organization.pluck(:id, :host).to_h
-  components = ->(name) { Decidim::Component.where(manifest_name: name) }
-  per_tenant = ->(scope) { scope.map { hosts[_1.organization.id] }.tally }
+  ActiveRecord::Base.transaction do
+    conn.execute('SET TRANSACTION READ ONLY')
+    conn.execute("SET LOCAL statement_timeout = '30s'")
 
-  check('Tenants: id | host | secondary hosts | tenant_type') do
-    Decidim::Organization.order(:id).each do |o|
-      puts "  #{[o.id, o.host, o.secondary_hosts.join(','), o.try(:tenant_type)].join(' | ')}"
+    hosts = Decidim::Organization.pluck(:id, :host).to_h
+    # component id -> host, only for the given ids (a handful)
+    component_hosts = lambda do |ids|
+      Decidim::Component.where(id: ids).includes(:participatory_space)
+                        .to_h { [_1.id, hosts[_1.participatory_space&.decidim_organization_id]] }
     end
-  end
-
-  check('A1 anonymous_codes: code groups per tenant') do
-    pp Decidim::AnonymousCodes::Group.all.map { |g| hosts[g.organization.id] }.tally
-  end
-
-  check('A3 Initiative types not offline: org | id | title | signature_type | document handler | sms | extra fields') do
-    Decidim::InitiativesType.where.not(signature_type: :offline).order(:decidim_organization_id).each do |t|
-      puts "  #{[hosts[t.decidim_organization_id], t.id, t.title['de'], t.signature_type,
-                 t.document_number_authorization_handler.inspect, "sms=#{t.validate_sms_code_on_votes}",
-                 "extra_fields=#{t.collect_user_extra_fields}"].join(' | ')}"
+    by_component_to_host = lambda do |counts|
+      map = component_hosts.(counts.keys)
+      counts.each_with_object(Hash.new(0)) { |(cid, n), acc| acc[map[cid]] += n }
     end
-  end
+    components_per_host = ->(name) { by_component_to_host.(Decidim::Component.where(manifest_name: name).group(:id).count) }
 
-  check('A4 navigation_maps blueprints / reporting_proposals components per tenant') do
-    pp navigation_maps: (Decidim::NavigationMaps::Blueprint.all.map { |b| hosts[b.decidim_organization_id] }.tally rescue 'n/a'),
-       reporting_proposals: per_tenant.(components.('reporting_proposals'))
-  end
-
-  check('C2 User groups per tenant (verified / total)') do
-    groups = Decidim::UserGroup.all
-    pp groups.group_by { hosts[_1.decidim_organization_id] }
-             .transform_values { |gs| "#{gs.count { _1.verified? }}/#{gs.size}" }
-  end
-
-  check('C4 Header snippets containing <script: id | host') do
-    pp Decidim::Organization.where('header_snippets ILIKE ?', '%<script%').pluck(:id, :host)
-  end
-
-  check('C5 Deprecated: sortitions components | collaborative drafts | meeting polls per tenant') do
-    pp sortitions: components.('sortitions').map { [hosts[_1.organization.id], _1.id, _1.published?] },
-       collaborative_drafts: Decidim::Proposals::CollaborativeDraft.find_each.map { hosts[_1.organization.id] }.tally,
-       meeting_polls: Decidim::Meetings::Poll.find_each.map { hosts[_1.meeting.organization.id] }.tally
-  end
-
-  check('Maps: tenants with HERE in map_config; map ENV variables that are set (names only)') do
-    pp Decidim::Organization.pluck(:host, :map_config).select { |_, c| c.to_s.downcase.include?('here') }
-    pp ENV.keys.grep(/MAPS|HERE/i).sort
-  end
-
-  check('Delayed jobs: pending | failed | cron (job class, schedule)') do
-    pp pending: Delayed::Job.where(failed_at: nil, cron: nil).count,
-       failed: Delayed::Job.where.not(failed_at: nil).count,
-       cron: Delayed::Job.where.not(cron: nil).pluck(:cron, :handler).map { |c, h| [h[/job_class: (\S+)/, 1], c] }
-  end
-
-  check('Freeze baseline: host | scopes | areas | process types | assembly types; categories total') do
-    Decidim::Organization.order(:id).each do |o|
-      puts "  #{[o.host, Decidim::Scope.where(organization: o).count, Decidim::Area.where(organization: o).count,
-                 Decidim::ParticipatoryProcessType.where(organization: o).count,
-                 Decidim::AssembliesType.where(organization: o).count].join(' | ')}"
+    check('Tenants: id | host | secondary hosts | tenant_type') do
+      Decidim::Organization.order(:id).pluck(:id, :host, :secondary_hosts, :tenant_type).each do |row|
+        row[2] = Array(row[2]).join(',')
+        puts "  #{row.join(' | ')}"
+      end
     end
-    puts "  categories: #{Decidim::Category.count}"
+
+    check('A1 anonymous_codes: code groups per tenant') do
+      pp Decidim::AnonymousCodes::Group.group(:decidim_organization_id).count.transform_keys(&hosts)
+    end
+
+    check('A3 Initiative types not offline: host | id | title | signature_type | document handler | sms | extra fields') do
+      Decidim::InitiativesType.where.not(signature_type: :offline).order(:decidim_organization_id)
+                              .pluck(:decidim_organization_id, :id, Arel.sql("title->>'de'"), :signature_type,
+                                     :document_number_authorization_handler, :validate_sms_code_on_votes,
+                                     :collect_user_extra_fields).each do |org, *rest|
+        puts "  #{[hosts[org], *rest].join(' | ')}"
+      end
+    end
+
+    check('A4 navigation_maps blueprints / reporting_proposals components per tenant') do
+      pp navigation_maps: Decidim::NavigationMaps::Blueprint.group(:decidim_organization_id).count.transform_keys(&hosts),
+         reporting_proposals: components_per_host.('reporting_proposals')
+    end
+
+    check('C2 User groups per tenant: total / verified') do
+      pp total: Decidim::UserGroup.group(:decidim_organization_id).count.transform_keys(&hosts),
+         verified: Decidim::UserGroup.verified.group(:decidim_organization_id).count.transform_keys(&hosts)
+    end
+
+    check('C4 Header snippets containing <script: id | host') do
+      pp Decidim::Organization.where('header_snippets ILIKE ?', '%<script%').pluck(:id, :host)
+    end
+
+    check('C5 Deprecated: sortitions components | collaborative drafts | meeting polls per tenant') do
+      pp sortitions: components_per_host.('sortitions'),
+         collaborative_drafts: by_component_to_host.(Decidim::Proposals::CollaborativeDraft.group(:decidim_component_id).count),
+         meeting_polls: by_component_to_host.(Decidim::Meetings::Poll.joins(:meeting)
+                                                     .group('decidim_meetings_meetings.decidim_component_id').count)
+    end
+
+    check('Maps: host | map_config provider (only tenants with a provider set); map ENV variable names') do
+      pp Decidim::Organization.where("map_config->>'provider' <> ''").pluck(:host, Arel.sql("map_config->>'provider'"))
+      pp ENV.keys.grep(/MAPS|HERE/i).sort
+    end
+
+    check('Delayed jobs: pending | failed | cron (job class, schedule)') do
+      pp pending: Delayed::Job.where(failed_at: nil, cron: nil).count,
+         failed: Delayed::Job.where.not(failed_at: nil).count,
+         cron: Delayed::Job.where.not(cron: nil)
+                           .pluck(Arel.sql("substring(handler from 'job_class: (\\S+)')"), :cron)
+    end
+
+    check('Freeze baseline: host | scopes | areas | process types | assembly types; categories total') do
+      counts = [Decidim::Scope, Decidim::Area, Decidim::ParticipatoryProcessType, Decidim::AssembliesType]
+               .map { _1.group(:decidim_organization_id).count }
+      hosts.sort.each { |id, host| puts "  #{[host, *counts.map { _1.fetch(id, 0) }].join(' | ')}" }
+      puts "  categories: #{Decidim::Category.count}"
+    end
+
+    raise ActiveRecord::Rollback
   end
 end
+
+puts "\n#{FAILED.empty? ? 'All checks ran.' : "FAILED checks: #{FAILED.join('; ')}"}"
+exit(FAILED.empty? ? 0 : 1)
