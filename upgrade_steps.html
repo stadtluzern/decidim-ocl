@@ -301,7 +301,7 @@ s3()  { local j; j=$(oc get secret ocp4-s3-storage -o json) || return 1   # aws 
   <li>Smoke test per tenant: log in</li>
   <li>Smoke test per tenant: processes and proposals with taxonomy filters</li>
   <li>Smoke test per tenant: fill in a survey; confirmation mail queued: <code>rr 'p Delayed::Job.where(queue: "mailers").count'</code></li>
-  <li>Smoke test per tenant: initiatives basic function (offline signatures only; gemeinsamer.space is inactive and skipped)</li>
+  <li>Smoke test per tenant: initiatives basic function (offline signatures only)</li>
   <li>Smoke test per tenant: upload an attachment, run an export</li>
   <li>Smoke test per tenant (0.31.8 permissions): a private space as a member and as a non-member, a space admin in admin, an anonymous survey, a reporting_proposals component (where used)</li>
   <li>(INT only) Permission matrix from planning §5.6, plus SMS: wrong code ×5 → "locked", and the <code>de</code>/<code>it</code> texts are translated</li>

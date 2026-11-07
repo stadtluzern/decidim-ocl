@@ -143,10 +143,9 @@
   <tr><th>#</th><th>Frage</th><th>Wer</th></tr>
   <tr><td>A1</td><td><b>decidim-anonymous_codes</b>: Der 0.31-Branch ist laut Pokecode nicht produktionsreif; der 500er bei Umfragen ist noch offen (<a href="https://github.com/openpoke/decidim-module-anonymous_codes/issues/28">anonymous_codes#28</a>). Im Einsatz auf <b>kooperation.winterthur.ch</b> (4 Code-Gruppen) und <b>dialogluzern.ch</b> (1 Code-Gruppe). Werden die Codes dort noch gebraucht? Fix bei Pokecode bestellen, selbst patchen oder Modul entfernen?</td><td>Projektleitung, kooperation.winterthur.ch, dialogluzern.ch</td></tr>
   <tr><td>A2</td><td><b>Taxonomien</b>: Kategorien, Bereiche und Themen werden zu Taxonomien. Liefert jeder Mandant eine Zielstruktur? Wer liefert sie, und bis wann?</td><td>Mandanten</td></tr>
-  <tr class="resolved"><td>A3</td><td><details><summary><b>Initiativen</b> <span class="done">erledigt</span></summary>Welche Mandanten und Initiativtypen sammeln Unterschriften online, und mit welcher Verifizierung (SMS, Dokumentnummer)? 0.31 erfordert neu konfigurierte Signatur-Workflows. Wer testet das ab?</details></td><td>Mandanten mit Initiativen</td><td>Durch die Datenprüfung auf PROD geklärt: Nur gemeinsamer.space (nicht mehr aktiv) hatte einen Initiativtyp mit Online-Unterschrift. Neue Signatur-Workflows sind nicht nötig; Initiativen werden auf INT in der Grundfunktion getestet.</td></tr>
+  <tr class="resolved"><td>A3</td><td><details><summary><b>Initiativen</b> <span class="done">erledigt</span></summary>Welche Mandanten und Initiativtypen sammeln Unterschriften online, und mit welcher Verifizierung (SMS, Dokumentnummer)? 0.31 erfordert neu konfigurierte Signatur-Workflows. Wer testet das ab?</details></td><td>Mandanten mit Initiativen</td><td>Durch die Datenprüfung auf PROD geklärt: Kein aktiver Mandant sammelt Unterschriften online. Neue Signatur-Workflows sind nicht nötig; Initiativen werden auf INT in der Grundfunktion getestet.</td></tr>
   <tr class="resolved"><td>A4</td><td><details><summary><b>Navigation Maps</b> und <b>Reporting Proposals</b> <span class="done">erledigt</span></summary>Werden sie noch gebraucht? In Zürich nicht im Einsatz, also ungetestet.</details></td><td>Mandanten</td><td>Durch die Datenprüfung auf PROD geklärt: Beide sind im Einsatz (Navigation Maps auf dialogluzern.ch, Reporting Proposals auf dialogluzern.ch und impulskoeniz.ch). Sie werden mitgenommen und auf INT besonders getestet.</td></tr>
   <tr><td>A5</td><td>Aus Zürich übernehmen: <b>Ephemeral Verifications</b> (einmalige Teilnahme ohne Konto, <a href="https://github.com/puzzle/decidim-zuerich/issues/610">zuerich#610</a>) und den Override für <b>DM-Benachrichtigungen</b> (<a href="https://github.com/puzzle/decidim-zuerich/issues/620">zuerich#620</a>)?</td><td>Projektleitung</td></tr>
-  <tr class="resolved"><td>A6</td><td><details><summary><b>Mandant ocl-prod.appuioapp.ch</b> <span class="done">erledigt</span></summary>Alte APPUiO-Adresse, Typ dialogluzern, mit Daten (Bereiche, Themen, Versammlungstypen). Wird er noch gebraucht?</details></td><td>Projektleitung, dialogluzern.ch</td><td>Entschieden: nicht mehr aktiv, wird beim Upgrade ignoriert und nicht abgenommen.</td></tr>
 </table>
 <h2>B. Termine und Zuständigkeiten</h2>
 <table>
@@ -169,7 +168,6 @@
 <h2>D. Zur Kenntnis</h2>
 <ul>
   <li>Das Upgrade erfolgt in <b>einem PROD-Deployment</b> (direkt 0.29 → 0.31.8, wie Zürich).</li>
-  <li><b>gemeinsamer.space</b> und <b>ocl-prod.appuioapp.ch</b> (alte APPUiO-Adresse) sind nicht mehr aktiv und werden beim Upgrade nicht abgenommen.</li>
   <li><b>SMS-Verifizierungen</b> werden beim Upgrade gelöscht; alle Teilnehmenden müssen sich neu verifizieren. Die Projektleitung informiert die Mandanten.</li>
   <li>Die <b>Projektleitungen der Mandanten</b> informieren alle weiteren Beteiligten (Admins, Teilnehmende).</li>
   <li>Die Admin-Seite <b>„Erscheinungsbild“</b> fällt weg. Der CTA-Button muss im Hero-Inhaltsblock neu gesetzt werden.</li>
