@@ -125,7 +125,7 @@
     <li><b>Immediate mitigation, STZH now and STLU before go-live:</b> make sure no system admin shares an email with an organization admin. Read-only check: <code>rr 'e = Decidim::System::Admin.pluck(:email); pp Decidim::User.where(admin: true, email: e).pluck(:decidim_organization_id, :email)'</code> must print <code>[]</code>; otherwise give the system admin a separate address.</li>
     <li><b>Code fix (both apps):</b> set <code>link_admin_to_system_admins = :disabled</code> <b>and</b> block the action, e.g. an override of <code>Decidim::DecidimAwesome::Admin::ChecksController#system_login</code> that raises <code>ActionController::RoutingError</code> unless <code>DecidimAwesome.enabled?(:link_admin_to_system_admins)</code>. Report upstream to decidim-ice/decidim-module-decidim_awesome.</li>
   </ul>
-  <p><small>Found by reading the module code (<code>app/controllers/decidim/decidim_awesome/admin/checks_controller.rb</code>, <code>app/helpers/decidim/decidim_awesome/admin/system_checker_helpers.rb</code>, <code>lib/decidim/decidim_awesome/awesome.rb</code>); not reproduced in a browser.</small></p>
+  <p><b>Reproduced</b> in an integration test (<code>test/integration/awesome_system_login_test.rb</code>): with <code>:disabled</code> set but without the override, the POST redirects an org admin into <code>/system</code>. <b>Fixed on this branch</b> by <code>app/overrides/decidim_awesome/admin/checks_controller_override.rb</code> (404 unless the setting is enabled); the same test now passes. STZH: same override on its own branch.</p>
 </div>
 
 <h2>1. Ticket scope (#228)</h2>

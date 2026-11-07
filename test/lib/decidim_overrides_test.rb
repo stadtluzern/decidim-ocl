@@ -69,6 +69,12 @@ DECIDIM_OVERRIDE_CHECKS = {
       methods: { 'Decidim::ApplicationMailer#set_from' => 'adbeafe13e864733c3252b1616a6a161' }
     }
   },
+  'app/overrides/decidim_awesome/admin/checks_controller_override.rb' => {
+    description: 'Blocks decidim_awesome passwordless /system login unless link_admin_to_system_admins is enabled',
+    targets: {
+      methods: { 'Decidim::DecidimAwesome::Admin::ChecksController#system_login' => '838073aa6251b62b0906b2b09ec4489d' }
+    }
+  },
   'app/overrides/map/provider/autocomplete/osm_override.rb' => {
     description: 'Osm autocomplete builder with configurable map config and URL',
     targets: {
