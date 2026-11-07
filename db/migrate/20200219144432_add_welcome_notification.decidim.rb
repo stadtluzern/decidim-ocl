@@ -1,6 +1,7 @@
 # frozen_string_literal: true
-# This migration comes from decidim (originally 20181029121244)
 
+# This migration comes from decidim (originally 20181029121244)
+# This file has been modified by `decidim upgrade:migrations` task on 2026-11-07 21:56:36 UTC
 class AddWelcomeNotification < ActiveRecord::Migration[5.2]
   def change
     change_table :decidim_organizations do |t|

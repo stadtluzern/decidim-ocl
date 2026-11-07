@@ -1,23 +1,15 @@
 # frozen_string_literal: true
-# This migration comes from decidim_templates (originally 20221006055954)
 
+# This migration comes from decidim_templates (originally 20221006055954)
+# This file has been modified by `decidim upgrade:migrations` task on 2026-11-07 21:56:37 UTC
 class AddFieldValuesAndTargetToDecidimTemplates < ActiveRecord::Migration[6.0]
   class Template < ApplicationRecord
     self.table_name = :decidim_templates_templates
   end
 
   def change
-    # This migration was modified because we already had the field_values and target columns
-    # from an old migration in the decidim_reporting_proposals module. In that module, the migrations
-    # have since been deleted, but in our databases the columns are still present.
-    # So the most realistic solution which works both in development and production is to
-    # add the conditional unless here.
-    unless ActiveRecord::Base.connection.column_exists?(:decidim_templates_templates, :field_values)
-      add_column :decidim_templates_templates, :field_values, :json, default: {}
-    end
-    unless ActiveRecord::Base.connection.column_exists?(:decidim_templates_templates, :target)
-      add_column :decidim_templates_templates, :target, :string
-    end
+    add_column :decidim_templates_templates, :field_values, :json, default: {}
+    add_column :decidim_templates_templates, :target, :string
 
     reversible do |direction|
       direction.up do

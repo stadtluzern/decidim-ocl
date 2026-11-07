@@ -2,8 +2,8 @@
 
 # DeepL Translation service configuration
 DeepL.configure do |config|
-  config.auth_key = Rails.application.secrets.translator[:secret_key]
-  config.host = Rails.application.secrets.translator[:endpoint_url]
+  config.auth_key = Decidim::Env.new('TRANSLATOR_SECRET_KEY', 'please-set-the-deepl-key-as-env-var').to_s
+  config.host = Decidim::Env.new('TRANSLATOR_ENDPOINT_URL', 'https://api.deepl.com').to_s
 end
 
 # Need to reset cached values inside the deepl client library because we

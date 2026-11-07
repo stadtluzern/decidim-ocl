@@ -96,6 +96,22 @@ search:
 # ignore_missing:
 # - 'errors.messages.{accepted,blank,invalid,too_short,too_long}'
 # - '{devise,simple_form}.*'
+## Keys provided by Decidim gem locales (en+de), not repeated in this app's locale files:
+ignore_missing:
+- 'decidim.admin.actions.actions_label'
+- 'decidim.admin.models.initiatives_committee_member.fields.actions'
+- 'decidim.initiatives.admin.committee_requests.index.invite_to_committee_help'
+- 'decidim.initiatives.create_initiative.share_committee_link.invite_to_committee_help_2'
+- 'decidim.initiatives.create_initiative.share_committee_link.more_information'
+- 'decidim.initiatives.form.add_image'
+- 'decidim.initiatives.form.edit_attachments'
+- 'decidim.initiatives.form.edit_image'
+- 'decidim.initiatives.form.image_legend'
+- 'decidim.verifications.sms.authorizations.update.expired'
+- 'decidim.verifications.sms.authorizations.update.locked'
+## Keys read by decidim-verifications controllers from the gem, not from app/:
+ignore_unused:
+- 'decidim.verifications.sms.authorizations.update.*'
 
 ## Consider these keys used:
 # ignore_unused:

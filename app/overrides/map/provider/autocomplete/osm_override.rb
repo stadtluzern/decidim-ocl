@@ -4,9 +4,9 @@ Decidim::Map::Provider::Autocomplete::Osm::Builder.class_eval do
   def initialize(template, options)
     @template = template
     @options = options
-    if map_config.present?
-      @options[:url] = autocomplete_url(@options[:url])
-    end
+    return if map_config.blank?
+
+    @options[:url] = autocomplete_url(@options[:url])
   end
 
   private
@@ -20,7 +20,7 @@ Decidim::Map::Provider::Autocomplete::Osm::Builder.class_eval do
   end
 
   def autocomplete_url(url)
-    # TODO handle URLs with query params which are not ordered exactly this way
+    # TODO: handle URLs with query params which are not ordered exactly this way
     regex = /\?lat=([0-9.]*)&lon=([0-9.]*)&bbox=([0-9.]*),([0-9.]*),([0-9.]*),([0-9.]*)/
     regex.match url
     lat = map_config.dig(:default_center, :lat) || Regexp.last_match(1)
@@ -31,10 +31,5 @@ Decidim::Map::Provider::Autocomplete::Osm::Builder.class_eval do
     lat_max = map_config.dig(:map_limits, :lat_max) || Regexp.last_match(6)
 
     url.gsub(regex, "?lat=#{lat}&lon=#{lng}&bbox=#{lng_min},#{lat_min},#{lng_max},#{lat_max}")
-  end
-
-  def replace_if_set(string, regex, value)
-    return string unless value
-    string.gsub(regex, value)
   end
 end

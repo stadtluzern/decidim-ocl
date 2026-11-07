@@ -1,6 +1,6 @@
 <!-- insert_top "#advanced-settings-panel"
      sequence :before => '2_add_map_config_override'
-     original 'bfd07a6dec462af577dcc6a14c11c36c90f3dc60'
+     original '9ceaa0e639f0b46fd349f0ca219328a53f400882'
 -->
 
 <div class="border-2 rounded border-background p-4 form__wrapper mt-8 first:mt-0 last:pb-4">

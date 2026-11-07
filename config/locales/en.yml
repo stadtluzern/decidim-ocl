@@ -39,51 +39,21 @@ en:
     admin:
       actions:
         add: Add
-        configure: Configure
         confirm_destroy: Confirm destroy
         destroy: Destroy
-        duplicate: Duplicate
         edit: Edit
-        new_assembly: New assembly
-        preview: Preview
-      assemblies:
-        index:
-          not_published: Not published
-          private: Private
-          public: Public
-          published: Published
       filters:
         state_eq:
           label: State
       menu:
         clean: Datenbereinigung
       models:
-        assembly:
-          fields:
-            created_at: Created at
-            private: Private
-            promoted: Promoted
-            published: Published
-            title: Title
-        navbar_link:
-          fields:
-            link: Link
-            title: Title
-            weight: Weight
         scope_type:
           fields:
             name: Name
             plural: Plural
-      navbar_links:
-        no_links: No links
       titles:
-        assemblies: Assemblies
-        navbar_links: Navbar links
         scope_types: Scope types
-    assemblies:
-      assembly_members:
-        index:
-          members: Members
     budgets:
       projects:
         budget_summary:
@@ -203,11 +173,6 @@ en:
     follows:
       create:
         participatory_space: Already following %{space_name}
-    groups:
-      form:
-        email_help: Email help
-        name_help: Name help
-        nickname_help: Nickname help
     initiatives:
       admin:
         committee_requests:
@@ -224,12 +189,10 @@ en:
             title: Title
       create_initiative:
         share_committee_link:
-          continue: Continue
           invite_to_committee_help: Invite to committee help
       form:
         add_attachments: Add attachments
         attachment_legend: Attachment legend
-        delete_attachment: Delete attachment
       initiatives_mailer:
         creation_subject: Creation subject
         more_information: More information
@@ -291,23 +254,6 @@ en:
               map_limits: Map Limits
         tenant_type:
           none: None
-    url_aliases:
-      admin:
-        '':
-          'no': 'No'
-          'yes': 'Yes'
-        models:
-          redirect_rule:
-            fields:
-              active: Active
-              destination: Destination
-              id: Id
-              source: Source
-              source_is_case_sensitive: Source is case sensitive
-        redirect_rules:
-          no_redirect_rules: No redirect rules
-        titles:
-          redirect_rules: Redirect rules
   decidim_ocl:
     devise: Devise
     maps:
@@ -353,9 +299,6 @@ en:
   hello: Hello world
   layouts:
     decidim:
-      assembly_navigation:
-        assembly_member_menu_item: Members (%{count})
-        assembly_menu_item: Assembly menu item
       cookie_warning:
         description_html: This site uses cookies. By continuing to browse the site, you agree to our use of cookies. We also use Matomo for anonymous user statistics. Find out more about it %{link}.
         link_label: here
