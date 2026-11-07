@@ -49,8 +49,8 @@ JOB_CLASS = 'h[/job_class: (\S+)/, 1]'
 STEPS = [
   # Phase B
   { id: 'b-0-down', kind: :manual, desc: 'Deployment repo: 0-down on main, ArgoCD sync done, public URLs blocked' },
-  { id: 'b-freeze-check', kind: :cmd, desc: 'Freeze baseline (compare with the phase A note)',
-    cmd: %q(rr 'Decidim::Organization.order(:id).each { |o| puts [o.host, Decidim::Scope.where(organization: o).count, Decidim::Area.where(organization: o).count, Decidim::ParticipatoryProcessType.where(organization: o).count, Decidim::AssembliesType.where(organization: o).count].join(" | ") }; puts "categories: #{Decidim::Category.count}"') },
+  { id: 'b-freeze-check', kind: :cmd, desc: 'Freeze baseline (compare with planning §10.1)',
+    cmd: %q(rr 'cats = Decidim::Category.includes(:participatory_space).map { _1.participatory_space&.decidim_organization_id }.tally; Decidim::Organization.order(:id).each { |o| puts [o.host, Decidim::Scope.where(organization: o).count, Decidim::Area.where(organization: o).count, Decidim::ParticipatoryProcessType.where(organization: o).count, Decidim::AssembliesType.where(organization: o).count, cats.fetch(o.id, 0)].join(" | ") }') },
   { id: 'b-db-dump', kind: :cmd, desc: 'DB dump to dumps/',
     cmd: %q(mkdir -p dumps && f="dumps/stlu-$ENV-$(date +%F-%H%M).sql.gz" && db 'pg_dump -cOx "$POSTGRES_DB"' | gzip > "$f" && ls -lh "$f") },
   { id: 'b-db-restore-test', kind: :manual, desc: 'Dump restored into local PostGIS 14, row counts equal (see guide)' },
