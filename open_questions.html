@@ -135,11 +135,10 @@
 <h2>A. Entscheide, die Umfang und Aufwand bestimmen (bitte zuerst)</h2>
 <table>
   <tr><th>#</th><th>Frage</th><th>Wer</th></tr>
-  <tr><td>A1</td><td><b>decidim-anonymous_codes</b>: Der 0.31-Branch ist laut Pokecode nicht produktionsreif; der 500er bei Umfragen ist noch offen (<a href="https://github.com/openpoke/decidim-module-anonymous_codes/issues/28">anonymous_codes#28</a>). Fix bei Pokecode bestellen, selbst patchen oder Modul entfernen? Welche Mandanten nutzen es?</td><td>Projektleitung / Mandanten</td></tr>
+  <tr><td>A1</td><td><b>decidim-anonymous_codes</b>: Der 0.31-Branch ist laut Pokecode nicht produktionsreif; der 500er bei Umfragen ist noch offen (<a href="https://github.com/openpoke/decidim-module-anonymous_codes/issues/28">anonymous_codes#28</a>). Im Einsatz auf <b>kooperation.winterthur.ch</b> (4 Code-Gruppen) und <b>dialogluzern.ch</b> (1 Code-Gruppe). Werden die Codes dort noch gebraucht? Fix bei Pokecode bestellen, selbst patchen oder Modul entfernen?</td><td>Projektleitung, kooperation.winterthur.ch, dialogluzern.ch</td></tr>
   <tr><td>A2</td><td><b>Taxonomien</b>: Kategorien, Bereiche und Themen werden zu Taxonomien. Liefert jeder Mandant eine Zielstruktur? Wer liefert sie, und bis wann?</td><td>Mandanten</td></tr>
-  <tr><td>A3</td><td><b>Initiativen</b>: Welche Mandanten und Initiativtypen sammeln Unterschriften online, und mit welcher Verifizierung (SMS, Dokumentnummer)? 0.31 erfordert neu konfigurierte Signatur-Workflows. Wer testet das ab?</td><td>Mandanten mit Initiativen</td></tr>
-  <tr><td>A4</td><td><b>Navigation Maps</b> und <b>Reporting Proposals</b>: Werden sie noch gebraucht? In Zürich nicht im Einsatz, also ungetestet.</td><td>Mandanten</td></tr>
   <tr><td>A5</td><td>Aus Zürich übernehmen: <b>Ephemeral Verifications</b> (einmalige Teilnahme ohne Konto, <a href="https://github.com/puzzle/decidim-zuerich/issues/610">zuerich#610</a>) und den Override für <b>DM-Benachrichtigungen</b> (<a href="https://github.com/puzzle/decidim-zuerich/issues/620">zuerich#620</a>)?</td><td>Projektleitung</td></tr>
+  <tr><td>A6</td><td><b>Mandant ocl-prod.appuioapp.ch</b> (alte APPUiO-Adresse, Typ dialogluzern): Er hat noch Daten (Bereiche, Themen, Versammlungstypen). Wird er noch gebraucht? Sonst wird er beim Upgrade nicht mehr migriert und abgenommen.</td><td>Projektleitung, dialogluzern.ch</td></tr>
 </table>
 <h2>B. Termine und Zuständigkeiten</h2>
 <table>
@@ -152,16 +151,19 @@
 <table>
   <tr><th>#</th><th>Frage</th></tr>
   <tr><td>C1</td><td><b>Inaktive Konten automatisch löschen</b> (neu in 0.31; Mails 30 und 7 Tage vor der Löschung): aktivieren? Nach wie vielen Tagen?</td></tr>
-  <tr><td>C2</td><td><b>Benutzergruppen</b> werden abgeschafft. Falls es welche gibt, verschickt Decidim Mails an die Gruppen und an die Mitglieder, darunter ein zufälliges Passwort im Klartext. Mails senden oder unterdrücken?</td></tr>
+  <tr><td>C2</td><td><b>Benutzergruppen</b> werden abgeschafft. Betroffen: <b>deinklima.ch</b> (1 Gruppe, verifiziert), <b>kooperation.winterthur.ch</b> (1) und <b>impulskoeniz.ch</b> (1). Decidim verschickt dabei Mails an die Gruppen und an die Mitglieder, darunter ein zufälliges Passwort im Klartext. Mails senden oder unterdrücken?</td></tr>
   <tr><td>C3</td><td><b>Sperre bei Verifizierungscodes</b> (neu in 0.31.8): nach 5 Fehlversuchen 30 Minuten gesperrt; SMS-Codes laufen nach 10 Minuten ab. Passen diese Werte?</td></tr>
-  <tr><td>C4</td><td><b>Header-Snippets</b>: JavaScript darin (z. B. Matomo, Chat-Widgets) läuft ab dem Upgrade nicht mehr. Welche Mandanten brauchen Tracking, und welches?</td></tr>
-  <tr><td>C5</td><td><b>Sortitions, kollaborative Entwürfe, Meeting-Umfragen</b> sind veraltet und fallen mit 0.32 weg. Werden sie aktiv genutzt?</td></tr>
+  <tr><td>C5</td><td><b>Sortitions, kollaborative Entwürfe, Meeting-Umfragen</b> sind veraltet und fallen mit 0.32 weg. Im Einsatz: Sortitions auf impulskoeniz.ch; kollaborative Entwürfe auf kooperation.winterthur.ch (8); Meeting-Umfragen auf kooperation.winterthur.ch und impulskoeniz.ch. Werden sie dort noch aktiv genutzt?</td></tr>
   <tr><td>C6</td><td><b>Externe API- oder OAuth-Nutzung</b>: Greift jemand von aussen auf die GraphQL-API zu oder meldet sich per OAuth an? Ab 0.31.8 liefert die API keine Inhalte aus privaten oder unveröffentlichten Räumen mehr. Der OAuth-Scope <code>public</code> heisst neu <code>profile</code>.</td></tr>
   <tr><td>C7</td><td><b>Umfragen mit dem „!dropdown!“-Trick</b>: Nutzt jemand diesen Trick? In Zürich ist er nach dem Upgrade defekt (<a href="https://github.com/puzzle/decidim-zuerich/issues/625">zuerich#625</a>).</td></tr>
 </table>
 <h2>D. Zur Kenntnis</h2>
 <ul>
   <li>Das Upgrade erfolgt in <b>einem PROD-Deployment</b> (direkt 0.29 → 0.31.8, wie Zürich).</li>
+  <li><b>gemeinsamer.space</b> ist nicht mehr aktiv und wird beim Upgrade nicht abgenommen.</li>
+  <li><b>Initiativen</b>: Kein aktiver Mandant sammelt Unterschriften online. Neue Signatur-Workflows sind deshalb nicht nötig; Initiativen werden auf INT nur in der Grundfunktion getestet.</li>
+  <li><b>Navigation Maps</b> (dialogluzern.ch) und <b>Reporting Proposals</b> (dialogluzern.ch, impulskoeniz.ch) sind im Einsatz und werden mitgenommen. Beide sind in Zürich nicht im Einsatz und werden auf INT besonders getestet.</li>
+  <li><b>Header-Snippets</b>: Kein Mandant hat JavaScript darin; das Upgrade ändert dort nichts.</li>
   <li><b>SMS-Verifizierungen</b> werden beim Upgrade gelöscht; alle Teilnehmenden müssen sich neu verifizieren. Die Projektleitung informiert die Mandanten.</li>
   <li>Die <b>Projektleitungen der Mandanten</b> informieren alle weiteren Beteiligten (Admins, Teilnehmende).</li>
   <li>Die Admin-Seite <b>„Erscheinungsbild“</b> fällt weg. Der CTA-Button muss im Hero-Inhaltsblock neu gesetzt werden.</li>
@@ -169,7 +171,7 @@
   <li>Die neuen Komponenten <b>Abstimmungen (Elections)</b> und <b>Kollaborative Texte</b> sind danach installiert und können pro Mandant aktiviert werden.</li>
 </ul>
 <label class="notes-toggle"><input type="checkbox" id="d-notes-toggle"> Notizen</label><textarea class="notes" id="d-notes" hidden></textarea>
-<p>Nicht auf dieser Liste, weil wir es selbst klären: die Nutzung von Benutzergruppen, Sortitions und Header-Snippets auf PROD (Datenprüfung Phase A), die Kartenkonfiguration (der HERE-Key ist global per ENV gesetzt, der Provider pro Mandant in der DB; beides prüfen wir selbst), den <code>jwt</code>-Pin, den deface-Fork und die S3-/CSP-Konfiguration.</p>
+<p>Nicht auf dieser Liste, weil wir es selbst klären: die Kartenkonfiguration (kein Mandant nutzt HERE), den <code>jwt</code>-Pin, den deface-Fork und die S3-/CSP-Konfiguration. Die Fragen A3, A4 und C4 der ersten Version sind durch die Datenprüfung auf PROD beantwortet (siehe oben); die übrigen Nummern bleiben unverändert.</p>
 <h2>Antworten sammeln</h2>
 <p>Ausgewählte und ausgefüllte Antworten werden als Markdown zusammengestellt. Unbeantwortete Fragen werden weggelassen; für sie gilt die empfohlene Antwort.</p>
 <button id="collect" class="btn" type="button">Antworten sammeln</button>
@@ -184,8 +186,7 @@
   const OPTIONS = {
     A1: ["*Modul entfernen | Wie Zürich. Kein Zusatzaufwand; die anonymen Codes fallen weg.", "Fix bei Pokecode bestellen | Externe Abhängigkeit, Termin unklar; kann das Upgrade verzögern.", "Selbst patchen | +1–2 PT; der Patch muss danach bei jedem Update nachgezogen werden."],
     A2: ["*1:1-Standardimport | Die bestehenden Kategorien, Bereiche und Themen werden übernommen; danach setzen die Mandanten-Admins die Filter.", "Mandanten liefern eine eigene Zielstruktur | Transformationsskript und Aufwand beim Mandanten. Bitte in den Notizen angeben, wer bis wann liefert."],
-    A3: { multi: true, options: ["*Keine Online-Unterschriften | Kein Zusatzaufwand.", "Online-Unterschrift mit SMS | Signatur-Workflow einrichten und testen; in Zürich nicht getestet.", "Online-Unterschrift mit Dokumentnummer | Signatur-Workflow einrichten und testen; in Zürich nicht getestet."] },
-    A4: ["*Entfernen, falls ungenutzt | Wir prüfen die Nutzung in der Datenbank. Kein Zusatzaufwand.", "Navigation Maps behalten | Mitnehmen + Testaufwand.", "Reporting Proposals behalten | Mitnehmen + Testaufwand.", "Beide behalten | Mitnehmen + Testaufwand für beide."],
+    A6: ["*Nicht mehr gebraucht, ignorieren | Wird nicht migriert und nicht abgenommen; die Daten bleiben bis zu einem späteren Aufräumen in der DB.", "Wird noch gebraucht | Normal migrieren und abnehmen."],
     A5: { multi: true, options: ["*Nichts übernehmen | Nicht Teil des Tickets.", "Ephemeral Verifications übernehmen | Zusätzlicher Aufwand: einmalige Teilnahme ohne Konto.", "DM-Benachrichtigungen übernehmen | Zusätzlicher Aufwand."] },
     B1: ["Vorschlag von Puzzle abwarten | Wir schlagen ein Datum vor, sobald die DEV-Probe durch ist.", "Wir legen das Datum in den Notizen fest"],
     B2: ["Vorschlag von Puzzle abwarten | Wir schlagen ein Datum vor, sobald die DEV-Probe durch ist.", "Wir legen das Datum in den Notizen fest"],
@@ -193,8 +194,7 @@
     C1: ["*Nicht aktivieren | Verhalten wie bisher.", "Aktivieren, 365 Tage | Decidim-Standard. Eine andere Frist bitte in den Notizen."],
     C2: ["*Mails unterdrücken | Nur die Datenmigration; es geht kein Passwort per Mail raus.", "Mails senden | Verhalten von Decidim, inklusive des Klartext-Passworts."],
     C3: ["*Decidim-Standardwerte beibehalten | 5 Fehlversuche, 30 Minuten Sperre, SMS-Code 10 Minuten gültig.", "Andere Werte | Bitte in den Notizen angeben."],
-    C4: ["*Puzzle prüft die DB und meldet | Wir melden die betroffenen Mandanten.", "Kein Tracking nötig", "Matomo weiterhin nötig | Wird über eine feste Integration statt über das Snippet eingebunden."],
-    C5: ["*Weiterlaufen lassen bis 0.32 | Kein Aufwand jetzt.", "Wird nicht genutzt", "Wird genutzt, Ersatz nötig | Bis zum Upgrade auf 0.32 klären."],
+    C5: ["*Weiterlaufen lassen bis 0.32 | Kein Aufwand jetzt.", "Wird nicht mehr genutzt", "Wird genutzt, Ersatz nötig | Bis zum Upgrade auf 0.32 klären."],
     C6: { multi: true, options: ["*Keine externen Nutzer", "Externe API-Nutzer | Diese informieren wir über die neuen API-Einschränkungen.", "Externe OAuth-Anmeldung | Der Scope muss auf profile umgestellt werden."] },
     C7: ["*Wird nicht genutzt", "Wird genutzt | Fix analog zu zuerich#625 nötig."],
   };

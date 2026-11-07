@@ -184,7 +184,7 @@ s3()  { local j; j=$(oc get secret ocp4-s3-storage -o json) || return 1   # aws 
 <p class="todo-title">Checklist: phase A</p>
 <ul class="todo">
   <li>#228: post the effort estimate (planning §9) and the questions from <a href="open_questions.html">open questions</a>: <code>gh issue comment 228 -R decidim-swiss/decidim.swiss --body-file estimate.md</code><textarea data-note></textarea></li>
-  <li>Decisions recorded (open questions A1–A5, B1–B3, C1–C7): link to the #228 comment<textarea data-note></textarea></li>
+  <li>Decisions recorded (open questions A1, A2, A5, A6, B1–B3, C1–C3, C5–C7): link to the #228 comment<textarea data-note></textarea></li>
   <li>Freeze date X and maintenance window agreed with the tenants<textarea data-note></textarea></li>
   <li>Our project lead has informed the tenants' project leads, who pass it on to admins and participants: freeze, maintenance window, SMS re-verification, user group mails, "Appearance" page gone, header snippets without JS, initiative signature workflows</li>
   <li>Target taxonomy plan received from every tenant (list missing ones)<textarea data-note></textarea></li>
@@ -301,7 +301,7 @@ s3()  { local j; j=$(oc get secret ocp4-s3-storage -o json) || return 1   # aws 
   <li>Smoke test per tenant: log in</li>
   <li>Smoke test per tenant: processes and proposals with taxonomy filters</li>
   <li>Smoke test per tenant: fill in a survey; confirmation mail queued: <code>rr 'p Delayed::Job.where(queue: "mailers").count'</code></li>
-  <li>Smoke test per tenant: initiative signature (where used)</li>
+  <li>Smoke test per tenant: initiatives basic function (offline signatures only; gemeinsamer.space is inactive and skipped)</li>
   <li>Smoke test per tenant: upload an attachment, run an export</li>
   <li>Smoke test per tenant (0.31.8 permissions): a private space as a member and as a non-member, a space admin in admin, an anonymous survey, a reporting_proposals component (where used)</li>
   <li>(INT only) Permission matrix from planning §5.6, plus SMS: wrong code ×5 → "locked", and the <code>de</code>/<code>it</code> texts are translated</li>

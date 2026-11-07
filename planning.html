@@ -195,18 +195,18 @@
   <tr><th>Gem</th><th>decidim.swiss today</th><th>0.31 source</th><th>Status</th></tr>
   <tr><td>decidim (+ conferences, initiatives, proposals, templates)</td><td>openpoke <code>0.29-backports</code> @ <code>13fd72f</code></td><td>openpoke <code>0.31-backports</code> (0.31.8). Zürich pins with <code>glob: 'decidim-xyz/*.gemspec'</code></td><td class="ok">ok</td></tr>
   <tr><td>decidim-elections, decidim-collaborative_texts</td><td>–</td><td>openpoke <code>0.31-backports</code></td><td class="ok">new</td></tr>
-  <tr><td>decidim-initiatives</td><td>in use (cron jobs, view and form overrides)</td><td>core</td><td class="mid">Not used in Zürich, so untested. 0.31 changes the signature workflow (release notes §5.8 "Initiatives digital signature process change").</td></tr>
+  <tr><td>decidim-initiatives</td><td>in use (cron jobs, view and form overrides)</td><td>core</td><td class="mid">Not used in Zürich, so untested. 0.31 changes the signature workflow (release notes §5.8), but no active tenant signs online (§10.1), so no new signature workflow is needed; basic function tested on INT.</td></tr>
   <tr><td>decidim-decidim_awesome</td><td><code>release/0.29-stable</code> @ <code>a9f2077</code></td><td>Zürich: <code>main</code> @ <code>362ca4c</code></td><td class="ok">ok</td></tr>
   <tr><td>decidim-term_customizer</td><td>OpenSourcePolitics <code>master</code> @ <code>3da4973</code></td><td>Zürich: <b>openpoke</b> <code>main</code> @ <code>8cd8baf</code> (openpoke also has <code>release/0.31-stable</code>)</td><td class="ok">ok (switch repo)</td></tr>
   <tr><td>decidim-participatory_documents</td><td><code>main</code> @ <code>21501f8</code></td><td><code>upgrade-0.31</code> @ <code>5d8bde9</code></td><td class="ok">ok</td></tr>
   <tr><td>decidim-antivirus</td><td>puzzle <code>master</code> @ <code>bc3cb4d</code></td><td>puzzle <code>main</code> @ <code>76a22d1</code></td><td class="ok">ok</td></tr>
   <tr><td>decidim-survey_multiple_answers</td><td><code>bump/0.29</code></td><td><code>bump/0.31</code> @ <code>95eba87</code></td><td class="ok">ok</td></tr>
   <tr><td>decidim-guest_meeting_registration</td><td><code>bump/module_to_0.29</code></td><td><code>bump/0.31</code> @ <code>f0c5e2c</code></td><td class="ok">ok</td></tr>
-  <tr><td>decidim-navigation_maps</td><td>Platoniq <code>release/0.29-stable</code></td><td>Platoniq <code>release/0.31-stable</code> (v1.8.0, <code>&gt;= 0.31, &lt; 0.32</code>)</td><td class="mid">Exists, but not used in Zürich, so untested</td></tr>
-  <tr><td>decidim-reporting_proposals</td><td>openpoke <code>main</code> @ <code>cbbb29c</code></td><td>openpoke <code>main</code> is now v0.8.0 (<code>&gt;= 0.31, &lt; 0.32</code>, last commit 2026-10-28)</td><td class="mid">Exists, but not used in Zürich, so untested</td></tr>
-  <tr><td>decidim-anonymous_codes</td><td>openpoke <code>main</code> @ <code>8323978</code></td><td>Only branch <code>upgrade-0.31</code> exists. <a href="https://github.com/openpoke/decidim-module-anonymous_codes/issues/28">anonymous_codes#28</a> (500 on surveys) is <b>still open</b>.</td><td class="bad">Blocker / decision needed</td></tr>
+  <tr><td>decidim-navigation_maps</td><td>Platoniq <code>release/0.29-stable</code></td><td>Platoniq <code>release/0.31-stable</code> (v1.8.0, <code>&gt;= 0.31, &lt; 0.32</code>)</td><td class="mid">In use (dialogluzern.ch, 2 blueprints), so it stays. Not used in Zürich, so untested.</td></tr>
+  <tr><td>decidim-reporting_proposals</td><td>openpoke <code>main</code> @ <code>cbbb29c</code></td><td>openpoke <code>main</code> is now v0.8.0 (<code>&gt;= 0.31, &lt; 0.32</code>, last commit 2026-10-28)</td><td class="mid">In use (dialogluzern.ch, impulskoeniz.ch), so it stays. Not used in Zürich, so untested. On 0.29 PROD it already logs an error at boot when including <code>ParticipatorySpaceUserRoleOverride</code> into <code>Decidim::Initiative</code> (no <code>user_roles</code>); check on 0.31.</td></tr>
+  <tr><td>decidim-anonymous_codes</td><td>openpoke <code>main</code> @ <code>8323978</code></td><td>Only branch <code>upgrade-0.31</code> exists. <a href="https://github.com/openpoke/decidim-module-anonymous_codes/issues/28">anonymous_codes#28</a> (500 on surveys) is <b>still open</b>.</td><td class="bad">Blocker / decision needed. In use: kooperation.winterthur.ch (4 code groups), dialogluzern.ch (1).</td></tr>
   <tr><td>deface (froger <code>fix/js-overrides</code>)</td><td>present, with a comment saying it is for decidim-geo</td><td>Zürich keeps it</td><td class="mid">decidim.swiss has no Geo; could probably go back to upstream deface [inference]</td></tr>
-  <tr><td>decidim-sortitions</td><td>part of the decidim meta gem</td><td>Deprecated in 0.31 (release notes §2.4)</td><td class="mid">check usage</td></tr>
+  <tr><td>decidim-sortitions</td><td>part of the decidim meta gem</td><td>Deprecated in 0.31 (release notes §2.4)</td><td class="mid">In use on impulskoeniz.ch (§10.1); stays until 0.32</td></tr>
 </table>
 <div class="block"><b>anonymous_codes:</b> decidim.swiss uses this module (it was enabled through <a href="https://github.com/decidim-swiss/decidim.swiss/issues/159">#159</a>). Zürich removed it because Pokecode said the 0.31 branch was not production-ready and the surveys 500 has not been fixed. Before starting, the client needs to decide: get a fix from Pokecode, patch it ourselves (<code>allow_answers?</code> → <code>allow_responses?</code>), or remove the module.</div>
 
@@ -411,24 +411,24 @@ bin/rails decidim:upgrade:user_groups:remove       # sends mails, see §5.2
 <h2>9. Basis for the effort estimate</h2>
 <p>Timeline in Zürich: development 2026-04-01 → 2026-04-08 (core + modules on DEV), then about 4 months of testing and bugfixing. That period was dominated by Decidim Geo (#594, #582, #627) and by external dependencies (Pokecode, octree). Without Geo, roughly 10 follow-up issues remained (#595, #606, #607, #612, #614, #623, #633, #636, #638, digest).</p>
 <h3>9.1 Optimized estimate with budget split (current)</h3>
-<p>Budget left for the upgrade: about 10 PD. Overrides stay in the upgrade budget; config and pipeline work is booked to <b>maintenance</b>. Assumes the recommended answers in the <a href="open_questions.html">open questions</a> (anonymous_codes removed, default taxonomy import with plan edits only on request, unused modules dropped) and the decided single PROD deployment.</p>
+<p>Budget left for the upgrade: about 10 PD. Overrides stay in the upgrade budget; config and pipeline work is booked to <b>maintenance</b>. Assumes the recommended answers in the <a href="open_questions.html">open questions</a> (anonymous_codes removed, default taxonomy import with plan edits only on request) and the decided single PROD deployment. The PROD data (§10.1) means navigation_maps and reporting_proposals stay.</p>
 <table>
   <tr><th>Work package</th><th>Budget</th><th>Estimate [inference]</th><th>How</th></tr>
   <tr><td>Core: Gemfile/backports, <code>decidim:upgrade</code>, migrations, Zürich code ports</td><td>Upgrade</td><td>1–1.5 PD</td><td>Port Zürich's files instead of working through the release notes</td></tr>
-  <tr><td>Modules</td><td>Upgrade</td><td>1–1.5 PD</td><td>anonymous_codes removed (as in Zürich); navigation_maps / reporting_proposals dropped if unused</td></tr>
+  <tr><td>Modules</td><td>Upgrade</td><td>1.5–2 PD</td><td>anonymous_codes removed (as in Zürich); navigation_maps and reporting_proposals are in use and stay (untested in Zürich)</td></tr>
   <tr><td>Overrides</td><td>Upgrade</td><td>1–1.5 PD</td><td>Delete the dead ones (§6), port the rest, take Zürich's #636 fix</td></tr>
   <tr><td>Remove fixes, SMS gateway, cron jobs</td><td>Upgrade</td><td>0.5 PD</td><td>Cherry-picks of Zürich <code>3967be1</code>, <code>97933a2</code>, <code>e93c0f5</code></td></tr>
   <tr><td>Taxonomies</td><td>Upgrade</td><td>0.5–1 PD</td><td>Default import; transform script only if a tenant asks</td></tr>
   <tr><td>Deployment execution DEV/INT/PROD</td><td>Upgrade</td><td>0.5–1 PD</td><td>Runbook and checklists already exist</td></tr>
   <tr><td>0.31.8 permission matrix on INT (§5.6)</td><td>Upgrade</td><td>0.5–1 PD</td><td>New in 0.31.8 and not covered by Zürich (0.31.6). Fixes usually live in module permission classes</td></tr>
   <tr><td>Bugfix buffer</td><td>Upgrade</td><td>2–3 PD</td><td>Zürich's follow-up bugs (#595, #606, #612, #614, #633, #636, #638) are fixed upfront. These fixes were made on 0.31.6, so they don't cover permission regressions from 0.31.8</td></tr>
-  <tr><th>Total upgrade</th><td></td><th>≈ 7–11 PD</th><td>The upper end exceeds the ~10 PD budget because of 0.31.8</td></tr>
+  <tr><th>Total upgrade</th><td></td><th>≈ 7.5–11.5 PD</th><td>The upper end exceeds the ~10 PD budget because of 0.31.8 and the two modules that stay</td></tr>
   <tr><td>Switch from secrets to ENV: drop <code>secrets.yml</code>, trim <code>decidim.rb</code>, port custom keys (DeepL, maps, OIDC, etherpad, initiatives), <code>production.rb</code> and <code>storage.yml</code> from the template</td><td>Maintenance</td><td>0.5–1 PD</td><td>Pod ENV already exists (<code>base/environments.yaml</code>); can be tested on 0.29 ahead of the upgrade [inference]</td></tr>
   <tr><td>Pipeline: Dockerfile (Ruby 3.3.4, Node 22, yarn), <code>.tool-versions</code>, GitHub workflows</td><td>Maintenance</td><td>0.5 PD</td><td>Zürich <code>801bac9</code>, <code>6f6d258</code>; ships together with the upgrade</td></tr>
   <tr><td>Deployment repo: new ENV variables, <code>0-down</code>/<code>1-deploy</code>/<code>2-up</code> commits and tags, <code>data:migrate</code> init container follow-up</td><td>Maintenance</td><td>0.5 PD</td><td>Config only</td></tr>
   <tr><th>Total maintenance</th><td></td><th>≈ 1.5–2 PD</th><td></td></tr>
 </table>
-<p>Still worth doing first: the phase A data checks (½ PD), since they settle initiatives (online signatures) and user groups. Budget breakers: keeping anonymous_codes, online initiative signatures with custom verification, custom taxonomy restructuring.</p>
+<p>Budget breakers: keeping anonymous_codes (used on kooperation.winterthur.ch and dialogluzern.ch), custom taxonomy restructuring, problems with navigation_maps / reporting_proposals on 0.31. Online initiative signatures are no longer a risk (§10.1).</p>
 
 <details>
 <summary>9.2 Original estimate (before optimization)</summary>
@@ -453,7 +453,23 @@ bin/rails decidim:upgrade:user_groups:remove       # sends mails, see §5.2
   <li><b>Communication</b>: our project lead informs the tenants' project leads, who pass everything on to their admins and participants. This includes the SMS re-verification (all SMS authorizations are deleted), the freeze, the maintenance window, user group mails, the removed "Appearance" page and header snippets without JS.</li>
   <li><b>Upgrade documents in the app (temporary)</b>: <code>UpgradeDocsController</code> + route <code>get 'upgrade/:doc'</code> serve <code>planning.html</code>, <code>upgrade_steps.html</code> and <code>open_questions.html</code> from the repo root at <code>/upgrade/&lt;doc&gt;.html</code> on every tenant, only to org admins after the normal Decidim login (others: login redirect or 404). <b>Remove the controller, the route and the three files before the upgrade is closed</b> (phase D checklist).</li>
 </ul>
-<p>We settle these ourselves (they are not on that list): whether the froger/deface fork is still needed without Geo, the <code>jwt</code> pin, the map configuration (HERE key and static provider in ENV, dynamic provider per tenant; see §5.3), and the phase A data checks (user groups, sortitions, collaborative drafts, meeting polls, header snippets, initiative types).</p>
+<p>We settle these ourselves (they are not on that list): whether the froger/deface fork is still needed without Geo, and the <code>jwt</code> pin.</p>
+
+<h3>10.1 Phase A data (PROD, 2026-11-07, <code>scripts/phase_a_checks.rb</code>)</h3>
+<p><b>gemeinsamer.space</b> (org 8) is no longer active and is ignored: no taxonomy plan, no acceptance test, and its data doesn't drive decisions.</p>
+<table>
+  <tr><th>Topic</th><th>Result (active tenants)</th><th>Consequence</th></tr>
+  <tr><td>Tenants</td><td>1 <code>ocl-prod.appuioapp.ch</code> (old APPUiO host), 2 dialogluzern.ch, 7 deinklima.ch, 9 kooperation.winterthur.ch, 10 impulskoeniz.ch</td><td>Whether tenant 1 is still needed is question A6</td></tr>
+  <tr><td>anonymous_codes</td><td>kooperation.winterthur.ch 4 code groups, dialogluzern.ch 1</td><td>A1 now names both tenants</td></tr>
+  <tr><td>Initiative types not offline</td><td>Only gemeinsamer.space (inactive)</td><td>No signature workflow needed; question A3 dropped</td></tr>
+  <tr><td>navigation_maps / reporting_proposals</td><td>dialogluzern.ch 2 blueprints / dialogluzern.ch and impulskoeniz.ch 2 components each</td><td>Both stay; question A4 dropped; +0.5 PD modules (§9.1)</td></tr>
+  <tr><td>User groups</td><td>deinklima.ch 1 (verified), kooperation.winterthur.ch 1, impulskoeniz.ch 1</td><td>C2 names the tenants</td></tr>
+  <tr><td>Header snippets with <code>&lt;script</code></td><td>none</td><td>Question C4 dropped</td></tr>
+  <tr><td>Sortitions / collaborative drafts / meeting polls</td><td>impulskoeniz.ch / kooperation.winterthur.ch 8 / kooperation.winterthur.ch, impulskoeniz.ch</td><td>C5 names the tenants; they stay until 0.32</td></tr>
+  <tr><td>Maps</td><td>No tenant has a <code>map_config</code> provider; no MAPS/HERE ENV variable</td><td>HERE not used; the v3 URL change (§5.3) is irrelevant</td></tr>
+  <tr><td>Delayed jobs</td><td>26 pending, 0 failed; 11 cron rows including <code>ComputeMetricsJob</code></td><td>Covered: B4 deletes all cron rows, they are recreated without <code>ComputeMetricsJob</code> (phase C check)</td></tr>
+  <tr><td>Freeze baseline</td><td>scopes / areas / assembly types: 1 → 3/26/2, 2 → 18/22/7, 7 → 7/8/8, 9 → 13/0/0, 10 → 13/15/6; process types 0 everywhere; 128 categories in total (including gemeinsamer.space)</td><td>Reference for the freeze check before the deployment</td></tr>
+</table>
 </main>
 </div>
 <script>
