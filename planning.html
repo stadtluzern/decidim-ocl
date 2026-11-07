@@ -459,12 +459,12 @@ bin/rails decidim:upgrade:user_groups:remove       # sends mails, see §5.2
 <p><b>gemeinsamer.space</b> (org 8) and <b>ocl-prod.appuioapp.ch</b> (org 1, old APPUiO host) are no longer active and are ignored: no taxonomy plan, no acceptance test, and their data doesn't drive decisions. Active tenants: dialogluzern.ch, deinklima.ch, kooperation.winterthur.ch, impulskoeniz.ch.</p>
 <table>
   <tr><th>Topic</th><th>Result (active tenants)</th><th>Consequence</th></tr>
-  <tr><td>Tenants</td><td>1 <code>ocl-prod.appuioapp.ch</code> (inactive), 2 dialogluzern.ch, 7 deinklima.ch, 8 gemeinsamer.space (inactive), 9 kooperation.winterthur.ch, 10 impulskoeniz.ch</td><td>4 active tenants to migrate and test</td></tr>
+  <tr><td>Tenants</td><td>1 <code>ocl-prod.appuioapp.ch</code> (inactive), 2 dialogluzern.ch, 7 deinklima.ch, 8 gemeinsamer.space (inactive), 9 kooperation.winterthur.ch, 10 impulskoeniz.ch</td><td>4 active tenants to migrate and test; question A6 marked as resolved</td></tr>
   <tr><td>anonymous_codes</td><td>kooperation.winterthur.ch 4 code groups, dialogluzern.ch 1</td><td>A1 now names both tenants</td></tr>
-  <tr><td>Initiative types not offline</td><td>Only gemeinsamer.space (inactive)</td><td>No signature workflow needed; question A3 dropped</td></tr>
-  <tr><td>navigation_maps / reporting_proposals</td><td>dialogluzern.ch 2 blueprints / dialogluzern.ch and impulskoeniz.ch 2 components each</td><td>Both stay; question A4 dropped; +0.5 PD modules (§9.1)</td></tr>
+  <tr><td>Initiative types not offline</td><td>Only gemeinsamer.space (inactive)</td><td>No signature workflow needed; question A3 marked as resolved</td></tr>
+  <tr><td>navigation_maps / reporting_proposals</td><td>dialogluzern.ch 2 blueprints / dialogluzern.ch and impulskoeniz.ch 2 components each</td><td>Both stay; question A4 marked as resolved; +0.5 PD modules (§9.1)</td></tr>
   <tr><td>User groups</td><td>deinklima.ch 1 (verified), kooperation.winterthur.ch 1, impulskoeniz.ch 1</td><td>C2 names the tenants</td></tr>
-  <tr><td>Header snippets with <code>&lt;script</code></td><td>none</td><td>Question C4 dropped</td></tr>
+  <tr><td>Header snippets with <code>&lt;script</code></td><td>none</td><td>Question C4 marked as resolved</td></tr>
   <tr><td>Sortitions / collaborative drafts / meeting polls</td><td>impulskoeniz.ch / kooperation.winterthur.ch 8 / kooperation.winterthur.ch, impulskoeniz.ch</td><td>C5 names the tenants; they stay until 0.32</td></tr>
   <tr><td>Maps</td><td>No tenant has a <code>map_config</code> provider; no MAPS/HERE ENV variable</td><td>HERE not used; the v3 URL change (§5.3) is irrelevant</td></tr>
   <tr><td>Delayed jobs</td><td>26 pending, 0 failed; 11 cron rows including <code>ComputeMetricsJob</code></td><td>Covered: B4 deletes all cron rows, they are recreated without <code>ComputeMetricsJob</code> (phase C check)</td></tr>
