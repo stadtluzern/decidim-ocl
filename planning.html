@@ -115,6 +115,19 @@
 <div class="layout">
 <nav id="toc"><p class="title">Contents</p></nav>
 <main>
+<h2>⛔ Security warning: decidim_awesome passwordless /system login (affects STZH and STLU)</h2>
+<div class="block">
+  <p><b>decidim_awesome 0.14 (the Decidim 0.31 versions: Zürich's <code>362ca4c</code>, our <code>7470edb</code>) lets an organization admin log into <code>/system</code> as the system admin with the same email address, without the system admin's password.</b> One click on the button of awesome's maintenance "checks" page (<code>POST /admin/decidim_awesome/maintenance/checks</code> → <code>ChecksController#system_login</code> → <code>sign_in(:admin, Decidim::System::Admin.find_by(email: current_user.email))</code>). <code>/system</code> controls every tenant: organization settings, SMTP, secrets, admins.</p>
+  <ul>
+    <li><b>On by default:</b> <code>config.link_admin_to_system_admins</code> defaults to <code>true</code>. Zürich has no awesome initializer, so <b>stzh-prod, which runs 0.31, has it enabled now</b>.</li>
+    <li><b><code>:disabled</code> is NOT enough:</b> the setting only hides the button (<code>system_admin?</code> in <code>SystemCheckerHelpers</code>). The controller action does not check it, so a hand-made POST by an org admin with a matching email still logs in. Our <code>config/initializers/decidim_awesome.rb</code> therefore does not close the hole on its own.</li>
+    <li><b>Who can exploit it:</b> anyone who controls an org-admin account whose email equals a system-admin email: a person with both roles, or an attacker who took over such an org-admin account (org-admin logins are usually weaker protected than <code>/system</code>).</li>
+    <li><b>Immediate mitigation, STZH now and STLU before go-live:</b> make sure no system admin shares an email with an organization admin. Read-only check: <code>rr 'e = Decidim::System::Admin.pluck(:email); pp Decidim::User.where(admin: true, email: e).pluck(:decidim_organization_id, :email)'</code> must print <code>[]</code>; otherwise give the system admin a separate address.</li>
+    <li><b>Code fix (both apps):</b> set <code>link_admin_to_system_admins = :disabled</code> <b>and</b> block the action, e.g. an override of <code>Decidim::DecidimAwesome::Admin::ChecksController#system_login</code> that raises <code>ActionController::RoutingError</code> unless <code>DecidimAwesome.enabled?(:link_admin_to_system_admins)</code>. Report upstream to decidim-ice/decidim-module-decidim_awesome.</li>
+  </ul>
+  <p><small>Found by reading the module code (<code>app/controllers/decidim/decidim_awesome/admin/checks_controller.rb</code>, <code>app/helpers/decidim/decidim_awesome/admin/system_checker_helpers.rb</code>, <code>lib/decidim/decidim_awesome/awesome.rb</code>); not reproduced in a browser.</small></p>
+</div>
+
 <h2>1. Ticket scope (#228)</h2>
 <ul>
   <li>Upgrade to Decidim <b>0.31.8</b> (ticket said 0.31.7; decided to target 0.31.8). <code>openpoke/decidim@0.31-backports</code> (HEAD <code>2f36d58</code>) is <code>v0.31.8</code> + 66 commits, 0 behind, version <code>0.31.8</code>. Only 0.31.8 contains the survey display-conditions fix (<code>inverse_of: :condition_question</code> absent in v0.31.7, see §6), and it carries 5 security advisories plus the verification hardening.</li>
@@ -196,7 +209,7 @@
   <tr><td>decidim (+ conferences, initiatives, proposals, templates)</td><td>openpoke <code>0.29-backports</code> @ <code>13fd72f</code></td><td>openpoke <code>0.31-backports</code> (0.31.8). Zürich pins with <code>glob: 'decidim-xyz/*.gemspec'</code></td><td class="ok">ok</td></tr>
   <tr><td>decidim-elections, decidim-collaborative_texts</td><td>–</td><td>openpoke <code>0.31-backports</code></td><td class="ok">new</td></tr>
   <tr><td>decidim-initiatives</td><td>in use (cron jobs, view and form overrides)</td><td>core</td><td class="mid">Not used in Zürich, so untested. 0.31 changes the signature workflow (release notes §5.8), but no active tenant signs online (§10.1), so no new signature workflow is needed; basic function tested on INT.</td></tr>
-  <tr><td>decidim-decidim_awesome</td><td><code>release/0.29-stable</code> @ <code>a9f2077</code></td><td><code>release/0.31-stable</code> @ <code>7470edb</code> (Zürich: <code>main</code> @ <code>362ca4c</code>)</td><td class="ok">ok. New default <code>link_admin_to_system_admins</code> (org admin with a system-admin email logs into <code>/system</code> without password) is set to <code>:disabled</code> in <code>config/initializers/decidim_awesome.rb</code>.</td></tr>
+  <tr><td>decidim-decidim_awesome</td><td><code>release/0.29-stable</code> @ <code>a9f2077</code></td><td><code>release/0.31-stable</code> @ <code>7470edb</code> (Zürich: <code>main</code> @ <code>362ca4c</code>)</td><td class="ok">ok. New default <code>link_admin_to_system_admins</code> (org admin with a system-admin email logs into <code>/system</code> without password) is set to <code>:disabled</code> in <code>config/initializers/decidim_awesome.rb</code>, <b>which only hides the button; see the security warning at the top</b>.</td></tr>
   <tr><td>decidim-term_customizer</td><td>OpenSourcePolitics <code>master</code> @ <code>3da4973</code></td><td>Zürich: <b>openpoke</b> <code>main</code> @ <code>8cd8baf</code> (openpoke also has <code>release/0.31-stable</code>)</td><td class="ok">ok (switch repo)</td></tr>
   <tr><td>decidim-participatory_documents</td><td><code>main</code> @ <code>21501f8</code></td><td><code>upgrade-0.31</code> @ <code>5d8bde9</code></td><td class="ok">ok</td></tr>
   <tr><td>decidim-antivirus</td><td>puzzle <code>master</code> @ <code>bc3cb4d</code></td><td>puzzle <code>main</code> @ <code>76a22d1</code></td><td class="ok">ok</td></tr>

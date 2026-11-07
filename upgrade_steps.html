@@ -124,6 +124,9 @@
 <div class="layout">
 <nav id="toc"><p class="title">Contents</p></nav>
 <main>
+<h2>⛔ Security warning: decidim_awesome passwordless /system login</h2>
+<div class="block"><b>decidim_awesome 0.14 lets an org admin log into <code>/system</code> as the system admin with the same email, without a password, and <code>link_admin_to_system_admins = :disabled</code> only hides the button.</b> Affects stzh-prod today and stlu from the upgrade on. Before any 0.31 deployment: no system-admin email may also be an org-admin email (<code>rr 'e = Decidim::System::Admin.pluck(:email); pp Decidim::User.where(admin: true, email: e).pluck(:decidim_organization_id, :email)'</code> → <code>[]</code>), and the action must be blocked in code. Details: <a href="planning.html#security-warning-decidim-awesome-passwordless-system-login-affects-stzh-and-stlu">planning</a>.</div>
+
 <h2>1. How the deployment works today (relevant to the steps)</h2>
 <p>Covers both the code repo (<code>stadtluzern/decidim-ocl</code>, branch <code>task/228-upgrade_decidim_to_v0.31.8</code>) and the deployment repo (<code>decidim/deployment</code>, ArgoCD, overlays <code>pitc-decidim-stlu-{dev,int,prod}</code>). One PROD deployment, directly 0.29.7 → 0.31.8. The same guide is used on INT and then on PROD. References like <a href="planning.html#5-5-task-names-checked-against-the-source-code">planning §5.5</a> point to <a href="planning.html">planning.html</a>.</p>
 
