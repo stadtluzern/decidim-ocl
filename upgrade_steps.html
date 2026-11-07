@@ -219,6 +219,7 @@ s3()  { local j; j=$(oc get secret ocp4-s3-storage -o json) || return 1   # aws 
   <li>DEV: <code>oc exec -c rails "$(pod)" -- printenv | grep -E '^(SMTP_ADDRESS|OCP4_S3_BUCKET)='</code> shows the mail catcher and a non-PROD bucket</li>
   <li>DEV: upgrade documents behind login: <code>/upgrade/open_questions.html</code> logged out → redirect to login; as a participant → 404; as an org admin → page loads, links to planning/steps work, "Antworten sammeln" works (download + copy)<textarea data-note></textarea></li>
   <li>DEV: full phase C run through, timings per step recorded<textarea data-note></textarea></li>
+  <li>DEV: nothing skipped by the direct jump (planning §5.5): <code>r db:migrate:status | grep -c '^\s*down'</code> and <code>r data:migrate:status | grep -c '^\s*down'</code> return 0; schema diff against a fresh 0.31.8 install is empty apart from column order<textarea data-note></textarea></li>
   <li>#228: DEV rehearsal done, findings and timings posted: <code>gh issue comment 228 -R decidim-swiss/decidim.swiss --body-file dev-rehearsal.md</code></li>
   <li>INT: phases B–D run through with the exact tags, images and this guide (see the INT item at the end of phase C)</li>
   <li>Go for PROD and PROD date given by the client; #228: date and maintenance window posted<textarea data-note></textarea></li>

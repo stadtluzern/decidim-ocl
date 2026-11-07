@@ -347,6 +347,13 @@ bin/rails decidim_surveys:upgrade:fix_survey_permissions
 bin/rails decidim:upgrade:user_groups:remove       # sends mails, see §5.2
 # skipped: decidim:metrics:rebuild, decidim:taxonomies:update_all_metrics (no longer exist)</pre>
 <div class="warn">Before each deployment, check the final list on the upgraded image with <code>bin/rails -AT | grep -E 'taxonomies|upgrade|revoke'</code>. That is the only check that also catches dynamically generated tasks such as <code>revoke:sms</code>, and tasks contributed by modules.</div>
+<p><b>Direct jump 0.29.7 → 0.31.8: completeness checks.</b></p>
+<ul>
+  <li><b>Migrations (checked):</b> every core migration and data migration of v0.29.7 and v0.30.9 is still in v0.31.8 (633 / 676 / 735 files in <code>decidim-*/db/{migrate,data}</code>; none dropped). 102 are new since 0.29.7 and run in timestamp order, so the schema passes through the 0.30 state.</li>
+  <li><b>Upgrade tasks (checked):</b> diff of all task names in <code>decidim-*/lib/tasks</code> between v0.30.9 and v0.31.8. Missing in 0.31.8: <code>update_all_metrics</code>/<code>update_metrics</code> (metrics removed, skipped above), <code>fix_duplicate_endorsements</code> → <code>fix_duplicate_likes</code> and <code>remove_valuator_orphan_records</code> → <code>remove_evaluator_orphan_records</code> (renames, both in the sequence above), <code>migrate_data_to_decidim_forms</code> (already in 0.29.7, not a 0.30 step), <code>webpacker</code> → <code>shakapacker</code>.</li>
+  <li><b>Modules (to check when switching the Gemfile):</b> the same migration comparison for each module between its 0.29 ref and its 0.31 ref.</li>
+  <li><b>On DEV after the rehearsal:</b> <code>bin/rails db:migrate:status</code> and <code>bin/rails data:migrate:status</code> show no <code>down</code>; the schema of the upgraded DB equals the schema of a fresh 0.31.8 install of the same Gemfile (<code>pg_dump --schema-only</code> of both, diff empty apart from the order of columns that were added later).</li>
+</ul>
 
 <h3>5.6 0.31.8 authorization changes (checked against <code>git diff v0.31.7 v0.31.8</code>)</h3>
 <p>The upgrade notes cover only §2.1 "Verification code security hardening". The changelog and the code diff show much more:</p>
