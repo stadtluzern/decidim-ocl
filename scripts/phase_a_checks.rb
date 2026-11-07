@@ -7,15 +7,22 @@
 #   NS=pitc-decidim-stlu-prod
 #   oc get pods -n "$NS"                      # pick the rails pod by name
 #   POD=<rails-pod-name>
-#   oc exec -i -n "$NS" -c rails "$POD" -- bin/rails runner - < scripts/phase_a_checks.rb > phase_a_checks.txt
+#   oc exec -i -n "$NS" -c rails "$POD" -- \
+#     env PGOPTIONS='-c default_transaction_read_only=on -c statement_timeout=30s' \
+#     bin/rails runner - < scripts/phase_a_checks.rb > phase_a_checks.txt
 #   echo "exit: $?"                           # 1 = at least one check failed, see "FAILED" lines
 #
 # Guarantees and limits:
-# - All queries run in ONE PostgreSQL transaction declared READ ONLY (enforced by the database:
-#   INSERT/UPDATE/DELETE/DDL and nextval() are rejected) with statement_timeout 30s, then rolled back.
-#   Rails' while_preventing_writes is kept as a second, weaker layer.
-# - Not covered: what `rails runner` does while booting (initializers run before this file, same as any
-#   `rails runner`/console on the pod). The checks themselves touch no files, cache or network.
+# - PGOPTIONS makes every DB connection of this process read-only with a 30s statement timeout from
+#   the moment it connects, so this also covers DB access by initializers during `rails runner` boot.
+#   It only affects this one process, not the running app.
+# - Inside the script, all queries additionally run in ONE transaction declared READ ONLY (works even
+#   without PGOPTIONS), then rolled back. The database rejects INSERT/UPDATE/DELETE/DDL and nextval().
+#   Rails' while_preventing_writes is kept as a third, weaker layer.
+# - Not covered: non-DB side effects of booting (cache, files, network), same as any `rails runner`
+#   on the pod. The checks themselves touch no files, cache or network.
+# - If the connection fails with "unsupported startup parameter: options", a connection pooler sits in
+#   between; run without the PGOPTIONS line and rely on the in-script read-only transaction.
 # - Load: aggregates run in SQL (COUNT/GROUP BY); only small lookup sets (tenants, a few components,
 #   ~10 cron rows) are loaded into Ruby.
 # - Output: hosts, ids, counts, map provider names and ENV variable NAMES. No ENV values, no map_config
