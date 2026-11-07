@@ -138,7 +138,6 @@
   <tr><td>A1</td><td><b>decidim-anonymous_codes</b>: Der 0.31-Branch ist laut Pokecode nicht produktionsreif; der 500er bei Umfragen ist noch offen (<a href="https://github.com/openpoke/decidim-module-anonymous_codes/issues/28">anonymous_codes#28</a>). Im Einsatz auf <b>kooperation.winterthur.ch</b> (4 Code-Gruppen) und <b>dialogluzern.ch</b> (1 Code-Gruppe). Werden die Codes dort noch gebraucht? Fix bei Pokecode bestellen, selbst patchen oder Modul entfernen?</td><td>Projektleitung, kooperation.winterthur.ch, dialogluzern.ch</td></tr>
   <tr><td>A2</td><td><b>Taxonomien</b>: Kategorien, Bereiche und Themen werden zu Taxonomien. Liefert jeder Mandant eine Zielstruktur? Wer liefert sie, und bis wann?</td><td>Mandanten</td></tr>
   <tr><td>A5</td><td>Aus Zürich übernehmen: <b>Ephemeral Verifications</b> (einmalige Teilnahme ohne Konto, <a href="https://github.com/puzzle/decidim-zuerich/issues/610">zuerich#610</a>) und den Override für <b>DM-Benachrichtigungen</b> (<a href="https://github.com/puzzle/decidim-zuerich/issues/620">zuerich#620</a>)?</td><td>Projektleitung</td></tr>
-  <tr><td>A6</td><td><b>Mandant ocl-prod.appuioapp.ch</b> (alte APPUiO-Adresse, Typ dialogluzern): Er hat noch Daten (Bereiche, Themen, Versammlungstypen). Wird er noch gebraucht? Sonst wird er beim Upgrade nicht mehr migriert und abgenommen.</td><td>Projektleitung, dialogluzern.ch</td></tr>
 </table>
 <h2>B. Termine und Zuständigkeiten</h2>
 <table>
@@ -160,7 +159,7 @@
 <h2>D. Zur Kenntnis</h2>
 <ul>
   <li>Das Upgrade erfolgt in <b>einem PROD-Deployment</b> (direkt 0.29 → 0.31.8, wie Zürich).</li>
-  <li><b>gemeinsamer.space</b> ist nicht mehr aktiv und wird beim Upgrade nicht abgenommen.</li>
+  <li><b>gemeinsamer.space</b> und <b>ocl-prod.appuioapp.ch</b> (alte APPUiO-Adresse) sind nicht mehr aktiv und werden beim Upgrade nicht abgenommen.</li>
   <li><b>Initiativen</b>: Kein aktiver Mandant sammelt Unterschriften online. Neue Signatur-Workflows sind deshalb nicht nötig; Initiativen werden auf INT nur in der Grundfunktion getestet.</li>
   <li><b>Navigation Maps</b> (dialogluzern.ch) und <b>Reporting Proposals</b> (dialogluzern.ch, impulskoeniz.ch) sind im Einsatz und werden mitgenommen. Beide sind in Zürich nicht im Einsatz und werden auf INT besonders getestet.</li>
   <li><b>Header-Snippets</b>: Kein Mandant hat JavaScript darin; das Upgrade ändert dort nichts.</li>
@@ -186,7 +185,6 @@
   const OPTIONS = {
     A1: ["*Modul entfernen | Wie Zürich. Kein Zusatzaufwand; die anonymen Codes fallen weg.", "Fix bei Pokecode bestellen | Externe Abhängigkeit, Termin unklar; kann das Upgrade verzögern.", "Selbst patchen | +1–2 PT; der Patch muss danach bei jedem Update nachgezogen werden."],
     A2: ["*1:1-Standardimport | Die bestehenden Kategorien, Bereiche und Themen werden übernommen; danach setzen die Mandanten-Admins die Filter.", "Mandanten liefern eine eigene Zielstruktur | Transformationsskript und Aufwand beim Mandanten. Bitte in den Notizen angeben, wer bis wann liefert."],
-    A6: ["*Nicht mehr gebraucht, ignorieren | Wird nicht migriert und nicht abgenommen; die Daten bleiben bis zu einem späteren Aufräumen in der DB.", "Wird noch gebraucht | Normal migrieren und abnehmen."],
     A5: { multi: true, options: ["*Nichts übernehmen | Nicht Teil des Tickets.", "Ephemeral Verifications übernehmen | Zusätzlicher Aufwand: einmalige Teilnahme ohne Konto.", "DM-Benachrichtigungen übernehmen | Zusätzlicher Aufwand."] },
     B1: ["Vorschlag von Puzzle abwarten | Wir schlagen ein Datum vor, sobald die DEV-Probe durch ist.", "Wir legen das Datum in den Notizen fest"],
     B2: ["Vorschlag von Puzzle abwarten | Wir schlagen ein Datum vor, sobald die DEV-Probe durch ist.", "Wir legen das Datum in den Notizen fest"],

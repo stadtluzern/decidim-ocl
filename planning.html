@@ -456,10 +456,10 @@ bin/rails decidim:upgrade:user_groups:remove       # sends mails, see §5.2
 <p>We settle these ourselves (they are not on that list): whether the froger/deface fork is still needed without Geo, and the <code>jwt</code> pin.</p>
 
 <h3>10.1 Phase A data (PROD, 2026-11-07, <code>scripts/phase_a_checks.rb</code>)</h3>
-<p><b>gemeinsamer.space</b> (org 8) is no longer active and is ignored: no taxonomy plan, no acceptance test, and its data doesn't drive decisions.</p>
+<p><b>gemeinsamer.space</b> (org 8) and <b>ocl-prod.appuioapp.ch</b> (org 1, old APPUiO host) are no longer active and are ignored: no taxonomy plan, no acceptance test, and their data doesn't drive decisions. Active tenants: dialogluzern.ch, deinklima.ch, kooperation.winterthur.ch, impulskoeniz.ch.</p>
 <table>
   <tr><th>Topic</th><th>Result (active tenants)</th><th>Consequence</th></tr>
-  <tr><td>Tenants</td><td>1 <code>ocl-prod.appuioapp.ch</code> (old APPUiO host), 2 dialogluzern.ch, 7 deinklima.ch, 9 kooperation.winterthur.ch, 10 impulskoeniz.ch</td><td>Whether tenant 1 is still needed is question A6</td></tr>
+  <tr><td>Tenants</td><td>1 <code>ocl-prod.appuioapp.ch</code> (inactive), 2 dialogluzern.ch, 7 deinklima.ch, 8 gemeinsamer.space (inactive), 9 kooperation.winterthur.ch, 10 impulskoeniz.ch</td><td>4 active tenants to migrate and test</td></tr>
   <tr><td>anonymous_codes</td><td>kooperation.winterthur.ch 4 code groups, dialogluzern.ch 1</td><td>A1 now names both tenants</td></tr>
   <tr><td>Initiative types not offline</td><td>Only gemeinsamer.space (inactive)</td><td>No signature workflow needed; question A3 dropped</td></tr>
   <tr><td>navigation_maps / reporting_proposals</td><td>dialogluzern.ch 2 blueprints / dialogluzern.ch and impulskoeniz.ch 2 components each</td><td>Both stay; question A4 dropped; +0.5 PD modules (§9.1)</td></tr>
