@@ -1,0 +1,7 @@
+<%# Temporary (#228): link to the upgrade documents served by UpgradeDocsController; remove together with it. %>
+<% if current_user&.admin? %>
+  <%= link_to "/upgrade/planning.html", class: "button__site", target: "_blank", data: { "external-link": false } do %>
+    <%= icon "file-text-line" %>
+    <%= t("decidim_ocl.admin.upgrade_docs_link") %>
+  <% end %>
+<% end %>

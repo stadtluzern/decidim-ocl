@@ -255,6 +255,8 @@ en:
         tenant_type:
           none: None
   decidim_ocl:
+    admin:
+      upgrade_docs_link: Upgrade documentation
     devise: Devise
     maps:
       gis_lu:

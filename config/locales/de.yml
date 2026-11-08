@@ -259,6 +259,8 @@ de:
             expired: Der Bestätigungscode ist abgelaufen. Bitte fordern Sie einen neuen an.
             locked: Zu viele fehlgeschlagene Versuche. Bitte versuchen Sie es später erneut oder fordern Sie einen neuen Code an.
   decidim_ocl:
+    admin:
+      upgrade_docs_link: Upgrade-Dokumentation
     devise: Devise
     maps:
       gis_lu:

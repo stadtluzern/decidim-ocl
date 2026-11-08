@@ -1,0 +1,4 @@
+<!-- insert_top '.tool-bar'
+     original 'c2d16afe9d38a32a257d05e6d080b168758150c2'
+-->
+<%= render 'layouts/decidim/admin/upgrade_docs_link' %>
