@@ -1,3 +1,4 @@
+#!/usr/bin/env -S bundle exec rails runner
 # frozen_string_literal: true
 
 # Phase A data checks for the 0.31 upgrade (#228).

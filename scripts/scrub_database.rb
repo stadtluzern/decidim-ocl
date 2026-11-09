@@ -1,3 +1,4 @@
+#!/usr/bin/env -S bundle exec rails runner
 # frozen_string_literal: true
 
 # rubocop:disable Rails/SquishedSQLHeredocs, Metrics/BlockLength, Style/HashEachMethods -- multi-line SQL/PL/pgSQL; rows are arrays
@@ -13,7 +14,7 @@
 #   gunzip -c dumps/stlu-prod-<date>.sql.gz | PGPASSWORD=scrub psql -q -h localhost -p 55433 -U postgres postgres
 #   RAILS_DB_HOST=localhost RAILS_DB_PORT=55433 RAILS_DB_USERNAME=postgres RAILS_DB_PASSWORD=scrub \
 #     RAILS_DB_NAME=postgres SCRUB_CONFIRM=postgres [SCRUB_TEST_PASSWORD=…] \
-#     bin/rails runner scripts/scrub_database.rb
+#     scripts/scrub_database.rb   # from the repo root; same as: bin/rails runner scripts/scrub_database.rb
 #   PGPASSWORD=scrub pg_dump -cOx -h localhost -p 55433 -U postgres postgres \
 #     | gzip > dumps/stlu-prod-<date>-scrubbed.sql.gz
 #   docker stop scrub   # the unscrubbed copy is gone with the container
