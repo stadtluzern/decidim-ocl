@@ -1,6 +1,8 @@
 #!/usr/bin/env -S bundle exec rails runner
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength -- one read-only transaction around all checks
+
 # Phase A data checks for the 0.31 upgrade (#228).
 #
 # Run (repo root; namespace and pod explicit; script comes in via stdin, nothing is written in the pod):
@@ -29,11 +31,11 @@
 # - Output: hosts, ids, counts, map provider names and ENV variable NAMES. No ENV values, no map_config
 #   contents, no exception messages (only the exception class).
 
-FAILED = []
+FAILED = Set.new
 
-def check(title)
+def check(title, &)
   puts "\n== #{title}"
-  ActiveRecord::Base.transaction(requires_new: true) { yield } # savepoint: a failing check doesn't abort the rest
+  ActiveRecord::Base.transaction(requires_new: true, &) # savepoint: a failing check doesn't abort the rest
 rescue StandardError => e
   FAILED << title
   puts "  FAILED (#{e.class})"
@@ -52,10 +54,10 @@ ActiveRecord::Base.while_preventing_writes do
                         .to_h { [_1.id, hosts[_1.participatory_space&.decidim_organization_id]] }
     end
     by_component_to_host = lambda do |counts|
-      map = component_hosts.(counts.keys)
+      map = component_hosts.call(counts.keys)
       counts.each_with_object(Hash.new(0)) { |(cid, n), acc| acc[map[cid]] += n }
     end
-    components_per_host = ->(name) { by_component_to_host.(Decidim::Component.where(manifest_name: name).group(:id).count) }
+    components_per_host = ->(name) { by_component_to_host.call(Decidim::Component.where(manifest_name: name).group(:id).count) }
 
     check('Tenants: id | host | secondary hosts | tenant_type') do
       Decidim::Organization.order(:id).pluck(:id, :host, :secondary_hosts, :tenant_type).each do |row|
@@ -68,7 +70,8 @@ ActiveRecord::Base.while_preventing_writes do
       pp Decidim::AnonymousCodes::Group.group(:decidim_organization_id).count.transform_keys(&hosts)
     end
 
-    check('A3 Initiative types not offline: host | id | title | signature_type | document handler | sms | extra fields') do
+    check('A3 Initiative types not offline: host | id | title | signature_type | document handler | sms | ' \
+          'extra fields') do
       Decidim::InitiativesType.where.not(signature_type: :offline).order(:decidim_organization_id)
                               .pluck(:decidim_organization_id, :id, Arel.sql("title->>'de'"), :signature_type,
                                      :document_number_authorization_handler, :validate_sms_code_on_votes,
@@ -79,7 +82,7 @@ ActiveRecord::Base.while_preventing_writes do
 
     check('A4 navigation_maps blueprints / reporting_proposals components per tenant') do
       pp navigation_maps: Decidim::NavigationMaps::Blueprint.group(:decidim_organization_id).count.transform_keys(&hosts),
-         reporting_proposals: components_per_host.('reporting_proposals')
+         reporting_proposals: components_per_host.call('reporting_proposals')
     end
 
     check('C2 User groups per tenant: total / verified') do
@@ -92,9 +95,9 @@ ActiveRecord::Base.while_preventing_writes do
     end
 
     check('C5 Deprecated: sortitions components | collaborative drafts | meeting polls per tenant') do
-      pp sortitions: components_per_host.('sortitions'),
-         collaborative_drafts: by_component_to_host.(Decidim::Proposals::CollaborativeDraft.group(:decidim_component_id).count),
-         meeting_polls: by_component_to_host.(Decidim::Meetings::Poll.joins(:meeting)
+      pp sortitions: components_per_host.call('sortitions'),
+         collaborative_drafts: by_component_to_host.call(Decidim::Proposals::CollaborativeDraft.group(:decidim_component_id).count),
+         meeting_polls: by_component_to_host.call(Decidim::Meetings::Poll.joins(:meeting)
                                                      .group('decidim_meetings_meetings.decidim_component_id').count)
     end
 
@@ -123,3 +126,4 @@ end
 
 puts "\n#{FAILED.empty? ? 'All checks ran.' : "FAILED checks: #{FAILED.join('; ')}"}"
 exit(FAILED.empty? ? 0 : 1)
+# rubocop:enable Metrics/BlockLength
