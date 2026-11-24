@@ -8,8 +8,12 @@ class AddFieldValuesAndTargetToDecidimTemplates < ActiveRecord::Migration[6.0]
   end
 
   def change
-    add_column :decidim_templates_templates, :field_values, :json, default: {}
-    add_column :decidim_templates_templates, :target, :string
+    # Local change (kept from before the 0.31 upgrade): the columns may already exist from an old
+    # decidim_reporting_proposals migration (20230412083900).
+    unless column_exists?(:decidim_templates_templates, :field_values)
+      add_column :decidim_templates_templates, :field_values, :json, default: {}
+    end
+    add_column :decidim_templates_templates, :target, :string unless column_exists?(:decidim_templates_templates, :target)
 
     reversible do |direction|
       direction.up do
