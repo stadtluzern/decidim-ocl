@@ -6,7 +6,9 @@ run-name: "Deploy ${{ github.ref_name }} to ${{ inputs.environment || 'dev' }}"
 # from there.
 #
 # Every push to master deploys to DEV. INT and PROD are deployed by running this
-# workflow by hand, and only from master.
+# workflow by hand, from master or from a hotfix/* branch. A hotfix branch
+# starts from the commit PROD runs, so it can be fixed without what master has
+# gained since.
 
 on:
   push:
@@ -18,7 +20,7 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment to deploy to (INT and PROD only from master)'
+        description: 'Environment to deploy to (INT and PROD only from master or hotfix/*)'
         type: choice
         options:
           - dev
@@ -45,8 +47,8 @@ jobs:
           ENVIRONMENT: ${{ inputs.environment || 'dev' }}
           REF: ${{ github.ref }}
         run: |
-          if [[ "${ENVIRONMENT}" != "dev" && "${REF}" != "refs/heads/master" ]]; then
-            echo "::error::${ENVIRONMENT} is only deployed from master, not from ${REF}."
+          if [[ "${ENVIRONMENT}" != "dev" && "${REF}" != "refs/heads/master" && "${REF}" != refs/heads/hotfix/* ]]; then
+            echo "::error::${ENVIRONMENT} is only deployed from master or a hotfix/* branch, not from ${REF}."
             exit 1
           fi
           echo "Deploying ${REF} (${GITHUB_SHA}) to ${ENVIRONMENT}"
