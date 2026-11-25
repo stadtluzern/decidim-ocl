@@ -6,7 +6,8 @@ on:
 
 jobs:
   test:
-    runs-on: 'ubuntu-latest'
+    # ubuntu-24.04: ruby/setup-ruby has no prebuilt Ruby 3.3.4 for ubuntu-latest (26.04)
+    runs-on: 'ubuntu-24.04'
 
     services:
       postgres:
@@ -32,7 +33,7 @@ jobs:
 
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
@@ -42,4 +43,5 @@ jobs:
         run: |
           bundle exec rails db:create
           bundle exec rails db:migrate
+          bundle exec rails data:migrate
           bundle exec rails test

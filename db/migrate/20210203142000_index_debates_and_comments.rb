@@ -4,6 +4,6 @@
 class IndexDebatesAndComments < ActiveRecord::Migration[5.2]
   def change
     Decidim::Comments::Comment.find_each(&:try_update_index_for_search_resource)
-    Decidim::Debates::Debate.find_each(&:try_update_index_for_search_resource)
+    Decidim::Debates::Debate.unscoped.find_each(&:try_update_index_for_search_resource)
   end
 end

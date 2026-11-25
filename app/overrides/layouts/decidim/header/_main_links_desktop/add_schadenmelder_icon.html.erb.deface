@@ -1,4 +1,6 @@
-<!-- insert_bottom '.main-bar__links-desktop__item-wrapper' -->
+<!-- insert_bottom '.main-bar__links-desktop__item-wrapper'
+     original '1ec34d809e50fb88177baee0e85dfb36a3214111'
+-->
 
 <% if current_organization.tenant_type&.to_sym == :dialogluzern %>
 <div>

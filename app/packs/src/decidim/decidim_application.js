@@ -78,18 +78,10 @@ window.addEventListener("load", (event) => {
 document.addEventListener("DOMContentLoaded", () => {
   if (!['koeniz'].includes(window.tenantType)) return
 
-  function scrollToStep() {
-    setTimeout(() => {
-      const step = $('.questionnaire-step:not(.hide)')[0];
-      step.scrollIntoView({behavior: "smooth"});
-    }, 1)
-  }
-
-  const buttons = document.querySelectorAll('.questionnaire-step a[data-toggle]');
-
-  buttons.forEach(button => {
-    button.removeAttribute('href');
-    $(button).on('click', () => scrollToStep());
+  // Runs after core's toggle controller (bound on the button) has unhidden the next step.
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest("[data-survey-buttons]")) return;
+    document.querySelector(".response-questionnaire__step:not([hidden])")?.scrollIntoView({ behavior: "smooth" });
   });
 
 });

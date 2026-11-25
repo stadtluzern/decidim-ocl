@@ -8,9 +8,10 @@ module DecidimOCL
       class AspsmsGateway
         attr_reader :mobile_phone_number, :code
 
-        def initialize(mobile_phone_number, code)
+        def initialize(mobile_phone_number, code, context = {})
           @mobile_phone_number = format_mobile_number(mobile_phone_number)
           @code = code
+          @context = context
         end
 
         def deliver_code
@@ -19,14 +20,10 @@ module DecidimOCL
 
           response = Net::HTTP.post(uri, payload)
           response.code == '200' && (begin
-                                       JSON(response.body)['StatusCode'] == '1'
-                                     rescue StandardError
-                                       false
-                                     end)
-        end
-
-        class << self
-          attr_accessor :organization
+            JSON(response.body)['StatusCode'] == '1'
+          rescue StandardError
+            false
+          end)
         end
 
         private
@@ -46,12 +43,12 @@ module DecidimOCL
 
         def payload
           {
-            "UserName": user_key,
-            "Password": password,
-            "Originator": translated('sms_originator_max_11_alphabetic_characters'),
-            "Recipients": [@mobile_phone_number],
-            "MessageText": translated('sms_text', code: @code, organization: organization_name),
-            "AffiliateID": affiliate_id
+            UserName: user_key,
+            Password: password,
+            Originator: translated('sms_originator_max_11_alphabetic_characters'),
+            Recipients: [@mobile_phone_number],
+            MessageText: translated('sms_text', code: @code, organization: organization_name),
+            AffiliateID: affiliate_id
           }.compact.to_json
         end
 
@@ -72,7 +69,7 @@ module DecidimOCL
         end
 
         def organization
-          self.class.organization
+          @context[:organization]
         end
 
         def organization_name

@@ -69,7 +69,7 @@ Rails.application.configure do
   config.active_support.deprecation = :notify
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
+  config.log_formatter = Logger::Formatter.new
 
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
@@ -100,21 +100,10 @@ Rails.application.configure do
     config.action_mailer.smtp_settings = { address: '127.0.0.1', port: 1025 }
   end
 
-  # config.action_mailer.smtp_settings = {
-  #   :address        => Rails.application.secrets.smtp_address,
-  #   :port           => Rails.application.secrets.smtp_port,
-  #   :authentication => Rails.application.secrets.smtp_authentication,
-  #   :user_name      => Rails.application.secrets.smtp_username,
-  #   :password       => Rails.application.secrets.smtp_password,
-  #   :domain         => Rails.application.secrets.smtp_domain,
-  #   :enable_starttls_auto => Rails.application.secrets.smtp_starttls_auto,
-  #   :openssl_verify_mode => 'none'
-  # }
-
   config.aspsms = {
-    user_key: ENV['ASPSMS_API_USER_KEY'],
-    password: ENV['ASPSMS_API_PASSWORD'],
-    affiliate_id: ENV['ASPSMS_AFFILIATE_ID']
+    user_key: ENV.fetch('ASPSMS_API_USER_KEY', nil),
+    password: ENV.fetch('ASPSMS_API_PASSWORD', nil),
+    affiliate_id: ENV.fetch('ASPSMS_AFFILIATE_ID', nil)
   }
 
   # Use log rage
@@ -124,7 +113,7 @@ Rails.application.configure do
   # noisy INFO-level loggers (cells, jobs, mailer) when it's active.
   if config.lograge.enabled
     config.after_initialize do
-      ActiveSupport::Notifications.unsubscribe "render_cell.action_view"
+      ActiveSupport::Notifications.unsubscribe 'render_cell.action_view'
     end
     config.active_job.logger = nil
     config.action_mailer.logger = nil
@@ -144,8 +133,8 @@ Rails.application.configure do
     }
   end
 
-  # Disable Deface dynamic overrides, and use precompiled files. 
+  # Disable Deface dynamic overrides, and use precompiled files.
   # to compile: `SKIP_MEMCACHE_CHECK=1 DEFACE_ENABLED=1 bundle exec rails deface:precompile`
   # to check compiled views: `./app/compiled_views`
-  config.deface.enabled = ENV.fetch("DEFACE_ENABLED", "0") == '1'
+  config.deface.enabled = ENV.fetch('DEFACE_ENABLED', '0') == '1'
 end

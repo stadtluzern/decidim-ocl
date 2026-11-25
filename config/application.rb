@@ -11,7 +11,12 @@ Bundler.require(*Rails.groups)
 module DecidimOCL
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.2
+
+    # Rails used SHA1 to encrypt attributes before, now it uses SHA256
+    # HACK: keep the old SHA1 algorithm so existing encrypted data stays readable
+    config.active_support.hash_digest_class = OpenSSL::Digest::SHA1
+    config.active_support.key_generator_hash_digest_class = OpenSSL::Digest::SHA1
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

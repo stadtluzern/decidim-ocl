@@ -7,7 +7,7 @@ require 'decidim/forms/test/factories'
 
 #  Regression test for decidim-swiss/decidim.swiss#231:
 #  re-saving a display condition must not move it to its condition question.
-#  Covered by app/overrides/decidim/forms/question_override.rb
+#  Fixed upstream in Decidim 0.31.8 (inverse_of on Question#display_conditions); the local override is gone.
 class DisplayConditionOwnershipTest < ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
 
@@ -15,14 +15,14 @@ class DisplayConditionOwnershipTest < ActiveSupport::TestCase
     organization = create(:organization, available_locales: %w[de], default_locale: 'de')
     questionnaire = create(:questionnaire, questionnaire_for: organization)
     @source = create(:questionnaire_question, questionnaire:, question_type: 'single_option')
-    @option = create(:answer_option, question: @source)
-    @conditioned = create(:questionnaire_question, questionnaire:, question_type: 'short_answer')
+    @option = create(:response_option, question: @source)
+    @conditioned = create(:questionnaire_question, questionnaire:, question_type: 'short_response')
   end
 
   def test_resaving_keeps_the_owning_question
     condition = @conditioned.display_conditions.create!(condition_question: @source,
                                                         condition_type: :equal,
-                                                        answer_option: @option)
+                                                        response_option: @option)
 
     # as Decidim::Forms::Admin::UpdateQuestionnaire does on every save
     @conditioned.display_conditions.find(condition.id).update!(condition_question: @source)

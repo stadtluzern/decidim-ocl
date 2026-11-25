@@ -6,7 +6,7 @@
 #                            Build Stage                         #
 ##################################################################
 
-FROM ruby:3.2.10-bookworm AS build
+FROM ruby:3.3.4-bookworm AS build
 
 # Set build shell
 SHELL ["/bin/bash", "-c"]
@@ -19,14 +19,14 @@ ARG BUILD_SCRIPT="\
   set -uex \
   && mkdir -p /etc/apt/keyrings \
   && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
-  && echo \"deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main\" > /etc/apt/sources.list.d/nodesource.list \
+  && echo \"deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main\" > /etc/apt/sources.list.d/nodesource.list \
   && apt-get update \
   && apt-get install nodejs -y \
   && npm install -g yarn \
-  && yarn set version 1.22.19 \
+  && yarn set version 1.22.21 \
 "
 ARG BUNDLE_WITHOUT="development:metrics:test"
-ARG BUNDLER_VERSION="2.5.6"
+ARG BUNDLER_VERSION="2.5.23"
 ARG POST_BUILD_SCRIPT="DEFACE_ENABLED=1 bundle exec rails deface:precompile && bundle exec rails assets:precompile"
 ARG RAILS_DB_ADAPTER="nulldb"
 ARG SKIP_MEMCACHE_CHECK="true"
@@ -87,7 +87,7 @@ RUN rm -rf vendor/cache/ .git/ node_modules/
 ##################################################################
 
 # This image will be replaced by Openshift
-FROM ruby:3.2.10-slim-bookworm AS app
+FROM ruby:3.3.4-slim-bookworm AS app
 
 # Set runtime shell
 SHELL ["/bin/bash", "-c"]
@@ -96,7 +96,7 @@ SHELL ["/bin/bash", "-c"]
 RUN adduser --disabled-password --uid 1001 --gid 0 --gecos "" --shell /bin/bash app
 
 ARG BUNDLE_WITHOUT="development:metrics:test"
-ARG BUNDLER_VERSION="2.5.6"
+ARG BUNDLER_VERSION="2.5.23"
 ARG RUN_PACKAGES="git imagemagick libicu-dev libpq5 nodejs poppler-utils p7zip-full wkhtmltopdf"
 ARG CUSTOMIZATION_OUTPUT="false"
 
