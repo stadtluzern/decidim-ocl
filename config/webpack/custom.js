@@ -1,18 +1,11 @@
 /* eslint-disable */
-
-const path = require("path");
-const { config } = require("@rails/webpacker");
+const { config } = require("shakapacker");
+const { InjectManifest } = require("workbox-webpack-plugin");
+const { EsbuildPlugin } = require("esbuild-loader");
 
 module.exports = {
   module: {
     rules: [
-      {
-        test: require.resolve("quill"),
-        loader: "expose-loader",
-        options: {
-          exposes: ["Quill"]
-        }
-      },
       {
         test: require.resolve("jquery"),
         loader: "expose-loader",
@@ -22,8 +15,8 @@ module.exports = {
       },
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules\/(?!tributejs)/,
-        loader: "babel-loader"
+        exclude: /node_modules\//,
+        loader: "esbuild-loader"
       },
       {
         test: /\.(graphql|gql)$/,
@@ -44,14 +37,11 @@ module.exports = {
         }
       },
       {
-        test: [
-          /\.md$/,
-          /\.odt$/,
-        ],
+        test: [/\.md$/, /\.odt$/],
         exclude: [/\.(js|mjs|jsx|ts|tsx)$/],
-        type: 'asset/resource',
+        type: "asset/resource",
         generator: {
-          filename: 'media/documents/[hash][ext][query]'
+          filename: "media/documents/[hash][ext][query]"
         }
       },
       // Overwrite webpacker files rule to amend the filename output
@@ -75,9 +65,9 @@ module.exports = {
           /\.svg$/
         ],
         exclude: [/\.(js|mjs|jsx|ts|tsx)$/],
-        type: 'asset/resource',
+        type: "asset/resource",
         generator: {
-          filename: 'media/images/[name]-[hash][ext][query]'
+          filename: "media/images/[name]-[hash][ext][query]"
         }
       }
     ]
@@ -88,10 +78,26 @@ module.exports = {
       crypto: false
     }
   },
-  // https://github.com/rails/webpacker/issues/2932
-  // As Decidim uses multiple packs, we need to enforce a single runtime, to prevent duplication
   optimization: {
-    runtimeChunk: false
+    minimizer: [
+      new EsbuildPlugin({
+        target: "es2015",
+        css: true
+      })
+    ]
   },
-  entry: config.entrypoints
-}
+  entry: config.entrypoints,
+  plugins: [
+    new InjectManifest({
+      swSrc: "src/decidim/sw/sw.js",
+
+      /**
+       * NOTE:
+       * @rails/webpacker outputs to '/packs',
+       * in order to make the SW run properly
+       * they must be put at the project's root folder '/'
+       */
+      swDest: "../sw.js"
+    })
+  ]
+};

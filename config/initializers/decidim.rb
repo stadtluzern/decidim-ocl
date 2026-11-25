@@ -149,6 +149,11 @@ Decidim.configure do |config| # rubocop:disable Metrics/BlockLength
     }
   }
 
+  config.content_security_policies_extra = {
+    "connect-src" => "photon.komoot.io",
+    "img-src" => "*.geo.admin.ch",
+  }
+
   if Rails.application.secrets.maps.present? && Rails.application.secrets.maps[:static_provider].present?
     static_provider = Rails.application.secrets.maps[:static_provider]
     dynamic_provider = Rails.application.secrets.maps[:dynamic_provider]
@@ -343,8 +348,10 @@ Decidim.configure do |config| # rubocop:disable Metrics/BlockLength
   # for more information about how it works and how to set it up.
   #
   # Enable machine translations
-  # config.enable_machine_translations = true
-  # config.machine_translation_delay = 0.seconds
+  config.enable_machine_translations = true
+
+  config.machine_translation_delay = 0.seconds
+
   #
   # If you want to enable machine translation you can create your own service
   # to interact with third party service to translate the user content.
@@ -369,7 +376,7 @@ Decidim.configure do |config| # rubocop:disable Metrics/BlockLength
   #   end
   # end
   #
-  # config.machine_translation_service = "MyTranslationService"
+  config.machine_translation_service = "DecidimOCL::DeeplTranslator"
 
   # Defines the name of the cookie used to check if the user allows Decidim to
   # set cookies.
@@ -486,20 +493,6 @@ if Decidim.module_installed? :initiatives
       config.print_enabled = Rails.application.secrets.dig(:decidim, :initiatives, :print_enabled).present?
     end
     config.do_not_require_authorization = Rails.application.secrets.dig(:decidim, :initiatives, :do_not_require_authorization).present?
-  end
-end
-if Decidim.module_installed? :elections
-  Decidim::Elections.configure do |config|
-    config.setup_minimum_hours_before_start = Rails.application.secrets.dig(:elections, :setup_minimum_hours_before_start).presence || 3
-    config.start_vote_maximum_hours_before_start = Rails.application.secrets.dig(:elections, :start_vote_maximum_hours_before_start).presence || 6
-    config.voter_token_expiration_minutes = Rails.application.secrets.dig(:elections, :voter_token_expiration_minutes).presence || 120
-  end
-  Decidim::Votings.configure do |config|
-    config.check_census_max_requests = Rails.application.secrets.dig(:elections, :votings, :check_census_max_requests).presence || 5
-    config.throttling_period = Rails.application.secrets.dig(:elections, :votings, :throttling_period).to_i.minutes
-  end
-  Decidim::Votings::Census.configure do |config|
-    config.census_access_codes_export_expiry_time = Rails.application.secrets.dig(:elections, :votings, :census, :access_codes_export_expiry_time).to_i.days
   end
 end
 

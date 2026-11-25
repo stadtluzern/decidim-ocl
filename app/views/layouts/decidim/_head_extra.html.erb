@@ -39,5 +39,8 @@
 <% end %>
 
 <script type="text/javascript">
-  window.tenantType = <%= current_organization&.tenant_type.to_json.html_safe %>
+  let tenant = <%= current_organization&.tenant_type.to_json.html_safe %>
+  window.tenantType = tenant
+  document.getElementsByTagName('html')[0].dataset['decidim_tenant'] = tenant 
 </script>
+

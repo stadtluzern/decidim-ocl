@@ -1,39 +1,50 @@
-name: 'Manual build without tests'
+name: 'Manual build'
 
 on:
   workflow_dispatch:
     inputs:
-      repository_url:
-        description: 'Url to push build image to'
-        type: string
+      environment:
+        description: 'Environment to build for'
+        type: choice
         required: true
-        default: "https://harbor.puzzle.ch"
-      images:
-        description: 'Images arguments for docker/metadata-action'
-        type: string
+        options:
+          - stlu-dev
+          - stlu-int
+          - stlu-prod
+        default: 'stlu-dev'
+      lint:
+        description: 'Run lint?'
+        type: boolean
         required: true
-        default: "harbor.puzzle.ch/decidim/stlu-int-rails"
-      flavor:
-        description: 'Flavor argument for docker/metadata-action'
-        type: string
-        required: false
-        default: "latest=true"
-      tags:
-        description: 'Tags argument for docker/metadata-action'
-        type: string
-        required: false
-        default: |
-          type=semver,pattern={{version}},priority=1000
-          type=schedule,priority=900
-          type=sha,format=long,priority=800
-
+        default: false
+      test:
+        description: 'Run tests?'
+        type: boolean
+        required: true
+        default: false
+      push:
+        description: 'Push the image to the registry?'
+        type: boolean
+        required: true
+        default: true
 
 jobs:
+  lint:
+    if: ${{ inputs.lint }}
+    uses: ./.github/workflows/reusable_lint.yaml
+
+  test:
+    if: ${{ inputs.test }}
+    uses: ./.github/workflows/reusable_tests.yaml
+
   build:
-    uses: ./.github/workflows/reusable_build.yaml
-    secrets: inherit
+    needs: [lint, test]
+    if: ${{ !failure() && !cancelled() }}
+    uses: ./.github/workflows/reusable-build.yaml
+    secrets:
+      PUZZLE_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+      PUZZLE_REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
     with:
-      repository_url: ${{ inputs.repository_url }}
-      images: ${{ inputs.images }}
-      flavor: ${{ inputs.flavor }}
-      tags: ${{ inputs.tags }}
+      environment: ${{ inputs.environment }}
+      project_name: ${{ inputs.environment }}
+      push: ${{ inputs.push }}

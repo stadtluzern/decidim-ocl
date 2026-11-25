@@ -1,0 +1,8 @@
+
+<!-- The following will be added into the <head> tag on admin pages -->
+
+<script type="text/javascript">
+  let tenant = <%= current_organization&.tenant_type.to_json.html_safe %>
+  window.tenantType = tenant
+  document.getElementsByTagName('html')[0].dataset['decidim_tenant'] = tenant 
+</script>

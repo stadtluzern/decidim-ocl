@@ -52,9 +52,21 @@ vendor/bundle
 /public/packs
 /public/packs-test
 /public/decidim-packs
+/public/sw.js
+/public/sw.js.map
 /node_modules
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
 
 /.idea
+
+tailwind.config.js
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
+/app/compiled_views

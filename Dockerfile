@@ -6,7 +6,7 @@
 #                            Build Stage                         #
 ##################################################################
 
-FROM ruby:3.0.6 AS build
+FROM ruby:3.2.10-bookworm AS build
 
 # Set build shell
 SHELL ["/bin/bash", "-c"]
@@ -70,7 +70,8 @@ RUN bundle config set --local deployment 'true' \
  && bundle clean
 
 COPY ./package.json ./yarn.lock /app-src/
-RUN yarn
+COPY ./packages /app-src/packages
+RUN yarn install --frozen-lockfile --ignore-engines
 
 # set up app-src directory
 COPY . /app-src
@@ -79,15 +80,14 @@ RUN [[ ${POST_BUILD_SCRIPT} ]] && bash -c "${POST_BUILD_SCRIPT}"
 
 # TODO: Save artifacts
 
-RUN rm -rf vendor/cache/ .git
-
+RUN rm -rf vendor/cache/ .git/ node_modules/
 
 ##################################################################
 #                            Run Stage                           #
 ##################################################################
 
 # This image will be replaced by Openshift
-FROM ruby:3.0.6-slim AS app
+FROM ruby:3.2.10-slim-bookworm AS app
 
 # Set runtime shell
 SHELL ["/bin/bash", "-c"]
@@ -97,9 +97,25 @@ RUN adduser --disabled-password --uid 1001 --gid 0 --gecos "" --shell /bin/bash 
 
 ARG BUNDLE_WITHOUT="development:metrics:test"
 ARG BUNDLER_VERSION="2.5.6"
-ARG RUN_PACKAGES="clamav clamav-daemon git graphicsmagick libicu-dev libpq5 nodejs poppler-utils"
+ARG RUN_PACKAGES="git imagemagick libicu-dev libpq5 nodejs poppler-utils p7zip-full wkhtmltopdf"
 ARG CUSTOMIZATION_OUTPUT="false"
-ENV TZ="Europe/Zurich"
+
+# Persist Data in the image
+ARG GITHUB_SHA
+ARG GITHUB_REPOSITORY
+ARG GITHUB_REPOSITORY_URL
+ARG GITHUB_REF_NAME
+ARG BUILD_COMMIT
+ARG BUILD_REPO
+ARG BUILD_REPO_URL
+ARG BUILD_REF
+
+
+ENV TZ="Europe/Zurich" \
+  BUILD_REPO="${BUILD_REPO:-${GITHUB_REPOSITORY}}" \
+  BUILD_REPO_URL="${BUILD_REPO_URL:-${GITHUB_REPOSITORY_URL}}" \
+  BUILD_REF="${BUILD_REF:-${GITHUB_REF_NAME}}" \
+  BUILD_COMMIT="${BUILD_COMMIT:-${GITHUB_SHA}}"
 
 # Prepare apt-get
 RUN    export DEBIAN_FRONTEND=noninteractive \
@@ -115,9 +131,7 @@ RUN    export DEBIAN_FRONTEND=noninteractive \
     && rm libpaper1*.deb \
     # Install the Packages we need at runtime
     && apt-get -y install ${RUN_PACKAGES} \
-    vim-tiny curl \
-    # HACK: Maybe move to different image... gives clamav the right to execute
-    && usermod -a -G 0 clamav \
+    adduser neovim curl \
     # Clean up after ourselves
     && unset DEBIAN_FRONTEND
 
@@ -128,24 +142,6 @@ WORKDIR /app-src
 
 RUN    chgrp -R 0 /app-src \
     && chmod -R u+w,g=u /app-src
-# HACK: Maybe move to different image... Set group permissions to app folder and help clamav to start
-RUN    mkdir /var/run/clamav \
-    && chown clamav /run/clamav \
-    && sed -i 's/^chown/# chown/' /etc/init.d/clamav-daemon \
-    && chgrp -R 0 /app-src \
-                  /var/log/clamav \
-                  /var/lib/clamav \
-                  /var/run/clamav \
-                  /run/clamav \
-    && chmod -R u+w,g=u /app-src \
-                        /var/log/clamav \
-                        /var/lib/clamav \
-                        /var/run/clamav \
-                        /run/clamav \
-                        /run/clamav \
-                        /opt/bin/start_clamd \
-    && freshclam
-
 
 ENV HOME=/app-src
 

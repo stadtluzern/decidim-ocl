@@ -9,7 +9,7 @@
 #
 # Also we don't use -onbuild as they're deprecated
 # https://github.com/docker-library/official-images/issues/2076
-FROM ruby:3.0.6 as dev
+FROM ruby:3.2.10-bookworm AS dev
 LABEL maintainer="beltrame@puzzle.ch"
 
 # Installs system dependencies
@@ -26,6 +26,8 @@ RUN apt-get update -qq \
       ca-certificates \
       curl \
       gnupg \
+      p7zip \
+      wkhtmltopdf \
     && apt-get clean \
     && rm -rf /var/cache/apt/archives/* \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
@@ -65,7 +67,7 @@ RUN mkdir /db-init && chown 1000 /db-init
 USER decidim
 
 # Update system gems
-RUN gem install bundler:2.5.23
+RUN gem install bundler -v '~> 4.0'
 #RUN gem update --system
 
 # Copy Gemfile and install bundle dependencies

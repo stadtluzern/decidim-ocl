@@ -11,7 +11,7 @@ Bundler.require(*Rails.groups)
 module DecidimOCL
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    config.load_defaults 7.0
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -22,10 +22,5 @@ module DecidimOCL
 
     # This option silences the logging of Redirector related SQL queries in your log file
     # config.redirector.silence_sql_logs = true
-
-    Raven.configure do |config|
-      config.dsn = ENV['SENTRY_DSN']
-      config.current_environment = ENV['SENTRY_CURRENT_ENV']
-    end
   end
 end

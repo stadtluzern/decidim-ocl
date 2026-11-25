@@ -1,0 +1,19 @@
+<!-- insert_top "#advanced-settings-panel"
+     original 'dbf36955ab74774decae4826493bd594e2141f71'
+-->
+
+<div class="border-2 rounded border-background p-4 form__wrapper mt-8 first:mt-0 last:pb-4">
+  <h3 class="h4">
+    <%= t("decidim.system.models.organization.fields.tenant_type") %>
+  </h3>
+
+  <fieldset class="border-2 border-background p-4">
+    <legend>
+      <label>Custom Fields</label>
+    </legend>
+    <%= f.select :tenant_type,
+                 [:deinklima, :dialogluzern, :gemeinsamerspace, :koeniz, :winterthur],
+                 { include_blank: t("decidim.system.organizations.tenant_type.none") },
+                 { multiple: false } %>
+  </fieldset>
+</div>

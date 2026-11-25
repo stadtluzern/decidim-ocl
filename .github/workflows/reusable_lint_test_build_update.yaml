@@ -3,12 +3,8 @@ name: 'Lint, test and build image. Push image tag to configmanagement'
 on:
   workflow_call:
     inputs:
-      image_repo:
-        description: "Image repo"
-        type: string
-        required: true
-      image_url:
-        description: "URL to push image to"
+      environment:
+        description: "Environment to build for, e.g. stlu-int"
         type: string
         required: true
       configmanagement:
@@ -23,6 +19,11 @@ on:
         description: "Path to kustomization file"
         type: string
         required: true
+      identifier:
+        description: 'Identifier for commit-message, could be a namespace or project-name'
+        type: string
+        required: false
+        default: 'deployment'
 
 jobs: 
   lint:
@@ -31,14 +32,15 @@ jobs:
     uses: ./.github/workflows/reusable_tests.yaml
   build:
     needs: [lint, test]
-    uses: ./.github/workflows/reusable_build.yaml
+    uses: ./.github/workflows/reusable-build.yaml
     secrets:
-      REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-      REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+      PUZZLE_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+      PUZZLE_REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
     with:
-      repository_url: ${{ inputs.image_repo }}
-      images: ${{ inputs.image_url }}
-      flavor: latest=true
+      environment: ${{ inputs.environment }}
+      project_name: ${{ inputs.environment }}
+      push: true
+
   update_tag:
     needs: [build]
     uses: ./.github/workflows/reusable_update_image.yaml
@@ -47,4 +49,5 @@ jobs:
       repository: ${{ inputs.configmanagement }}
       repository_branch: ${{ inputs.configmanagement_branch }}
       file: ${{ inputs.kustomization_path }}
-      json: ${{ needs.build.outputs.json }}
+      image_tag: git-${{ github.sha }}
+      identifier: ${{ inputs.identifier }}

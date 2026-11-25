@@ -1,0 +1,16 @@
+<!-- insert_top "#advanced-settings-panel"
+     sequence :before => '2_add_map_config_override'
+     original 'bfd07a6dec462af577dcc6a14c11c36c90f3dc60'
+-->
+
+<div class="border-2 rounded border-background p-4 form__wrapper mt-8 first:mt-0 last:pb-4">
+  <h3 class="h4">
+    <%= t("decidim.system.models.organization.fields.aspsms") %>
+  </h3>
+
+  <%= field_set_tag f.label("Fields", nil, for: nil), class: "border border-background p-4" do %>
+    <%= f.text_field :aspsms_user_key %>
+    <%= f.text_field :aspsms_password %>
+  <% end %>
+
+</div>
