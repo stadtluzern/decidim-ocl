@@ -93,6 +93,10 @@ STEPS = [
   { id: 'c-go-no-go', kind: :manual, desc: 'GO decision taken (last point for rollback without side effects)' },
   { id: 'c-revoke-sms', kind: :once, desc: 'Revoke SMS authorizations', cmd: 'r decidim:verifications:revoke:sms' },
   { id: 'c-user-groups-remove', kind: :once, desc: 'Convert user groups (queues mails)', cmd: 'r decidim:upgrade:user_groups:remove' },
+  # Planning 10.2 C2: user group mails only for Winterthur (kooperation.winterthur.ch). Matching the host, not
+  # tenant_type: the inactive gemeinsamer.space also has tenant_type winterthur (DEV rehearsal: 6 of 13 mails).
+  { id: 'c-suppress-user-group-mails', kind: :once, desc: 'Delete queued user group mails except Winterthur',
+    cmd: %q(rr 'keep = Decidim::Organization.select { _1.host.include?("winterthur") }.map(&:id); jobs = Delayed::Job.where("handler LIKE ?", "%UserGroupMailer%").reject { |j| keep.include?(Decidim::User.find_by(id: j.handler[%r{Decidim::User/(\d+)}, 1])&.decidim_organization_id) }; puts "kept for #{keep.inspect}, deleted #{jobs.size}"; jobs.each(&:destroy)') },
   { id: 'c-queued-jobs', kind: :cmd, desc: 'Queued jobs per queue',
     cmd: %q(rr 'pp Delayed::Job.where(failed_at: nil).group(:queue).count') },
   { id: 'c-2-up', kind: :manual, desc: 'Deployment repo: 2-up on main, ArgoCD sync done (POINT OF NO RETURN)' },
