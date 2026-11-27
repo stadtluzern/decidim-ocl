@@ -198,8 +198,11 @@ class Runbook
     status = nil
     File.open(log, 'w') do |f|
       f.puts "# #{Time.now.iso8601} #{step[:cmd]}"
-      Open3.popen2e({ 'ENV' => @env }, 'bash', '-c', "#{PRELUDE}\n#{step[:cmd]}") do |_stdin, out, wait|
+      # `expect` only sees stdout; stderr (Rails deprecation warnings) is shown and logged, not matched.
+      Open3.popen3({ 'ENV' => @env }, 'bash', '-c', "#{PRELUDE}\n#{step[:cmd]}") do |_stdin, out, err, wait|
+        errs = Thread.new { err.each_line { |line| print "   #{line}"; f.write(line) } }
         out.each_line { |line| print "   #{line}"; f.write(line); output << line }
+        errs.join
         status = wait.value
       end
     end
