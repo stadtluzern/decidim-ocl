@@ -98,8 +98,15 @@
   .notes-toggle { display: flex; gap: .4rem; align-items: center; margin-top: .5rem; font-size: 12.5px; color: var(--muted); cursor: pointer; width: fit-content; }
   textarea.notes { display: block; width: 100%; min-height: 4.5rem; margin-top: .3rem; resize: vertical; font-size: 13px; }
   textarea.notes[hidden] { display: none; }
+  .extra { display: flex; gap: .5rem; align-items: flex-start; margin-bottom: .6rem; }
+  .extra textarea.notes { flex: 1; margin-top: 0; }
+  .extra .remove { font: inherit; color: var(--muted); background: none; border: 1px solid var(--border); border-radius: 6px; padding: .2rem .55rem; cursor: pointer; }
   .for-whom { display: flex; flex-wrap: wrap; gap: .4rem .8rem; align-items: center; margin: .4rem 0 .6rem; font-weight: 600; }
   .for-whom > span { min-width: 15rem; }
+  .tenant-tabs { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 1rem; padding: .6rem 0; background: var(--bg); border-bottom: 2px solid var(--border); }
+  .tenant-tabs button { font: inherit; font-weight: 600; color: var(--accent); background: var(--accent-soft); border: 0; border-radius: 8px 8px 0 0; padding: .45rem 1rem; cursor: pointer; }
+  .tenant-tabs button[aria-selected="true"] { color: #fff; background: var(--accent); }
+  .tenant-tabs button .count { font-weight: 400; opacity: .8; margin-left: .35rem; }
   .for-whom input { flex: 1; min-width: 16rem; max-width: 32rem; font: inherit; font-weight: 400; color: var(--fg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: .35rem .6rem; }
   #md-out { width: 100%; min-height: 14rem; font: 12.5px/1.55 ui-monospace, "SF Mono", Menlo, Consolas, monospace; margin-top: .8rem; }
   .btn { font: inherit; font-weight: 600; color: #fff; background: var(--accent); border: 0; border-radius: 8px; padding: .5rem 1.1rem; cursor: pointer; margin-right: .5rem; }
@@ -137,7 +144,7 @@
 <main>
 <h2>Wer testet, welche Plattform?</h2>
 <label class="for-whom"><span>Name</span><input type="text" id="answered-by" placeholder="Vor- und Nachname"></label>
-<label class="for-whom"><span>Plattform</span><input type="text" id="for-whom" placeholder="z. B. dialogluzern.ch"></label>
+<p>Jede Plattform hat ihre eigene Liste (Reiter weiter unten, über den Adressen); die Einträge werden pro Plattform in diesem Browser gespeichert. Beim Öffnen auf einer Plattform ist ihr Reiter schon gewählt.</p>
 
 <h2>Wichtig vorab</h2>
 <ul>
@@ -147,25 +154,28 @@
   <li><b>Es werden keine E-Mails zugestellt</b>, und die SMS-Verifizierung lässt sich auf DEV nicht testen.</li>
   <li><b>DEV wird später wieder zurückgesetzt.</b> Was ihr hier ändert, geht verloren. Bitte keine echten Personendaten eingeben.</li>
   <li>Nach dem Upgrade sind alle bestehenden SMS-Verifizierungen gelöscht; Teilnehmende müssen sich neu verifizieren (wie angekündigt).</li>
+  <li><b>Diese Liste ist nur für Admins erreichbar.</b> Öffnet sie als Admin und lasst den Tab offen; die Rollen Teilnehmende und Space-Admin testet ihr in einem zweiten bzw. privaten Fenster. Eure Einträge bleiben in diesem Browser gespeichert, auch wenn ihr euch abmeldet.</li>
 </ul>
+
+<div id="tenant-tabs" class="tenant-tabs" role="tablist"><button type="button" role="tab" data-tenant="dialogluzern">Dialog Luzern</button><button type="button" role="tab" data-tenant="deinklima">deinklima</button><button type="button" role="tab" data-tenant="winterthur">Kooperation Winterthur</button><button type="button" role="tab" data-tenant="koeniz">ImpulsKöniz</button></div>
 
 <h2>Adressen</h2>
 <table>
   <tr><th>Plattform</th><th>DEV-Adresse</th></tr>
-  <tr><td>Dialog Luzern</td><td><a href="https://dialogluzern.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch">dialogluzern.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch</a></td></tr>
-  <tr><td>deinklima</td><td><a href="https://deinklima.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch">deinklima.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch</a></td></tr>
-  <tr><td>Kooperation Winterthur</td><td><a href="https://kooperation-winterthur.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch">kooperation-winterthur.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch</a></td></tr>
-  <tr><td>ImpulsKöniz</td><td><a href="https://impuls-koeniz.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch">impuls-koeniz.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch</a></td></tr>
+  <tr data-tenant="dialogluzern"><td>Dialog Luzern</td><td><a href="https://dialogluzern.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch">dialogluzern.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch</a></td></tr>
+  <tr data-tenant="deinklima"><td>deinklima</td><td><a href="https://deinklima.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch">deinklima.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch</a></td></tr>
+  <tr data-tenant="winterthur"><td>Kooperation Winterthur</td><td><a href="https://kooperation-winterthur.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch">kooperation-winterthur.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch</a></td></tr>
+  <tr data-tenant="koeniz"><td>ImpulsKöniz</td><td><a href="https://impuls-koeniz.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch">impuls-koeniz.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch</a></td></tr>
 </table>
 
 <h2>Testkonten</h2>
 <p>Alle Konten haben dasselbe Passwort, das ihr separat erhaltet. Es sind echte Konten aus der PROD-Kopie mit ersetzter E-Mail-Adresse; Rechte und Rollen sind wie auf PROD.</p>
 <table>
   <tr><th>Plattform</th><th>Admin</th><th>Space-Admin (Räume)</th><th>Teilnehmende</th></tr>
-  <tr><td>Dialog Luzern</td><td><code>user-1167@example.invalid</code></td><td><code>user-503@example.invalid</code> (Versammlungen schadenmelden, stadtluzern, keimlifeiss)</td><td><code>user-81612@example.invalid</code></td></tr>
-  <tr><td>deinklima</td><td><code>user-1742@example.invalid</code></td><td><code>user-2129@example.invalid</code> (Prozesse klimaideethun, reallaborthun; Versammlung Zurich)</td><td><code>user-78021@example.invalid</code></td></tr>
-  <tr><td>Kooperation Winterthur</td><td><code>user-1878@example.invalid</code></td><td><code>user-3216@example.invalid</code> (Prozesse multigination-grueze, co-kreation)</td><td><code>user-81610@example.invalid</code></td></tr>
-  <tr><td>ImpulsKöniz</td><td><code>user-3222@example.invalid</code></td><td><code>user-3626@example.invalid</code> (Prozess liebefeldmitte)</td><td><code>user-81010@example.invalid</code></td></tr>
+  <tr data-tenant="dialogluzern"><td>Dialog Luzern</td><td><code>user-1167@example.invalid</code></td><td><code>user-503@example.invalid</code> (Versammlungen schadenmelden, stadtluzern, keimlifeiss)</td><td><code>user-81612@example.invalid</code></td></tr>
+  <tr data-tenant="deinklima"><td>deinklima</td><td><code>user-1742@example.invalid</code></td><td><code>user-2129@example.invalid</code> (Prozesse klimaideethun, reallaborthun; Versammlung Zurich)</td><td><code>user-78021@example.invalid</code></td></tr>
+  <tr data-tenant="winterthur"><td>Kooperation Winterthur</td><td><code>user-1878@example.invalid</code></td><td><code>user-3216@example.invalid</code> (Prozesse multigination-grueze, co-kreation)</td><td><code>user-81610@example.invalid</code></td></tr>
+  <tr data-tenant="koeniz"><td>ImpulsKöniz</td><td><code>user-3222@example.invalid</code></td><td><code>user-3626@example.invalid</code> (Prozess liebefeldmitte)</td><td><code>user-81010@example.invalid</code></td></tr>
 </table>
 
 <h2>1. Ohne Login (5 Min.)</h2>
@@ -202,28 +212,44 @@
   <tr><td>A1</td><td><b>Taxonomien</b> (Admin → Einstellungen → Taxonomien): «~ Bereiche», «~ Gebiete» und «~ Kategorien» enthalten eure bisherigen Einträge; nichts doppelt, nichts vermischt</td></tr>
   <tr><td>A2</td><td>Einer Komponente einen <b>Taxonomie-Filter</b> zuweisen und prüfen, dass er öffentlich als Filter erscheint (das wird nach dem Upgrade eure Aufgabe sein)</td></tr>
   <tr><td>A3</td><td>Startseite → Inhaltsblock «Hero»: Call-to-Action prüfen (ersetzt die frühere Seite «Erscheinungsbild»)</td></tr>
-  <tr><td>A4</td><td>Nur Dialog Luzern, ImpulsKöniz: Komponente «Meldungen» öffnen; die Zuständigen pro Taxonomie neu zuweisen ist nach dem Upgrade nötig (Liste stellen wir bereit)</td></tr>
+  <tr data-tenants="dialogluzern koeniz"><td>A4</td><td>Komponente «Meldungen» öffnen; die Zuständigen pro Taxonomie neu zuweisen ist nach dem Upgrade nötig (Liste stellen wir bereit)</td></tr>
   <tr><td>A5</td><td>Einen Export starten (z. B. Vorschläge); die Mail mit dem Download-Link kommt auf DEV nicht an, es geht nur ums Auslösen ohne Fehler</td></tr>
   <tr><td>A6</td><td>Oben rechts: «Upgrade-Dokumentation» öffnet Planung, offene Fragen und diese Seite (nur für Admins sichtbar)</td></tr>
 </table>
 
 <h2>Weitere Beobachtungen</h2>
-<p>Alles, was euch sonst auffällt: Adresse (URL), verwendetes Konto, was ihr erwartet habt. Fehlerseiten («Serverfehler») bitte immer melden, mit Uhrzeit.</p>
-<textarea class="notes" id="d-notes" rows="5"></textarea>
+<p>Alles, was euch sonst auffällt: Adresse (URL), verwendetes Konto, was ihr erwartet habt. Fehlerseiten («Serverfehler») bitte immer melden, mit Uhrzeit. Pro Thema ein eigenes Feld.</p>
+<div id="extras"></div>
+<button id="add-extra" class="btn secondary" type="button">+ Weitere Beobachtung</button>
 
 <h2>Ergebnis sammeln</h2>
-<p>Alle Punkte mit Status oder Notiz werden als Markdown zusammengestellt. Schickt es uns als Kommentar im Ticket oder per Mail, Screenshots gerne dazu.</p>
+<p>Alle Plattformen und Punkte mit Status oder Notiz werden als Markdown zusammengestellt; leere werden weggelassen. Schickt es uns als Kommentar im Ticket oder per Mail, Screenshots gerne dazu.</p>
 <button id="collect" class="btn" type="button">Ergebnis sammeln</button>
 <button id="copy" class="btn secondary" type="button" hidden>Kopieren</button>
 <a id="download" class="btn secondary" hidden download="testergebnis_228.md">Als .md herunterladen</a>
-<button id="reset" class="btn secondary" type="button">Alles zurücksetzen</button>
+<button id="reset" class="btn secondary" type="button">Diese Plattform zurücksetzen</button>
 <textarea id="md-out" readonly hidden></textarea>
 </main>
 </div>
 <script>
-  // Every item row gets OK / Problem / nicht getestet + "Notizen". State (radios, notes, name fields) is kept in localStorage.
-  const KEY = "devtest:" + location.pathname, state = JSON.parse(localStorage.getItem(KEY) || "{}");
-  const save = () => localStorage.setItem(KEY, JSON.stringify(state));
+  // One list per tenant: rows with data-tenant / data-tenants show only for the selected tenant. Each item row gets
+  // OK / Problem / nicht getestet + "Notizen". State per tenant in localStorage; the export contains only filled entries.
+  const KEY = "devtest:" + location.pathname, store = JSON.parse(localStorage.getItem(KEY) || '{"tenants":{}}');
+  store.tenants ||= {};
+  const save = () => { localStorage.setItem(KEY, JSON.stringify(store)); renderTabs(); };
+  const tabs = [...document.querySelectorAll("#tenant-tabs button")], NAMES = Object.fromEntries(tabs.map(b => [b.dataset.tenant, b.textContent]));
+  const HOSTS = { dialogluzern: /dialog-?luzern/, deinklima: /deinklima/, winterthur: /winterthur/, koeniz: /koeniz|köniz/ };
+  let current = store.current || Object.keys(HOSTS).find(k => HOSTS[k].test(location.hostname)) || tabs[0].dataset.tenant;
+  // Active tab + number of filled entries per tenant (shown in brackets).
+  function renderTabs() {
+    tabs.forEach(b => {
+      const td = store.tenants[b.dataset.tenant], n = td ? Object.keys(td.items || {}).length + (td.extras || []).filter(x => x.trim()).length : 0;
+      b.setAttribute("aria-selected", b.dataset.tenant === current);
+      b.innerHTML = NAMES[b.dataset.tenant] + (n ? `<span class="count">(${n})</span>` : "");
+    });
+  }
+  const tenant = () => current, data = () => (store.tenants[tenant()] ||= { items: {}, extras: [] });
+
   const STATUS = ["OK", "Problem | Bitte in den Notizen beschreiben.", "Nicht getestet"];
   const items = [];
   document.querySelectorAll("main table").forEach(table => {
@@ -232,13 +258,13 @@
     table.rows[0].insertAdjacentHTML("beforeend", "<th>Status</th>");
     const section = table.previousElementSibling.textContent;
     rows.forEach(row => {
-      const id = row.cells[0].textContent.trim(), name = "s-" + id, title = row.cells[1].textContent.trim();
+      const id = row.cells[0].textContent.trim(), title = row.cells[1].textContent.trim();
       const cell = row.insertCell();
       cell.className = "answer";
       for (const raw of STATUS) {
         const [text, hint] = raw.split(" | ");
         const label = document.createElement("label"), input = document.createElement("input"), span = document.createElement("span");
-        Object.assign(input, { type: "radio", name, value: text, checked: state[id]?.status === text });
+        Object.assign(input, { type: "radio", name: "s-" + id, value: text });
         span.textContent = text;
         if (hint) span.insertAdjacentHTML("beforeend", `<small class="hint">${hint}</small>`);
         label.append(input, span);
@@ -246,57 +272,98 @@
       }
       row.cells[1].insertAdjacentHTML("beforeend", '<label class="notes-toggle"><input type="checkbox"> Notizen</label><textarea class="notes" hidden></textarea>');
       const toggle = row.cells[1].querySelector(".notes-toggle input"), notes = row.cells[1].querySelector("textarea.notes");
-      notes.value = state[id]?.note || "";
-      toggle.checked = !!notes.value; notes.hidden = !toggle.checked;
-      const store = () => { state[id] = { status: cell.querySelector("input:checked")?.value || "", note: notes.value }; save(); };
+      const persist = () => {
+        const status = cell.querySelector("input:checked")?.value || "", note = notes.value;
+        if (status || note.trim()) data().items[id] = { status, note }; else delete data().items[id];
+        save();
+      };
       toggle.addEventListener("change", () => { notes.hidden = !toggle.checked; if (toggle.checked) notes.focus(); });
-      notes.addEventListener("input", store);
+      notes.addEventListener("input", persist);
       cell.querySelectorAll("input[type=radio]").forEach(r => {
         // Clicking the selected status again clears it; "Problem" opens the notes.
         r.closest("label").addEventListener("mousedown", () => r.dataset.was = r.checked);
-        r.addEventListener("click", () => { if (r.dataset.was === "true") r.checked = false; r.dataset.was = ""; store(); });
+        r.addEventListener("click", () => { if (r.dataset.was === "true") r.checked = false; r.dataset.was = ""; persist(); });
         r.addEventListener("change", () => { if (r.checked && r.value === "Problem" && !toggle.checked) { toggle.checked = true; toggle.dispatchEvent(new Event("change")); } });
       });
-      items.push({ id, title, section, cell, toggle, notes });
+      items.push({ id, title, section, row, cell, toggle, notes });
     });
   });
-  for (const id of ["answered-by", "for-whom", "d-notes"]) {
-    const el = document.getElementById(id);
-    el.value = state["_" + id] || "";
-    el.addEventListener("input", () => { state["_" + id] = el.value; save(); });
+
+  const name = document.getElementById("answered-by"), extrasEl = document.getElementById("extras");
+  name.value = store.name || "";
+  name.addEventListener("input", () => { store.name = name.value; save(); });
+  // "Weitere Beobachtungen": one text field per topic; always at least one (empty) field.
+  const extrasOf = d => (d.extras ||= d.extra ? [d.extra] : [], delete d.extra, d.extras);
+  function renderExtras(focusLast = false) {
+    const list = extrasOf(data());
+    if (!list.length) list.push("");
+    extrasEl.replaceChildren(...list.map((text, i) => {
+      const row = document.createElement("div"), area = document.createElement("textarea"), remove = document.createElement("button");
+      row.className = "extra"; area.className = "notes"; area.rows = 3; area.value = text; area.placeholder = `Beobachtung ${i + 1}`;
+      Object.assign(remove, { type: "button", className: "remove", textContent: "×", title: "Entfernen" });
+      area.addEventListener("input", () => { list[i] = area.value; save(); });
+      remove.addEventListener("click", () => { list.splice(i, 1); save(); renderExtras(); });
+      row.append(area, remove);
+      return row;
+    }));
+    if (focusLast) extrasEl.lastElementChild.querySelector("textarea").focus();
   }
+  document.getElementById("add-extra").addEventListener("click", () => { extrasOf(data()).push(""); save(); renderExtras(true); });
+  const applies = (row, t) => (!row.dataset.tenant || row.dataset.tenant === t) && (!row.dataset.tenants || row.dataset.tenants.split(" ").includes(t));
+  function show() {
+    const t = tenant(), d = data();
+    store.current = t; save();
+    document.querySelectorAll("tr[data-tenant], tr[data-tenants]").forEach(r => r.hidden = !applies(r, t));
+    for (const q of items) {
+      const v = d.items[q.id] || {};
+      q.cell.querySelectorAll("input").forEach(i => i.checked = i.value === v.status);
+      q.notes.value = v.note || "";
+      q.toggle.checked = !!q.notes.value; q.notes.hidden = !q.toggle.checked;
+    }
+    renderExtras();
+  }
+  tabs.forEach(b => b.addEventListener("click", () => { current = b.dataset.tenant; show(); }));
+  show();
 
   const out = document.getElementById("md-out"), dl = document.getElementById("download"), copy = document.getElementById("copy");
   document.getElementById("collect").addEventListener("click", () => {
-    const forWhom = document.getElementById("for-whom").value.trim(), answeredBy = document.getElementById("answered-by").value.trim();
-    const meta = [answeredBy && `**Name:** ${answeredBy}  `, forWhom && `**Plattform:** ${forWhom}`].filter(Boolean);
-    const lines = ["# Testergebnis DEV (decidim.swiss#228)", "", ...(meta.length ? [...meta, ""] : [])];
-    dl.download = "testergebnis_228" + (forWhom ? "_" + forWhom.toLowerCase().replace(/[^a-z0-9äöü]+/g, "-").replace(/^-|-$/g, "") : "") + ".md";
-    let lastSection = null, any = false;
-    for (const q of items) {
-      const status = q.cell.querySelector("input:checked")?.value || "", note = q.toggle.checked ? q.notes.value.trim() : "";
-      if (!status && !note) continue;
-      if (q.section !== lastSection) { lines.push(`## ${q.section}`, ""); lastSection = q.section; }
-      lines.push(`- **${q.id}** ${q.title}: **${status || "–"}**`);
-      if (note) lines.push("  - Notiz: " + note.replace(/\n/g, "\n    "));
-      any = true;
+    const answeredBy = name.value.trim();
+    const lines = ["# Testergebnis DEV (decidim.swiss#228)", "", ...(answeredBy ? [`**Name:** ${answeredBy}`, ""] : [])];
+    const filled = [];
+    for (const [t, d] of Object.entries(store.tenants)) {
+      const entries = items.filter(q => d.items[q.id] && applies(q.row, t));
+      const extras = extrasOf(d).map(x => x.trim()).filter(Boolean);
+      if (!entries.length && !extras.length) continue;
+      filled.push(t);
+      lines.push(`## ${NAMES[t]}`, "");
+      let lastSection = null;
+      for (const q of entries) {
+        const { status, note } = d.items[q.id];
+        if (q.section !== lastSection) { lines.push(`### ${q.section}`, ""); lastSection = q.section; }
+        lines.push(`- **${q.id}** ${q.title}: **${status || "–"}**`);
+        if (note?.trim()) lines.push("  - Notiz: " + note.trim().replace(/\n/g, "\n    "));
+      }
+      if (extras.length) lines.push("### Weitere Beobachtungen", "", ...extras.flatMap((x, i) => [`${i + 1}.`, "   " + x.replace(/\n/g, "\n   "), ""]));
     }
-    const extra = document.getElementById("d-notes").value.trim();
-    if (extra) { lines.push("## Weitere Beobachtungen", "", extra); any = true; }
-    if (!any) lines.push("_Noch nichts erfasst._");
-    out.value = lines.join("\n").replace(/\n## /g, "\n\n## ").replace(/\n\n\n/g, "\n\n") + "\n";
+    if (!filled.length) lines.push("_Noch nichts erfasst._");
+    dl.download = "testergebnis_228" + (filled.length === 1 ? "_" + filled[0] : "") + ".md";
+    out.value = lines.join("\n").replace(/\n(#{2,3}) /g, "\n\n$1 ").replace(/\n{3,}/g, "\n\n") + "\n";
     URL.revokeObjectURL(dl.href);
     dl.href = URL.createObjectURL(new Blob([out.value], { type: "text/markdown" }));
     out.hidden = dl.hidden = copy.hidden = false;
   });
   copy.addEventListener("click", () => navigator.clipboard.writeText(out.value).then(() => copy.textContent = "Kopiert ✓"));
-  document.getElementById("reset").addEventListener("click", () => { if (confirm("Alle Einträge auf dieser Seite löschen?")) { localStorage.removeItem(KEY); location.reload(); } });
+  document.getElementById("reset").addEventListener("click", () => {
+    if (!confirm(`Alle Einträge für ${NAMES[tenant()]} löschen?`)) return;
+    delete store.tenants[tenant()]; save(); show();
+  });
 </script>
 <script>
   // Wrap each h2 and its content in a <section> card, wrap tables for horizontal scroll, and build the TOC.
   const main = document.querySelector("main"), toc = document.getElementById("toc");
   let section = null;
   for (const node of [...main.childNodes]) {
+    if (node.id === "tenant-tabs") { section = null; continue; }
     if (node.nodeName === "H2") { section = document.createElement("section"); main.insertBefore(section, node); }
     if (section) section.appendChild(node);
   }
