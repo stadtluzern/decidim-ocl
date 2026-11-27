@@ -75,6 +75,12 @@ DECIDIM_OVERRIDE_CHECKS = {
       methods: { 'Decidim::DecidimAwesome::Admin::ChecksController#system_login' => '838073aa6251b62b0906b2b09ec4489d' }
     }
   },
+  'app/overrides/decidim/maintenance/import_models/area_override.rb' => {
+    description: 'Taxonomy import: area filter items use the area type plural like the taxonomy nodes (no duplicate type nodes)',
+    targets: {
+      methods: { 'Decidim::Maintenance::ImportModels::Area#filter_item_for_space_manifest' => 'e74e212cc0dd1a9c571e2bfb74ae9b24' }
+    }
+  },
   'app/overrides/map/provider/autocomplete/osm_override.rb' => {
     description: 'Osm autocomplete builder with configurable map config and URL',
     targets: {

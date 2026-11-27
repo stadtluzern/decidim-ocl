@@ -53,6 +53,7 @@ de:
             name: Name
             plural: Plural
       titles:
+        areas: Gebiete
         scope_types: Scope types
     budgets:
       projects:

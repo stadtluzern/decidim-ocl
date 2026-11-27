@@ -87,7 +87,7 @@ STEPS = [
   { id: 'c-import-plans', kind: :once, desc: 'Import taxonomy plans', cmd: 'r decidim:taxonomies:import_all_plans' },
   { id: 'c-reset-counters', kind: :cmd, desc: 'Reset taxonomy counters', cmd: 'r decidim:taxonomies:reset_counters' },
   { id: 'c-results-copy-out', kind: :cmd, desc: 'Copy import results to plans/result, check for errors', expect: /\Aclean\Z/,
-    cmd: %q(rm -rf plans/result && oc cp -c rails "$(pod)":/app-src/tmp/taxonomies plans/result && (grep -il error plans/result/*_result.json || echo clean)) },
+    cmd: %q(rm -rf plans/result && oc cp -c rails "$(pod)":/app-src/tmp/taxonomies plans/result >&2 && (grep -il error plans/result/*_result.json || echo clean)) },
   *UPGRADE_TASKS.map { |task| { id: "c-#{task.split(':').last.tr('_', '-')}", kind: :cmd, desc: task, cmd: "r #{task}" } },
   { id: 'c-smoke-test', kind: :manual, desc: 'Smoke test per tenant (login, filters, survey, initiative, upload, export)' },
   { id: 'c-go-no-go', kind: :manual, desc: 'GO decision taken (last point for rollback without side effects)' },
