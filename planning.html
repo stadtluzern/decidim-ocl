@@ -105,7 +105,7 @@
     <span class="chip">Ticket <a href="https://github.com/decidim-swiss/decidim.swiss/issues/228">decidim.swiss#228</a></span>
     <span class="chip">Repo <code>stadtluzern/decidim-ocl</code> · branch <code>master</code></span>
     <span class="chip">Reference <a href="https://github.com/puzzle/decidim-zuerich/tree/upgrade">puzzle/decidim-zuerich @ <code>upgrade</code></a></span>
-    <span class="chip">0.29.7 → 0.31.8</span>
+    <span class="chip">0.29.7 → 0.31.9</span>
     <span class="chip">→ <a href="upgrade_steps.html">Step-by-step guide</a></span>
     <span class="chip">→ <a href="open_questions.html">Open questions</a></span>
   </div>
@@ -130,7 +130,7 @@
 
 <h2>1. Ticket scope (#228)</h2>
 <ul>
-  <li>Upgrade to Decidim <b>0.31.8</b> (ticket said 0.31.7; decided to target 0.31.8). <code>openpoke/decidim@0.31-backports</code> (HEAD <code>2f36d58</code>) is <code>v0.31.8</code> + 66 commits, 0 behind, version <code>0.31.8</code>. Only 0.31.8 contains the survey display-conditions fix (<code>inverse_of: :condition_question</code> absent in v0.31.7, see §6), and it carries 5 security advisories plus the verification hardening.</li>
+  <li>Upgrade to Decidim <b>0.31.9</b> (ticket said 0.31.7; first targeted 0.31.8, moved to 0.31.9 on 2026-11-27 after the DEV rehearsal, §5.7). <code>openpoke/decidim@0.31-backports</code> (HEAD <code>567b232</code>, merged 2026-11-27) contains all of <code>v0.31.9</code> plus later 0.31-stable backports (e.g. cross-organization taxonomy filter hardening, decidim#18210), version <code>0.31.9</code>. Before: <code>2f36d58</code> = <code>v0.31.8</code> + 66 commits. Only 0.31.8 contains the survey display-conditions fix (<code>inverse_of: :condition_question</code> absent in v0.31.7, see §6), and it carries 5 security advisories plus the verification hardening.</li>
   <li>Drop the Pokecode 0.29 backports and switch to <code>0.31-backports</code>.</li>
   <li>Install the new components <code>decidim-elections</code> and <code>decidim-collaborative_texts</code>.</li>
   <li>Remove the mail digest fix (see <a href="https://github.com/puzzle/decidim-zuerich/issues/615">zuerich#615</a>).</li>
@@ -143,7 +143,7 @@
 <h2>2. Version jump</h2>
 <table>
   <tr><th></th><th>decidim.swiss today (<code>upgrade</code> branch)</th><th>Zürich after upgrade</th><th>Target for decidim.swiss</th></tr>
-  <tr><td>Decidim</td><td>0.29.7 (openpoke <code>0.29-backports</code> @ <code>13fd72f</code>)</td><td>0.31.6 (openpoke <code>0.31-backports</code> @ <code>d4439af</code>)</td><td>0.31.8 (openpoke <code>0.31-backports</code>)</td></tr>
+  <tr><td>Decidim</td><td>0.29.7 (openpoke <code>0.29-backports</code> @ <code>13fd72f</code>)</td><td>0.31.6 (openpoke <code>0.31-backports</code> @ <code>d4439af</code>)</td><td>0.31.9 (openpoke <code>0.31-backports</code> @ <code>567b232</code>)</td></tr>
   <tr><td>Rails</td><td>7.0.8.7, <code>load_defaults 7.0</code></td><td>7.2.3.1, <code>load_defaults 7.2</code></td><td>7.2.x</td></tr>
   <tr><td>Ruby</td><td>3.2.10 (<code>.tool-versions</code>, Dockerfile)</td><td>3.3.4</td><td>3.3.4</td></tr>
   <tr><td>Node</td><td>18.20</td><td>22.14 (Dockerfile nodesource <code>node_22.x</code>, yarn 1.22.21, <code>nodejs</code> dropped from runtime image)</td><td>22.x</td></tr>
@@ -206,7 +206,7 @@
 <h2>4. Modules: decidim.swiss today vs. 0.31</h2>
 <table>
   <tr><th>Gem</th><th>decidim.swiss today</th><th>0.31 source</th><th>Status</th></tr>
-  <tr><td>decidim (+ conferences, initiatives, proposals, templates)</td><td>openpoke <code>0.29-backports</code> @ <code>13fd72f</code></td><td>openpoke <code>0.31-backports</code> (0.31.8). Zürich pins with <code>glob: 'decidim-xyz/*.gemspec'</code></td><td class="ok">ok</td></tr>
+  <tr><td>decidim (+ conferences, initiatives, proposals, templates)</td><td>openpoke <code>0.29-backports</code> @ <code>13fd72f</code></td><td>openpoke <code>0.31-backports</code> (0.31.9). Zürich pins with <code>glob: 'decidim-xyz/*.gemspec'</code></td><td class="ok">ok</td></tr>
   <tr><td>decidim-elections, decidim-collaborative_texts</td><td>–</td><td>openpoke <code>0.31-backports</code></td><td class="ok">new</td></tr>
   <tr><td>decidim-initiatives</td><td>in use (cron jobs, view and form overrides)</td><td>core</td><td class="mid">Not used in Zürich, so untested. 0.31 changes the signature workflow (release notes §5.8), but no active tenant signs online (§10.1), so no new signature workflow is needed; basic function tested on INT.</td></tr>
   <tr><td>decidim-decidim_awesome</td><td><code>release/0.29-stable</code> @ <code>a9f2077</code></td><td><code>release/0.31-stable</code> @ <code>7470edb</code> (Zürich: <code>main</code> @ <code>362ca4c</code>)</td><td class="ok">ok. New default <code>link_admin_to_system_admins</code> (org admin with a system-admin email logs into <code>/system</code> without password) is set to <code>:disabled</code> in <code>config/initializers/decidim_awesome.rb</code>, <b>which only hides the button; see the security warning at the top</b>.</td></tr>
@@ -382,6 +382,17 @@ bin/rails decidim:upgrade:user_groups:remove       # sends mails, see §5.2
 </table>
 <div class="warn">Consequence: acceptance testing on INT has to go through a <b>permission matrix</b>: visitor, logged-in participant, verified participant (SMS), space admin, collaborator/evaluator, awesome scoped admin, org admin × a public, private, transparent and unpublished space × proposals, reporting_proposals, meetings (+ guest registration), surveys (anonymous and multiple answers), initiatives (create/sign), participatory_documents, profiles/search. SMS: wrong code ×5 → locked; code older than 10 min → expired.</div>
 
+<h3>5.7 Fixes from the DEV rehearsal (2026-11-27) and when they can go</h3>
+<p>The rehearsal with the scrubbed PROD dump found three problems in Decidim's upgrade path; a check of v0.31.9 found a fourth. The pin moved to openpoke <code>567b232</code> (0.31.9 + later backports). The app runs its <b>copies</b> of migrations in <code>db/migrate</code>, so a gem update alone never changes them.</p>
+<table>
+  <tr><th>Problem (PROD effect without the fix)</th><th>Fix</th><th>Remove when</th></tr>
+  <tr><td><code>MoveHighlightedContentBannerSettingsToContentBlock</code> crashes: Winterthur has no highlighted-content-banner block (upgrade stops half-migrated)</td><td>decidim#18090/#18128, in v0.31.9. Our copy <code>db/migrate/20261107215658_…decidim.rb</code> is identical to v0.31.9</td><td>Nothing of ours left since the move to 0.31.9 (first a backport in <code>8d4400df</code>)</td></tr>
+  <tr><td><code>MoveCtaToHeroContentBlock</code> replaces the hero block settings: welcome texts of dialogluzern, Winterthur and Köniz lost (seen on DEV run 3)</td><td>decidim#18140, in v0.31.9. Our copy <code>db/migrate/20261107215657_…decidim.rb</code> is identical to v0.31.9</td><td>Nothing of ours left since the move to 0.31.9</td></tr>
+  <tr><td>German <code>decidim.admin.titles.scopes</code> and <code>.areas</code> are both "Bereiche": <code>make_plan</code> gives scopes and areas the same root, the import merges them into one taxonomy</td><td><code>config/locales/de.yml</code>: <code>titles.areas: Gebiete</code></td><td>Not fixed in v0.31.9 or openpoke <code>567b232</code>. Can go once all organizations are imported (the key is then only the title of the old areas admin page) or when upstream renames it</td></tr>
+  <tr><td><code>ImportModels::Area</code>: filter items use the area type <code>name</code>, the taxonomy uses its <code>plural</code>: dialogluzern's "Quartiere der Stadt Luzern" twice, filters point to the copy</td><td>Override <code>app/overrides/maintenance/import_models/area_override.rb</code> (MD5 check in <code>test/lib/decidim_overrides_test.rb</code>)</td><td>Not fixed in v0.31.9 or openpoke <code>567b232</code> (upstream issue to file). Remove after the PROD import (only <code>make_plan</code> uses it), or when the MD5 test reports an upstream change</td></tr>
+</table>
+<p>Also with the move to 0.31.9: new migration <code>MakeUserOptionalInActionLogs</code> (copied as <code>20261127102529</code>; makes <code>decidim_action_logs.user_id/user_type</code> nullable, no data change); <code>CreateFollow</code> override deleted (added 2021 for decidim#7854, upstream has done the same since; it would have undone 0.31.9's organization scoping); assemblies admin <code>filtered_collection</code> override merged with 0.31.9's child-assembly list.</p>
+
 <h2>6. Local code hotspots in decidim.swiss</h2>
 <p>There are 26 files in <code>app/overrides</code> and about 43 replaced views/cells (excluding <code>static/api</code>). Most are not yet checked against 0.31. These have been confirmed so far:</p>
 <table>
@@ -470,7 +481,7 @@ bin/rails decidim:upgrade:user_groups:remove       # sends mails, see §5.2
 <p>The questions for the client and the tenants, each with a recommended answer and its effect on the effort, are collected in <a href="open_questions.html">open questions</a> (German, for #228). The estimate in §9.1 assumes the recommended answers.</p>
 <p><b>Already decided:</b></p>
 <ul>
-  <li><b>One PROD deployment</b>, directly 0.29.7 → 0.31.8 (§2). No 0.30.9 intermediate step.</li>
+  <li><b>One PROD deployment</b>, directly 0.29.7 → 0.31.9 (§2). No 0.30.9 intermediate step.</li>
   <li><b>Communication</b>: our project lead informs the tenants' project leads, who pass everything on to their admins and participants. This includes the SMS re-verification (all SMS authorizations are deleted), the freeze, the maintenance window, user group mails, the removed "Appearance" page and header snippets without JS.</li>
   <li><b>Upgrade documents in the app (temporary)</b>: <code>UpgradeDocsController</code> + route <code>get 'upgrade/:doc'</code> serve <code>planning.html</code>, <code>upgrade_steps.html</code> and <code>open_questions.html</code> from the repo root at <code>/upgrade/&lt;doc&gt;.html</code> on every tenant, only to org admins after the normal Decidim login (others: login redirect or 404). Org admins also get an "Upgrade-Dokumentation" button in the admin header (<code>_title_bar</code> deface + <code>layouts/decidim/admin/_upgrade_docs_link</code>), hidden for space admins. <b>Remove the controller, the route, the header button and the three files before the upgrade is closed</b> (phase D checklist).</li>
 </ul>
