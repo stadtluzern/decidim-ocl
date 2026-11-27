@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 # Deletes participants inactive for longer than Decidim's inactivity period
-# (DECIDIM_DELETE_INACTIVE_USERS_AFTER_DAYS, Decidim default 365; warning mails 30 and 7 days before).
+# (DECIDIM_DELETE_INACTIVE_USERS_AFTER_DAYS, Decidim default 365, decidim.swiss 1095;
+# warning mails 30 and 7 days before).
 #
 # Only for the tenants listed in DELETE_INACTIVE_ACCOUNTS_TENANT_TYPES (comma-separated tenant_type,
-# e.g. "dialogluzern,winterthur"); without it the job is not scheduled and does nothing. Decided per
-# tenant in #228 (open questions C1): Luzern and Winterthur yes, deinklima and Köniz no.
+# e.g. "dialogluzern,winterthur"); without it the job is not scheduled and does nothing. #228 (C1):
+# all four tenants, 3 years.
 class DeleteInactiveAccounts < CronJob
   self.cron_expression = '0 0 * * *'
 
