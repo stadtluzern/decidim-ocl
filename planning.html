@@ -233,6 +233,12 @@
 
 <h3>5.1 Commands, in order, per release</h3>
 <p><code>bundle update decidim</code>, <code>bin/rails decidim:upgrade</code> and <code>bin/rails db:migrate</code> are part of every release. From 0.31.1 on, <code>bin/rails data:migrate</code> is too. The table lists only the <b>additional</b> steps.</p>
+<div class="warn"><b>After every <code>decidim:upgrade</code>: check <code>git diff db/migrate</code> before committing.</b> The task re-copies Decidim's migrations and silently overwrites local edits in our copies. These edits only matter for fresh databases (CI <code>db:create</code> + <code>db:migrate</code>, local setups); DEV/INT/PROD ran the versions long ago. Restore them with <code>git checkout -- &lt;file&gt;</code> and keep upstream's other changes:
+<ul>
+  <li><code>20250505112164_add_field_values_and_target_to_decidim_templates.decidim_templates.rb</code>: <code>column_exists?</code> guards, the columns already come from reporting_proposals <code>20230412083900</code> (since 0.28, <code>2653aaca</code>; overwritten in <code>93285e9f</code> and again on 2026-11-27, restored in <code>fbd7678</code>/<code>8a69d7bd</code>)</li>
+  <li><code>…fix_proposals_data_to_ensure_title_and_body_are_hashes.decidim_proposals.rb</code>: <code>Proposal.with_deleted</code> (<code>fbd7678</code>, as Zürich <code>c68dfa20</code>)</li>
+</ul>
+CI catches a lost guard too (fresh <code>db:migrate</code> fails), but only after a push.</div>
 <table>
   <tr><th>Release</th><th>Additional steps</th><th>Notes</th></tr>
   <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.30.0">0.30.0</a></td><td><pre>rbenv install 3.3.4
@@ -286,6 +292,7 @@ bin/rails decidim:upgrade:fix_deleted_private_follows</pre></td><td>Same steps a
   <tr><td>0.31.6</td><td>–</td><td>Includes the digest fix (decidim.swiss#219) and "Fix Toggle Stimulus controller usage" (#16868), which touches the survey step toggle in §6.</td></tr>
   <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.31.7">0.31.7</a></td><td>–</td><td>"Ensure JWT secret exists for <code>devise-jwt</code>" (#17346), which may make Zürich's <code>jwt &lt; 3.2.0</code> pin unnecessary [inference]. "Fix ENV var for setting inactive users deletion period" (#17276).</td></tr>
   <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.31.8">0.31.8</a></td><td>–</td><td>5 security advisories. <b>Verification code hardening</b> (#17639): failed attempts are now tracked server-side (default lockout after 5 attempts, configurable via <code>DECIDIM_VERIFICATION_MAX_FAILED_ATTEMPTS</code> and <code>DECIDIM_VERIFICATION_UNLOCK_IN</code>), SMS codes expire after 10 minutes (<code>DECIDIM_VERIFICATION_CODE_EXPIRY_MINUTES</code>), and Rack::Attack throttles to 10 requests/min/IP. <b>Also, and only in the changelog: broad authorization hardening</b> (about 110 new <code>enforce_permission_to</code> checks, API permissions, organization-scoped finders). 811 files changed compared with 0.31.7. Details are in §5.6. Zürich runs 0.31.6, so none of this has been tested there.</td></tr>
+  <tr><td><a href="https://github.com/decidim/decidim/releases/tag/v0.31.9">0.31.9</a></td><td>–</td><td>Standard steps only. Fixes two migrations of our upgrade path (banner #18128, CTA/hero settings #18140) and the forms counter-cache migration, adds <code>MakeUserOptionalInActionLogs</code>, more organization-scoped finders and sanitization. We use it through openpoke <code>567b232</code>; see §5.7.</td></tr>
 </table>
 <p>For a direct 0.29.7 → 0.31.8 upgrade, merging and deduplicating the lists gives the 0.30.0 block, the 0.31.0 block, plus <code>remove_deleted_users_left_data</code> and <code>fix_deleted_private_follows</code>. <b>But two of the 0.30.0 tasks no longer exist in 0.31.8</b>, and a few others behave differently than the notes suggest. The checked list is in §5.5.</p>
 
