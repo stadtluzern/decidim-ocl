@@ -10,7 +10,7 @@
 # behave as on PROD.
 #
 # NEVER run this against PROD, INT or DEV directly. Flow (see upgrade_steps.html phase A):
-#   docker run -d --rm --name scrub -e POSTGRES_PASSWORD=scrub -p 55433:5432 postgis/postgis:14-3.3-alpine
+#   docker run -d --rm --name scrub -e POSTGRES_PASSWORD=scrub -p 55433:5432 postgres:14.9-alpine
 #   gunzip -c dumps/stlu-prod-<date>.sql.gz | PGPASSWORD=scrub psql -q -h localhost -p 55433 -U postgres postgres
 #   RAILS_DB_HOST=localhost RAILS_DB_PORT=55433 RAILS_DB_USERNAME=postgres RAILS_DB_PASSWORD=scrub \
 #     RAILS_DB_NAME=postgres SCRUB_CONFIRM=postgres [SCRUB_TEST_PASSWORD=…] \
@@ -36,7 +36,7 @@ KEEP_NAMES = /\A(\w+_type|manifest_name|locale|slug|state|status|role|reference|
 
 # Admin-authored, public structure: kept as is.
 KEEP_TABLES = %w[
-  ar_internal_metadata schema_migrations data_migrations spatial_ref_sys
+  ar_internal_metadata schema_migrations data_migrations
   decidim_accountability_milestones decidim_accountability_results decidim_accountability_statuses
   decidim_accountability_timeline_entries decidim_area_types decidim_areas decidim_assemblies
   decidim_assemblies_types decidim_attachment_collections decidim_budgets_budgets decidim_budgets_projects

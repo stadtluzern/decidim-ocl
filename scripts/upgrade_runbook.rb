@@ -53,7 +53,7 @@ STEPS = [
     cmd: %q(rr 'cats = Decidim::Category.includes(:participatory_space).map { _1.participatory_space&.decidim_organization_id }.tally; Decidim::Organization.order(:id).each { |o| puts [o.host, Decidim::Scope.where(organization: o).count, Decidim::Area.where(organization: o).count, Decidim::ParticipatoryProcessType.where(organization: o).count, Decidim::AssembliesType.where(organization: o).count, cats.fetch(o.id, 0)].join(" | ") }') },
   { id: 'b-db-dump', kind: :cmd, desc: 'DB dump to dumps/',
     cmd: %q(mkdir -p dumps && f="dumps/stlu-$ENV-$(date +%F-%H%M).sql.gz" && db 'pg_dump -cOx "$POSTGRES_DB"' | gzip > "$f" && ls -lh "$f") },
-  { id: 'b-db-restore-test', kind: :manual, desc: 'Dump restored into local PostGIS 14, row counts equal (see guide)' },
+  { id: 'b-db-restore-test', kind: :manual, desc: 'Dump restored into local Postgres 14, row counts equal (see guide)' },
   { id: 'b-s3-backup', kind: :cmd, desc: 'S3 bucket mirrored to dumps/s3-<env> (incremental after the phase A sync)',
     cmd: %q(mkdir -p dumps && s3 sync --delete --only-show-errors "s3://$(bucket)" "/dumps/s3-$ENV") },
   { id: 'b-s3-backup-check', kind: :cmd, desc: 'Object count of the mirror equals the bucket',
