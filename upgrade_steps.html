@@ -156,6 +156,18 @@
   <tr><td>Traceability</td><td>Generic run names</td><td>Run title "Deploy &lt;ref&gt; to &lt;env&gt;", GitHub environment per target</td><td class="ok">gained</td></tr>
 </table>
 <p>Workarounds if needed: a fast DEV-only path would be an input to skip lint/tests that is only allowed for <code>dev</code>; "build only" would need a separate workflow without the tag step. Both change Carlo's design on purpose, so agree with him first.</p>
+
+<h3>1.2 Cost of the deploy.yaml change (running log)</h3>
+<p>Every change we make because of the CI change of 2026-11-25 is logged here with its cost, for the retro with Carlo (planned after the PROD deployment). Estimates are marked [inference]. <b>Add a row whenever the new CI makes us change a step, a script or the docs.</b></p>
+<table>
+  <tr><th>Date</th><th>What we had to change</th><th>Why (deploy.yaml)</th><th>Cost</th></tr>
+  <tr><td>2026-11-26</td><td>Docs rewritten from the old workflows to <code>deploy.yaml</code>: branch <code>master</code>, INT/PROD build steps, C1, rollback, §1.1 comparison (<code>9889e232</code>, <code>c71fe95c</code>, <code>f979f5dd</code>)</td><td>Workflows, branches and tag handling replaced</td><td>~0.25 PD spent [inference]</td></tr>
+  <tr><td>2026-11-26</td><td>Local work branch renamed (<code>task/228-…</code> → <code>228-on-master</code>), work moved to <code>master</code>; remote task branch to be deleted</td><td>The old branch still carries <code>build-int-on-push.yaml</code>; a push would overwrite the DEV tag set by master</td><td>~15 min; risk of an accidental DEV overwrite until the remote branch is gone</td></tr>
+  <tr><td>2026-11-26</td><td>"Build ahead, then revert the CI tag commit, set <code>newTag</code> in <code>1-deploy</code>" for INT and PROD (A5, phase A and C checklists)</td><td>No build without tag write; "build early, deploy later" lost</td><td>Per environment: one extra revert commit and a check, ~10–15 min [inference]; a few minutes in which nobody may sync that environment; INT + PROD ≈ 0.05 PD</td></tr>
+  <tr><td>2026-11-26</td><td>PROD image built separately and checked with <code>docker manifest inspect</code> before deploy day</td><td>No promotion of the accepted INT image (copy workflow removed)</td><td>One more full CI run (~15 min, was a ~2 min copy); <b>risk</b>: the PROD image is not the image INT was accepted with</td></tr>
+  <tr><td>ongoing</td><td>Every fix during the DEV rehearsal and INT acceptance goes through a full lint + test + build</td><td>No build without lint/tests</td><td>~5 min more per fix iteration than a fast build [inference]; number of iterations unknown</td></tr>
+  <tr><th>Total so far</th><td colspan="2"></td><th>≈ 0.35 PD plus the PROD-image risk [inference]</th></tr>
+</table>
 <p class="todo-title">Shell setup (used by all commands below)</p>
 <pre>ENV=int   # or prod / dev
 oc project pitc-decidim-stlu-$ENV
