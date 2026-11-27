@@ -36,7 +36,7 @@ KEEP_NAMES = /\A(\w+_type|manifest_name|locale|slug|state|status|role|reference|
 
 # Admin-authored, public structure: kept as is.
 KEEP_TABLES = %w[
-  ar_internal_metadata schema_migrations data_migrations
+  ar_internal_metadata schema_migrations data_migrations spatial_ref_sys
   decidim_accountability_milestones decidim_accountability_results decidim_accountability_statuses
   decidim_accountability_timeline_entries decidim_area_types decidim_areas decidim_assemblies
   decidim_assemblies_types decidim_attachment_collections decidim_budgets_budgets decidim_budgets_projects
