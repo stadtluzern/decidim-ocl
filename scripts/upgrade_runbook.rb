@@ -49,7 +49,7 @@ JOB_CLASS = 'h[/job_class: (\S+)/, 1]'
 STEPS = [
   # Phase B
   { id: 'b-0-down', kind: :manual, desc: 'Deployment repo: 0-down on main, ArgoCD sync done, public URLs blocked' },
-  { id: 'b-freeze-check', kind: :cmd, desc: 'Freeze baseline (compare with planning §10.1)',
+  { id: 'b-freeze-check', kind: :cmd, desc: 'Freeze baseline (compare with planning 10.1)',
     cmd: %q(rr 'cats = Decidim::Category.includes(:participatory_space).map { _1.participatory_space&.decidim_organization_id }.tally; Decidim::Organization.order(:id).each { |o| puts [o.host, Decidim::Scope.where(organization: o).count, Decidim::Area.where(organization: o).count, Decidim::ParticipatoryProcessType.where(organization: o).count, Decidim::AssembliesType.where(organization: o).count, cats.fetch(o.id, 0)].join(" | ") }') },
   { id: 'b-db-dump', kind: :cmd, desc: 'DB dump to dumps/',
     cmd: %q(mkdir -p dumps && f="dumps/stlu-$ENV-$(date +%F-%H%M).sql.gz" && db 'pg_dump -cOx "$POSTGRES_DB"' | gzip > "$f" && ls -lh "$f") },
@@ -83,9 +83,7 @@ STEPS = [
   { id: 'c-make-plan', kind: :cmd, desc: 'Generate taxonomy plans', cmd: 'r decidim:taxonomies:make_plan' },
   { id: 'c-plans-copy-out', kind: :cmd, desc: 'Copy generated plans to plans/generated',
     cmd: %q(rm -rf plans/generated && oc cp -c rails "$(pod)":/app-src/tmp/taxonomies plans/generated && ls plans/generated) },
-  { id: 'c-plans-transform', kind: :manual, desc: 'Tenant plans applied to plans/final, diff contains only the agreed moves' },
-  { id: 'c-plans-copy-in', kind: :cmd, desc: 'Copy plans/final into the pod',
-    cmd: %q(oc exec -c rails "$(pod)" -- sh -c 'rm -f /app-src/tmp/taxonomies/*_plan.json' && for f in plans/final/*_plan.json; do oc cp -c rails "$f" "$(pod)":/app-src/tmp/taxonomies/ || exit 1; done) },
+  { id: 'c-plans-check', kind: :manual, desc: 'Generated plans look complete; 1:1 import, imported unchanged (planning 10.2, A2)' },
   { id: 'c-import-plans', kind: :once, desc: 'Import taxonomy plans', cmd: 'r decidim:taxonomies:import_all_plans' },
   { id: 'c-reset-counters', kind: :cmd, desc: 'Reset taxonomy counters', cmd: 'r decidim:taxonomies:reset_counters' },
   { id: 'c-results-copy-out', kind: :cmd, desc: 'Copy import results to plans/result, check for errors', expect: /\Aclean\Z/,
@@ -215,7 +213,7 @@ class Runbook
   end
 end
 
-USAGE = File.read(__FILE__)[/^#   scripts.*?(?=\n#\n)/m].gsub(/^# ?/, '')
+USAGE = File.read(__FILE__, encoding: 'UTF-8')[/^#   scripts.*?(?=\n#\n)/m].gsub(/^# ?/, '')
 env, command, arg = ARGV
 abort USAGE unless %w[status run redo reset].include?(command)
 runbook = Runbook.new(env.to_s)
