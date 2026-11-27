@@ -86,7 +86,9 @@ Rails.application.configure do
 
   # Mail Settings
   if ENV['RAILS_MAIL_DELIVERY_CONFIG'].present?
-    case config.action_mailer.delivery_method.to_s
+    # delivery_method is still unset here (ActionMailer defaults to :smtp later), so assume that default;
+    # without it the ENV was never applied and mails without tenant SMTP went to localhost:25 (#228).
+    case (config.action_mailer.delivery_method || :smtp).to_s
     when 'smtp'
       config.action_mailer.smtp_settings =
         YAML.safe_load("{ #{ENV['RAILS_MAIL_DELIVERY_CONFIG']} }")
