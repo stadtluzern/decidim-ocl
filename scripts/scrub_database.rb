@@ -15,8 +15,8 @@
 #   RAILS_DB_HOST=localhost RAILS_DB_PORT=55433 RAILS_DB_USERNAME=postgres RAILS_DB_PASSWORD=scrub \
 #     RAILS_DB_NAME=postgres SCRUB_CONFIRM=postgres [SCRUB_TEST_PASSWORD=…] \
 #     scripts/scrub_database.rb   # from the repo root; same as: bin/rails runner scripts/scrub_database.rb
-#   PGPASSWORD=scrub pg_dump -cOx -h localhost -p 55433 -U postgres postgres \
-#     | gzip > dumps/stlu-prod-<date>-scrubbed.sql.gz
+#   docker exec scrub pg_dump -cOx -U postgres postgres | gzip > dumps/stlu-prod-<date>-scrubbed.sql.gz
+#     # container's pg_dump 14 (= PROD/DEV); a newer host pg_dump adds \restrict lines older psql rejects
 #   docker stop scrub   # the unscrubbed copy is gone with the container
 #
 # Works with plain SQL only, so it runs with the 0.31 code against a 0.29 dump (and vice versa).
