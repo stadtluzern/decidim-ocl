@@ -13,8 +13,7 @@ class MoveHighlightedContentBannerSettingsToContentBlock < ActiveRecord::Migrati
 
     Organization.find_each do |organization|
       content_block = Decidim::ContentBlock.find_by(organization: organization, scope_name: :homepage, manifest_name: :highlighted_content_banner)
-      # The content block can be missing (e.g. an admin deleted it), so there is no banner to move.
-      # Backport of decidim/decidim#18090 (not in openpoke 0.31-backports 2f36d585); fails on PROD Winterthur (#228).
+      # The content block can be missing (e.g. an admin deleted it), so there is no banner to move
       next if content_block.nil?
 
       settings = extract_settings(organization)

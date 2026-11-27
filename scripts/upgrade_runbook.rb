@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-# Runbook for the Decidim 0.29.7 -> 0.31.8 upgrade (decidim.swiss#228), phases B and C of upgrade_steps.html.
+# Runbook for the Decidim 0.29.7 -> 0.31.9 upgrade (decidim.swiss#228), phases B and C of upgrade_steps.html.
 #
 #   scripts/upgrade_runbook.rb <env> status         # show all steps with their state
 #   scripts/upgrade_runbook.rb <env> run            # run from the first step that is not done, stop on failure

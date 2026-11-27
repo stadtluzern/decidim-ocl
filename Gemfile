@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-DECIDIM_VERSION = '0.31.8'
+DECIDIM_VERSION = '0.31.9'
 
 ruby RUBY_VERSION
 
@@ -10,7 +10,7 @@ ruby RUBY_VERSION
 gem 'decidim',
     github: 'openpoke/decidim',
     branch: '0.31-backports',
-    ref: '2f36d585cfd452c38f4c7fa7eaa53af77ffe9c09'
+    ref: '567b2327c8edb0e442f70e6132dcf5ecc10fec7c'
 
 # Internal Modules
 # gem 'decidim-conferences', DECIDIM_VERSION
@@ -21,32 +21,32 @@ gem 'decidim',
 gem 'decidim-collaborative_texts',
     github: 'openpoke/decidim',
     branch: '0.31-backports',
-    ref: '2f36d585cfd452c38f4c7fa7eaa53af77ffe9c09',
+    ref: '567b2327c8edb0e442f70e6132dcf5ecc10fec7c',
     glob: 'decidim-collaborative_texts/*.gemspec'
 gem 'decidim-conferences',
     github: 'openpoke/decidim',
     branch: '0.31-backports',
-    ref: '2f36d585cfd452c38f4c7fa7eaa53af77ffe9c09',
+    ref: '567b2327c8edb0e442f70e6132dcf5ecc10fec7c',
     glob: 'decidim-conferences/*.gemspec'
 gem 'decidim-elections',
     github: 'openpoke/decidim',
     branch: '0.31-backports',
-    ref: '2f36d585cfd452c38f4c7fa7eaa53af77ffe9c09',
+    ref: '567b2327c8edb0e442f70e6132dcf5ecc10fec7c',
     glob: 'decidim-elections/*.gemspec'
 gem 'decidim-initiatives',
     github: 'openpoke/decidim',
     branch: '0.31-backports',
-    ref: '2f36d585cfd452c38f4c7fa7eaa53af77ffe9c09',
+    ref: '567b2327c8edb0e442f70e6132dcf5ecc10fec7c',
     glob: 'decidim-initiatives/*.gemspec'
 gem 'decidim-proposals',
     github: 'openpoke/decidim',
     branch: '0.31-backports',
-    ref: '2f36d585cfd452c38f4c7fa7eaa53af77ffe9c09',
+    ref: '567b2327c8edb0e442f70e6132dcf5ecc10fec7c',
     glob: 'decidim-proposals/*.gemspec'
 gem 'decidim-templates',
     github: 'openpoke/decidim',
     branch: '0.31-backports',
-    ref: '2f36d585cfd452c38f4c7fa7eaa53af77ffe9c09',
+    ref: '567b2327c8edb0e442f70e6132dcf5ecc10fec7c',
     glob: 'decidim-templates/*.gemspec'
 
 # HACK: Using patched version of deface, to fix JS overrides

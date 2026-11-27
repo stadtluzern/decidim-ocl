@@ -1289,11 +1289,11 @@
   integrity sha512-tAgvZQe/t2mlvpNosA4+CkMiZ2azISW5WPAcdSalZlEjQvUfghHxfQcrCiK/7/CrfAWVxyM88kGFYO82heIGDg==
 
 "@decidim/browserslist-config@file:packages/browserslist-config":
-  version "0.31.8"
+  version "0.31.9"
   resolved "file:packages/browserslist-config"
 
 "@decidim/core@file:packages/core":
-  version "0.31.8"
+  version "0.31.9"
   resolved "file:packages/core"
   dependencies:
     "@emoji-mart/data" "^1.1.2"
@@ -1362,7 +1362,7 @@
     wc-datepicker "^0.5.2"
 
 "@decidim/dev@file:packages/dev":
-  version "0.31.8"
+  version "0.31.9"
   resolved "file:packages/dev"
   dependencies:
     "@linthtml/linthtml" "^0.10.2"
@@ -1370,19 +1370,19 @@
     markdownlint-cli "^0.35.0"
 
 "@decidim/eslint-config@file:packages/eslint-config":
-  version "0.31.8"
+  version "0.31.9"
   resolved "file:packages/eslint-config"
 
 "@decidim/prettier-config@file:packages/prettier-config":
-  version "0.31.8"
+  version "0.31.9"
   resolved "file:packages/prettier-config"
 
 "@decidim/stylelint-config@file:packages/stylelint-config":
-  version "0.31.8"
+  version "0.31.9"
   resolved "file:packages/stylelint-config"
 
 "@decidim/webpacker@file:packages/webpacker":
-  version "0.31.8"
+  version "0.31.9"
   resolved "file:packages/webpacker"
   dependencies:
     "@hotwired/stimulus" "^3.2.2"

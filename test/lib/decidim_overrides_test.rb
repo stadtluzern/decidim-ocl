@@ -30,19 +30,13 @@ DECIDIM_OVERRIDE_CHECKS = {
   'app/overrides/assemblies/admin/assemblies_controller_override.rb' => {
     description: 'Admin assemblies list: filtered_collection override (method lives in Decidim::Admin::Filterable)',
     targets: {
-      classes: { 'Decidim::Assemblies::Admin::AssembliesController' => '36d79d9f157137feab81d941e8a0eac8' }
+      classes: { 'Decidim::Assemblies::Admin::AssembliesController' => '3b7dddb370d29b9961104621a8717caa' }
     }
   },
   'app/overrides/cells/decidim/translation_bar_cell_override.rb' => {
     description: 'Shows the translation banner only outside the organization default locale',
     targets: {
       methods: { 'Decidim::TranslationBarCell#renderable?' => '099e3c47938bde03a5635b7fadb41dcd' }
-    }
-  },
-  'app/overrides/commands/decidim/create_follow_override.rb' => {
-    description: 'Overrides follow creation',
-    targets: {
-      methods: { 'Decidim::CreateFollow#create_follow!' => 'a27aa741cc8082c31c2b588d19cb909b' }
     }
   },
   'app/overrides/controllers/concerns/decidim_ocl/participatory_space_context_override.rb' => {
@@ -90,7 +84,7 @@ DECIDIM_OVERRIDE_CHECKS = {
   'app/overrides/meetings/directory/meetings_controller_override.rb' => {
     description: 'Directory meetings listing: past/upcoming filter and custom search',
     targets: {
-      classes: { 'Decidim::Meetings::Directory::MeetingsController' => 'cc7f74c013792f5f6f559568fa37fb6f' }
+      classes: { 'Decidim::Meetings::Directory::MeetingsController' => '23772334e746f2e1284d9c8d9bec55ba' }
     }
   },
   'app/overrides/meetings/meetings_controller_override.rb' => {
