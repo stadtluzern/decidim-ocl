@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>decidim.swiss – Upgrade auf Decidim 0.31.9 (#228): Test auf DEV</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #f6f7f9; --surface: #fff; --fg: #1d2330; --muted: #5d6677; --border: #e1e5eb;
+    --accent: #2457d6; --accent-soft: #e8eefc; --code-bg: #f1f3f6;
+    --ok: #1f7a3a; --ok-bg: #e5f4ea; --bad: #b42318; --bad-bg: #fdecea; --mid: #a15c00; --mid-bg: #fff3e0;
+    --radius: 10px; --shadow: 0 1px 2px rgb(16 24 40 / .06), 0 1px 3px rgb(16 24 40 / .08);
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1218; --surface: #171b23; --fg: #e4e7ec; --muted: #98a2b3; --border: #2a303c;
+    --accent: #7aa2ff; --accent-soft: #1d2740; --code-bg: #1f2430;
+    --ok: #6fcf8f; --ok-bg: #16301f; --bad: #ff8a80; --bad-bg: #3a1a18; --mid: #ffb74d; --mid-bg: #3a2a12;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  header.hero { background: linear-gradient(135deg, #1e3a8a, #2457d6); color: #fff; padding: 2rem 1.5rem 1.6rem; }
+  header.hero .inner { max-width: 1400px; margin: 0 auto; position: relative; }
+  #theme-toggle { position: absolute; top: 0; right: 0; background: rgb(255 255 255 / .14); border: 1px solid rgb(255 255 255 / .3); color: #fff; border-radius: 999px; padding: .3rem .8rem; font: inherit; font-size: 13px; cursor: pointer; }
+  #theme-toggle:hover { background: rgb(255 255 255 / .25); }
+  header.hero h1 { padding-right: 7rem; }
+  header.hero h1 { margin: 0 0 .6rem; font-size: 1.9rem; line-height: 1.2; }
+  header.hero .meta { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 .8rem; }
+  header.hero .chip { background: rgb(255 255 255 / .14); border: 1px solid rgb(255 255 255 / .25); border-radius: 999px; padding: .2rem .75rem; font-size: 13px; }
+  header.hero a, header.hero code { color: #fff; }
+  header.hero code { background: rgb(255 255 255 / .15); }
+  header.hero small { color: rgb(255 255 255 / .8); }
+
+  .layout { max-width: 1400px; margin: 0 auto; padding: 1.5rem; display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 2rem; }
+  nav#toc { position: sticky; top: 1rem; align-self: start; max-height: calc(100vh - 2rem); overflow-y: auto; font-size: 13.5px; }
+  nav#toc .title { font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: 11.5px; color: var(--muted); margin: 0 0 .5rem .6rem; }
+  nav#toc a { display: block; padding: .25rem .6rem; border-radius: 6px; color: var(--fg); border-left: 2px solid transparent; }
+  nav#toc a.h3 { padding-left: 1.4rem; color: var(--muted); font-size: 12.5px; }
+  nav#toc a:hover { background: var(--accent-soft); text-decoration: none; }
+  nav#toc a.active { background: var(--accent-soft); border-left-color: var(--accent); color: var(--accent); }
+  @media (max-width: 960px) { .layout { grid-template-columns: 1fr; } nav#toc { position: static; max-height: none; } }
+
+  main > section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: .4rem 1.6rem 1.4rem; margin-bottom: 1.5rem; }
+  h2 { font-size: 1.35rem; margin: 1.1rem 0 .8rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.05rem; margin: 1.6rem 0 .6rem; color: var(--fg); }
+  h2 a.anchor, h3 a.anchor { opacity: 0; margin-left: .4rem; font-weight: 400; color: var(--muted); }
+  h2:hover a.anchor, h3:hover a.anchor { opacity: 1; }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .25rem 0; }
+  details { border: 1px solid var(--border); border-radius: 8px; padding: .5rem .9rem; margin: 1rem 0; }
+  details > summary { cursor: pointer; font-weight: 600; color: var(--muted); }
+  details[open] > summary { margin-bottom: .4rem; }
+
+  .table-wrap { overflow-x: auto; margin: .9rem 0; border: 1px solid var(--border); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { padding: .5rem .65rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+  th { background: var(--code-bg); font-weight: 600; position: sticky; top: 0; white-space: nowrap; }
+  tr:last-child td { border-bottom: 0; }
+  tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--code-bg) 45%, transparent); }
+  td:first-child { white-space: nowrap; }
+  td:first-child code { white-space: normal; }
+
+  code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 12.5px; background: var(--code-bg); padding: .1rem .35rem; border-radius: 4px; overflow-wrap: anywhere; }
+  pre { background: #10141c; color: #e6e9ef; padding: .8rem 1rem; border-radius: 8px; overflow-x: auto; font: 12.5px/1.55 ui-monospace, "SF Mono", Menlo, Consolas, monospace; margin: .6rem 0; }
+  td pre { margin: 0; font-size: 12px; }
+  td:has(> pre) { min-width: 30rem; max-width: 42rem; }
+  td:last-child { min-width: 16rem; }
+  pre code { background: none; padding: 0; color: inherit; }
+
+  .warn, .block { border-radius: 8px; padding: .75rem 1rem; margin: 1rem 0; border: 1px solid; }
+  .warn { background: var(--mid-bg); border-color: color-mix(in srgb, var(--mid) 35%, transparent); }
+  .block { background: var(--bad-bg); border-color: color-mix(in srgb, var(--bad) 35%, transparent); }
+  .warn::before { content: "⚠ "; color: var(--mid); font-weight: 700; }
+  .block::before { content: "⛔ "; }
+
+  td.ok, td.bad, td.mid { font-weight: 600; white-space: nowrap; }
+  td.ok { color: var(--ok); background: var(--ok-bg) !important; }
+  td.bad { color: var(--bad); background: var(--bad-bg) !important; }
+  td.mid { color: var(--mid); background: var(--mid-bg) !important; white-space: normal; }
+  small { color: var(--muted); }
+
+  td.answer { min-width: 26rem; }
+  td.answer .hint { display: block; font-size: 12.5px; line-height: 1.4; }
+  td.answer label { display: flex; gap: .4rem; align-items: baseline; margin: .15rem 0; cursor: pointer; }
+  td.answer label.recommended { background: var(--ok-bg); border-radius: 6px; padding: .1rem .35rem; margin-left: -.35rem; margin-right: -.35rem; }
+  td.answer .tag { margin-left: auto; font-size: 11px; font-weight: 700; color: var(--ok); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+  tr.resolved td { color: var(--muted); background: color-mix(in srgb, var(--code-bg) 60%, transparent) !important; }
+  tr.resolved td b, tr.resolved a { color: inherit; }
+  tr.resolved details { border: 0; padding: 0; margin: 0; }
+  tr.resolved summary { cursor: pointer; font-weight: 400; }
+  tr.resolved details[open] summary { margin-bottom: .3rem; }
+  .done { margin-left: .4rem; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; border: 1px solid var(--border); border-radius: 999px; padding: 0 .45rem; }
+  textarea.notes, #md-out { font: inherit; color: var(--fg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: .3rem .5rem; }
+  .notes-toggle { display: flex; gap: .4rem; align-items: center; margin-top: .5rem; font-size: 12.5px; color: var(--muted); cursor: pointer; width: fit-content; }
+  textarea.notes { display: block; width: 100%; min-height: 4.5rem; margin-top: .3rem; resize: vertical; font-size: 13px; }
+  textarea.notes[hidden] { display: none; }
+  .for-whom { display: flex; flex-wrap: wrap; gap: .4rem .8rem; align-items: center; margin: .4rem 0 .6rem; font-weight: 600; }
+  .for-whom > span { min-width: 15rem; }
+  .for-whom input { flex: 1; min-width: 16rem; max-width: 32rem; font: inherit; font-weight: 400; color: var(--fg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: .35rem .6rem; }
+  #md-out { width: 100%; min-height: 14rem; font: 12.5px/1.55 ui-monospace, "SF Mono", Menlo, Consolas, monospace; margin-top: .8rem; }
+  .btn { font: inherit; font-weight: 600; color: #fff; background: var(--accent); border: 0; border-radius: 8px; padding: .5rem 1.1rem; cursor: pointer; margin-right: .5rem; }
+  .btn.secondary { color: var(--accent); background: var(--accent-soft); }
+
+  @media print {
+    body { background: #fff; }
+    nav#toc, h2 a.anchor, h3 a.anchor { display: none; }
+    .layout { display: block; padding: 0; }
+    main > section { box-shadow: none; break-inside: auto; }
+    header.hero { background: none; color: #000; padding: 0 0 1rem; }
+    header.hero a, header.hero code, header.hero small { color: #000; }
+  }
+</style>
+<script>
+  // Saved choice wins; otherwise follow the OS. Runs before paint to avoid a flash.
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+</script>
+</head>
+<body>
+<header class="hero"><div class="inner">
+  <button id="theme-toggle" type="button" aria-label="Toggle dark mode"></button>
+  <h1>decidim.swiss – Upgrade auf Decidim 0.31.9: Test auf DEV</h1>
+  <div class="meta">
+    <span class="chip">Ticket <a href="https://github.com/decidim-swiss/decidim.swiss/issues/228">decidim.swiss#228</a></span>
+    <span class="chip">0.29.7 → 0.31.9</span>
+    <span class="chip">→ <a href="planning.html">Planung</a></span>
+    <span class="chip">→ <a href="open_questions.html">Offene Fragen</a></span>
+  </div>
+  <small>DEV läuft bereits mit Decidim 0.31.9 und einer anonymisierten Kopie der PROD-Daten vom 27.11. Pro Plattform rechnen wir mit rund 15–20 Minuten. Eure Einträge bleiben in diesem Browser gespeichert; am Schluss «Ergebnis sammeln» und uns das Markdown schicken.</small>
+</div></header>
+
+<div class="layout">
+<nav id="toc"><p class="title">Inhalt</p></nav>
+<main>
+<h2>Wer testet, welche Plattform?</h2>
+<label class="for-whom"><span>Name</span><input type="text" id="answered-by" placeholder="Vor- und Nachname"></label>
+<label class="for-whom"><span>Plattform</span><input type="text" id="for-whom" placeholder="z. B. dialogluzern.ch"></label>
+
+<h2>Wichtig vorab</h2>
+<ul>
+  <li><b>Auf PROD gilt ab sofort (27.11.) bis zum Upgrade:</b> keine Kategorien, Bereiche, Gebiete und Raumtypen (Prozess- und Versammlungstypen) mehr anlegen, ändern oder löschen. Sie werden beim Upgrade 1:1 übernommen. Auf DEV dürft ihr damit spielen.</li>
+  <li><b>Anonymisierte Inhalte:</b> Namen heissen «User 123», Beiträge, Kommentare und Umfrageantworten sind Platzhaltertext («Lorem ipsum …»). Räume, Komponenten, Kategorien, Bereiche, Gebiete und Seiten sind echt.</li>
+  <li><b>Bilder und Anhänge fehlen</b> grösstenteils (die Dateien liegen nur auf PROD). Leere Bilder sind deshalb kein Fehler.</li>
+  <li><b>Es werden keine E-Mails zugestellt</b>, und die SMS-Verifizierung lässt sich auf DEV nicht testen.</li>
+  <li><b>DEV wird später wieder zurückgesetzt.</b> Was ihr hier ändert, geht verloren. Bitte keine echten Personendaten eingeben.</li>
+  <li>Nach dem Upgrade sind alle bestehenden SMS-Verifizierungen gelöscht; Teilnehmende müssen sich neu verifizieren (wie angekündigt).</li>
+</ul>
+
+<h2>Adressen</h2>
+<table>
+  <tr><th>Plattform</th><th>DEV-Adresse</th></tr>
+  <tr><td>Dialog Luzern</td><td><a href="https://dialogluzern.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch">dialogluzern.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch</a></td></tr>
+  <tr><td>deinklima</td><td><a href="https://deinklima.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch">deinklima.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch</a></td></tr>
+  <tr><td>Kooperation Winterthur</td><td><a href="https://kooperation-winterthur.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch">kooperation-winterthur.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch</a></td></tr>
+  <tr><td>ImpulsKöniz</td><td><a href="https://impuls-koeniz.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch">impuls-koeniz.pitc-decidim-stlu-dev.ocp.cloudscale.puzzle.ch</a></td></tr>
+</table>
+
+<h2>Testkonten</h2>
+<p>Alle Konten haben dasselbe Passwort, das ihr separat erhaltet. Es sind echte Konten aus der PROD-Kopie mit ersetzter E-Mail-Adresse; Rechte und Rollen sind wie auf PROD.</p>
+<table>
+  <tr><th>Plattform</th><th>Admin</th><th>Space-Admin (Räume)</th><th>Teilnehmende</th></tr>
+  <tr><td>Dialog Luzern</td><td><code>user-1167@example.invalid</code></td><td><code>user-503@example.invalid</code> (Versammlungen schadenmelden, stadtluzern, keimlifeiss)</td><td><code>user-81612@example.invalid</code></td></tr>
+  <tr><td>deinklima</td><td><code>user-1742@example.invalid</code></td><td><code>user-2129@example.invalid</code> (Prozesse klimaideethun, reallaborthun; Versammlung Zurich)</td><td><code>user-78021@example.invalid</code></td></tr>
+  <tr><td>Kooperation Winterthur</td><td><code>user-1878@example.invalid</code></td><td><code>user-3216@example.invalid</code> (Prozesse multigination-grueze, co-kreation)</td><td><code>user-81610@example.invalid</code></td></tr>
+  <tr><td>ImpulsKöniz</td><td><code>user-3222@example.invalid</code></td><td><code>user-3626@example.invalid</code> (Prozess liebefeldmitte)</td><td><code>user-81010@example.invalid</code></td></tr>
+</table>
+
+<h2>1. Ohne Login (5 Min.)</h2>
+<table>
+  <tr><th>#</th><th>Prüfen</th></tr>
+  <tr><td>L1</td><td>Startseite: Begrüssungstext und Call-to-Action wie auf PROD</td></tr>
+  <tr><td>L2</td><td>Prozesse, Versammlungen, Veranstaltungen öffnen</td></tr>
+  <tr><td>L3</td><td>Einen Prozess mit Vorschlägen öffnen und die Filter benutzen (Status, Kategorien/Bereiche)</td></tr>
+  <tr><td>L4</td><td>Suche nach einem Begriff</td></tr>
+  <tr><td>L5</td><td>Private Räume sind nicht sichtbar</td></tr>
+</table>
+
+<h2>2. Als Teilnehmende (5 Min.)</h2>
+<table>
+  <tr><th>#</th><th>Prüfen</th></tr>
+  <tr><td>T1</td><td>Anmelden, Profil und Benachrichtigungseinstellungen öffnen</td></tr>
+  <tr><td>T2</td><td>Wo eine Komponente offen ist: einen Vorschlag erstellen, kommentieren, unterstützen</td></tr>
+  <tr><td>T3</td><td>Wo eine Umfrage offen ist: ausfüllen und absenden</td></tr>
+  <tr><td>T4</td><td>Einer Veranstaltung folgen bzw. sich anmelden</td></tr>
+  <tr><td>T5</td><td>Die Adresse <code>/admin</code> zeigt «Nicht gefunden» (kein Zugang)</td></tr>
+</table>
+
+<h2>3. Als Space-Admin (5 Min.)</h2>
+<table>
+  <tr><th>#</th><th>Prüfen</th></tr>
+  <tr><td>S1</td><td>Admin-Bereich des eigenen Raums öffnen, eine Komponente bearbeiten (speichern nicht nötig)</td></tr>
+  <tr><td>S2</td><td>Bei Vorschlägen: Antwort entwerfen, Status setzen</td></tr>
+  <tr><td>S3</td><td>Bekannt: Die Liste der Versammlungen im Admin zeigt alle Versammlungen, nicht nur die eigenen (Decidim-Verhalten, schon vor dem Upgrade; bearbeiten lassen sich nur die eigenen). Bitte prüfen, dass ein fremder Raum «nicht berechtigt» meldet.</td></tr>
+</table>
+
+<h2>4. Als Admin (5–10 Min.)</h2>
+<table>
+  <tr><th>#</th><th>Prüfen</th></tr>
+  <tr><td>A1</td><td><b>Taxonomien</b> (Admin → Einstellungen → Taxonomien): «~ Bereiche», «~ Gebiete» und «~ Kategorien» enthalten eure bisherigen Einträge; nichts doppelt, nichts vermischt</td></tr>
+  <tr><td>A2</td><td>Einer Komponente einen <b>Taxonomie-Filter</b> zuweisen und prüfen, dass er öffentlich als Filter erscheint (das wird nach dem Upgrade eure Aufgabe sein)</td></tr>
+  <tr><td>A3</td><td>Startseite → Inhaltsblock «Hero»: Call-to-Action prüfen (ersetzt die frühere Seite «Erscheinungsbild»)</td></tr>
+  <tr><td>A4</td><td>Nur Dialog Luzern, ImpulsKöniz: Komponente «Meldungen» öffnen; die Zuständigen pro Taxonomie neu zuweisen ist nach dem Upgrade nötig (Liste stellen wir bereit)</td></tr>
+  <tr><td>A5</td><td>Einen Export starten (z. B. Vorschläge); die Mail mit dem Download-Link kommt auf DEV nicht an, es geht nur ums Auslösen ohne Fehler</td></tr>
+  <tr><td>A6</td><td>Oben rechts: «Upgrade-Dokumentation» öffnet Planung, offene Fragen und diese Seite (nur für Admins sichtbar)</td></tr>
+</table>
+
+<h2>Weitere Beobachtungen</h2>
+<p>Alles, was euch sonst auffällt: Adresse (URL), verwendetes Konto, was ihr erwartet habt. Fehlerseiten («Serverfehler») bitte immer melden, mit Uhrzeit.</p>
+<textarea class="notes" id="d-notes" rows="5"></textarea>
+
+<h2>Ergebnis sammeln</h2>
+<p>Alle Punkte mit Status oder Notiz werden als Markdown zusammengestellt. Schickt es uns als Kommentar im Ticket oder per Mail, Screenshots gerne dazu.</p>
+<button id="collect" class="btn" type="button">Ergebnis sammeln</button>
+<button id="copy" class="btn secondary" type="button" hidden>Kopieren</button>
+<a id="download" class="btn secondary" hidden download="testergebnis_228.md">Als .md herunterladen</a>
+<button id="reset" class="btn secondary" type="button">Alles zurücksetzen</button>
+<textarea id="md-out" readonly hidden></textarea>
+</main>
+</div>
+<script>
+  // Every item row gets OK / Problem / nicht getestet + "Notizen". State (radios, notes, name fields) is kept in localStorage.
+  const KEY = "devtest:" + location.pathname, state = JSON.parse(localStorage.getItem(KEY) || "{}");
+  const save = () => localStorage.setItem(KEY, JSON.stringify(state));
+  const STATUS = ["OK", "Problem | Bitte in den Notizen beschreiben.", "Nicht getestet"];
+  const items = [];
+  document.querySelectorAll("main table").forEach(table => {
+    const rows = [...table.rows].filter(r => /^[LTSA]\d+$/.test(r.cells[0]?.textContent.trim()));
+    if (!rows.length) return;
+    table.rows[0].insertAdjacentHTML("beforeend", "<th>Status</th>");
+    const section = table.previousElementSibling.textContent;
+    rows.forEach(row => {
+      const id = row.cells[0].textContent.trim(), name = "s-" + id, title = row.cells[1].textContent.trim();
+      const cell = row.insertCell();
+      cell.className = "answer";
+      for (const raw of STATUS) {
+        const [text, hint] = raw.split(" | ");
+        const label = document.createElement("label"), input = document.createElement("input"), span = document.createElement("span");
+        Object.assign(input, { type: "radio", name, value: text, checked: state[id]?.status === text });
+        span.textContent = text;
+        if (hint) span.insertAdjacentHTML("beforeend", `<small class="hint">${hint}</small>`);
+        label.append(input, span);
+        cell.appendChild(label);
+      }
+      row.cells[1].insertAdjacentHTML("beforeend", '<label class="notes-toggle"><input type="checkbox"> Notizen</label><textarea class="notes" hidden></textarea>');
+      const toggle = row.cells[1].querySelector(".notes-toggle input"), notes = row.cells[1].querySelector("textarea.notes");
+      notes.value = state[id]?.note || "";
+      toggle.checked = !!notes.value; notes.hidden = !toggle.checked;
+      const store = () => { state[id] = { status: cell.querySelector("input:checked")?.value || "", note: notes.value }; save(); };
+      toggle.addEventListener("change", () => { notes.hidden = !toggle.checked; if (toggle.checked) notes.focus(); });
+      notes.addEventListener("input", store);
+      cell.querySelectorAll("input[type=radio]").forEach(r => {
+        // Clicking the selected status again clears it; "Problem" opens the notes.
+        r.closest("label").addEventListener("mousedown", () => r.dataset.was = r.checked);
+        r.addEventListener("click", () => { if (r.dataset.was === "true") r.checked = false; r.dataset.was = ""; store(); });
+        r.addEventListener("change", () => { if (r.checked && r.value === "Problem" && !toggle.checked) { toggle.checked = true; toggle.dispatchEvent(new Event("change")); } });
+      });
+      items.push({ id, title, section, cell, toggle, notes });
+    });
+  });
+  for (const id of ["answered-by", "for-whom", "d-notes"]) {
+    const el = document.getElementById(id);
+    el.value = state["_" + id] || "";
+    el.addEventListener("input", () => { state["_" + id] = el.value; save(); });
+  }
+
+  const out = document.getElementById("md-out"), dl = document.getElementById("download"), copy = document.getElementById("copy");
+  document.getElementById("collect").addEventListener("click", () => {
+    const forWhom = document.getElementById("for-whom").value.trim(), answeredBy = document.getElementById("answered-by").value.trim();
+    const meta = [answeredBy && `**Name:** ${answeredBy}  `, forWhom && `**Plattform:** ${forWhom}`].filter(Boolean);
+    const lines = ["# Testergebnis DEV (decidim.swiss#228)", "", ...(meta.length ? [...meta, ""] : [])];
+    dl.download = "testergebnis_228" + (forWhom ? "_" + forWhom.toLowerCase().replace(/[^a-z0-9äöü]+/g, "-").replace(/^-|-$/g, "") : "") + ".md";
+    let lastSection = null, any = false;
+    for (const q of items) {
+      const status = q.cell.querySelector("input:checked")?.value || "", note = q.toggle.checked ? q.notes.value.trim() : "";
+      if (!status && !note) continue;
+      if (q.section !== lastSection) { lines.push(`## ${q.section}`, ""); lastSection = q.section; }
+      lines.push(`- **${q.id}** ${q.title}: **${status || "–"}**`);
+      if (note) lines.push("  - Notiz: " + note.replace(/\n/g, "\n    "));
+      any = true;
+    }
+    const extra = document.getElementById("d-notes").value.trim();
+    if (extra) { lines.push("## Weitere Beobachtungen", "", extra); any = true; }
+    if (!any) lines.push("_Noch nichts erfasst._");
+    out.value = lines.join("\n").replace(/\n## /g, "\n\n## ").replace(/\n\n\n/g, "\n\n") + "\n";
+    URL.revokeObjectURL(dl.href);
+    dl.href = URL.createObjectURL(new Blob([out.value], { type: "text/markdown" }));
+    out.hidden = dl.hidden = copy.hidden = false;
+  });
+  copy.addEventListener("click", () => navigator.clipboard.writeText(out.value).then(() => copy.textContent = "Kopiert ✓"));
+  document.getElementById("reset").addEventListener("click", () => { if (confirm("Alle Einträge auf dieser Seite löschen?")) { localStorage.removeItem(KEY); location.reload(); } });
+</script>
+<script>
+  // Wrap each h2 and its content in a <section> card, wrap tables for horizontal scroll, and build the TOC.
+  const main = document.querySelector("main"), toc = document.getElementById("toc");
+  let section = null;
+  for (const node of [...main.childNodes]) {
+    if (node.nodeName === "H2") { section = document.createElement("section"); main.insertBefore(section, node); }
+    if (section) section.appendChild(node);
+  }
+  document.querySelectorAll("table").forEach(t => { const w = document.createElement("div"); w.className = "table-wrap"; t.replaceWith(w); w.appendChild(t); });
+  const slug = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const links = [];
+  main.querySelectorAll("h2, h3").forEach(h => {
+    h.id ||= slug(h.textContent);
+    const a = document.createElement("a");
+    a.href = "#" + h.id; a.textContent = h.textContent; a.className = h.tagName.toLowerCase();
+    toc.appendChild(a); links.push([h, a]);
+    h.insertAdjacentHTML("beforeend", `<a class="anchor" href="#${h.id}">#</a>`);
+  });
+  const spy = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    links.forEach(([, a]) => a.classList.remove("active"));
+    links.find(([h]) => h === e.target)?.[1].classList.add("active");
+  }), { rootMargin: "0px 0px -75% 0px" });
+  links.forEach(([h]) => spy.observe(h));
+  const btn = document.getElementById("theme-toggle"), root = document.documentElement;
+  const label = () => btn.textContent = root.dataset.theme === "dark" ? "☀ Hell" : "☾ Dunkel";
+  btn.addEventListener("click", () => { root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark"; localStorage.setItem("theme", root.dataset.theme); label(); });
+  label();
+</script>
+</body>
+</html>

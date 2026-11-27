@@ -108,6 +108,7 @@
     <span class="chip">0.29.7 → 0.31.9</span>
     <span class="chip">→ <a href="upgrade_steps.html">Step-by-step guide</a></span>
     <span class="chip">→ <a href="open_questions.html">Open questions</a></span>
+    <span class="chip">→ <a href="dev_test.html">DEV test (German)</a></span>
   </div>
   <small>0.31 is <em>not</em> on Zürich <code>master</code> (still 0.29.7). Compiled 2026-10-31 from GitHub issues, both repositories and the Decidim release notes and docs. Statements marked [inference] are not verified.</small>
 </div></header>
@@ -491,7 +492,7 @@ bin/rails decidim:upgrade:user_groups:remove       # sends mails, see §5.2
 <ul>
   <li><b>One PROD deployment</b>, directly 0.29.7 → 0.31.9 (§2). No 0.30.9 intermediate step.</li>
   <li><b>Communication</b>: our project lead informs the tenants' project leads, who pass everything on to their admins and participants. This includes the SMS re-verification (all SMS authorizations are deleted), the freeze, the maintenance window, user group mails, the removed "Appearance" page and header snippets without JS.</li>
-  <li><b>Upgrade documents in the app (temporary)</b>: <code>UpgradeDocsController</code> + route <code>get 'upgrade/:doc'</code> serve <code>planning.html</code>, <code>upgrade_steps.html</code> and <code>open_questions.html</code> from the repo root at <code>/upgrade/&lt;doc&gt;.html</code> on every tenant, only to org admins after the normal Decidim login (others: login redirect or 404). Org admins also get an "Upgrade-Dokumentation" button in the admin header (<code>_title_bar</code> deface + <code>layouts/decidim/admin/_upgrade_docs_link</code>), hidden for space admins. <b>Remove the controller, the route, the header button and the three files before the upgrade is closed</b> (phase D checklist).</li>
+  <li><b>Upgrade documents in the app (temporary)</b>: <code>UpgradeDocsController</code> + route <code>get 'upgrade/:doc'</code> serve <code>planning.html</code>, <code>upgrade_steps.html</code>, <code>open_questions.html</code> and <code>dev_test.html</code> (German click list for the DEV test, state kept in the browser) from the repo root at <code>/upgrade/&lt;doc&gt;.html</code> on every tenant, only to org admins after the normal Decidim login (others: login redirect or 404). Org admins also get an "Upgrade-Dokumentation" button in the admin header (<code>_title_bar</code> deface + <code>layouts/decidim/admin/_upgrade_docs_link</code>), hidden for space admins. <b>Remove the controller, the route, the header button and the four files before the upgrade is closed</b> (phase D checklist).</li>
 </ul>
 <h3>10.2 Tenant answers (2026-11-24)</h3>
 <p>Lars Kaiser for Luzern (dialogluzern.ch) and Winterthur (kooperation.winterthur.ch); Anthony Smith for deinklima.ch and impulskoeniz.ch (answered without consulting the clients; he communicates once date and tasks are known). C1 was settled on 2026-11-26 (3 years, all tenants).</p>
