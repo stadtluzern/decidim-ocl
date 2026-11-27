@@ -314,3 +314,8 @@ de:
         cc_by_license: Cc by license
         decidim_logo: Decidim logo
         made_with_open_source: Made with open source
+  time:
+    formats:
+      decidim_month: "%B"
+      decidim_month_and_year: "%B %Y"
+      time_of_day_with_time_zone: "%H:%M %Z"
